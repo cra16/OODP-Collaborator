@@ -4,41 +4,89 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public abstract class AbstractViewActivity extends Activity implements AdapterView.OnItemLongClickListener {
 
     // Job 오브젝트를 담는 배열
-    protected List<AbstractJob> jobList;
+    private List<AbstractJob> jobList;
 
-    protected String tableName;
-    protected String createTableQuery = "create table if not exists "+ tableName + " (id integer primary key, title text);";
+    private String tableName;
+    private String createTableQuery = "create table if not exists "+ tableName + " (id integer primary key, title text);";
 
-    protected ListView jobListView;
+    private ListView jobListView;
 
-    protected String alertDialogTitle;
+    private String alertDialogTitle;
+
+    private String[] columns;
+
+    public abstract void setColumns();
+    public abstract void setAlertDialogTitle();
+    public abstract void setJobListView();
+    public abstract void setTableName();
+    public abstract void setJobList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_abstract_view);
+
+        setColumns();
+        setAlertDialogTitle();
+        setJobListView();
+        setTableName();
+        setJobList();
+
         DatabaseHelper.myDBHelper.CreateTable(createTableQuery);
-        selectData();
+        selectData(columns);
         displayJobList();
         jobListView.setOnItemLongClickListener(this);
     }
 
-    protected abstract void displayJobList();
+    protected final void displayJobList(){
+        ArrayAdapter<AbstractJob> Adapter;
 
-    protected abstract void selectData();
+        // TODO: 어댑터 수정
+        Adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, jobList);
+        ListView list = (ListView)findViewById(R.id.task_list_view);
+
+        list.setAdapter(Adapter);
+    }
+
+    protected abstract void inflateJobList(Cursor cursor);
+
+    protected final void selectData(String[] columns){
+
+        Cursor result = DatabaseHelper.myDBHelper.QuerySelect(tableName,columns,null,null,null,null,null);
+        result.moveToFirst();
+        while(!result.isAfterLast()){
+            inflateJobList(result);
+//            arr_id_list.add(result.getString(0));
+//            arrayList.add(result.getString(1));
+//            for(int i = 0; i<result.getColumnCount();i++) {
+//                jobList.add(new AbstractJob() {
+//                    @Override
+//                    public void setTitle(String title) {
+//                        super.setTitle(result.getString());
+//                    }
+//                })
+//                jobList.add(result.getString(i));
+//                result.
+            }
+            result.moveToNext();
+        }
+        result.close();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
