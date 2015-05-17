@@ -1,16 +1,13 @@
 package cra.oodp2nd;
 
-import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -74,13 +71,13 @@ public class TaskViewActivity extends AbstractViewActivity {
     }
 
     @Override
-    public void setTableName() {
-        tableName = "table_task";
+    protected void setJobAdapter() {
+        jobAdapter = new TaskAdapter(this, R.layout.task_list_item, jobList);
     }
 
     @Override
-    protected void setJobAdapter() {
-        jobAdapter = new TaskAdapter(this, R.layout.task_list_item, jobList);
+    protected void setTableName() {
+        tableName = "table_task";
     }
 
     protected class TaskAdapter extends JobAdapter {
