@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,7 +24,8 @@ import java.util.List;
 
 public abstract class AbstractViewActivity extends Activity implements AdapterView.OnItemLongClickListener {
 
-    public DatabaseHelper myDBHelper;
+    public static DatabaseHelper myDBHelper;
+    protected SQLiteDatabase DB;
 
     // Job 오브젝트를 담는 배열
     protected List<AbstractJob> jobList;
@@ -57,7 +59,8 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_abstract_view);
 
-//        myDBHelper = DatabaseHelper.getInstance(this);
+        myDBHelper = DatabaseHelper.getInstance(this);
+        DB = myDBHelper.getWritableDatabase();
 
 //        setColumns();
         setAlertDialogTitle();
@@ -82,7 +85,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
 
     protected final void selectData(String[] columns){
 
-        Cursor result = DatabaseHelper.myDBHelper.QuerySelect(tableName,columns,null,null,null,null,null);
+        Cursor result = DB.query(tableName,columns,null,null,null,null,null);
         result.moveToFirst();
         while(!result.isAfterLast()) {
             inflateJobList(result);
@@ -137,7 +140,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
                 int position = jobList.get(selectedPos).getId();
 
                 dialog.dismiss();
-                DatabaseHelper.myDBHelper.Querydelete(tableName, "id=" + position, null);
+                DB.delete(tableName, "id=" + position, null);
                 displayJobList();
             }
         });
