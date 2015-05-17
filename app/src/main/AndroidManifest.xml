@@ -17,8 +17,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AbstractViewActivity"
-            android:label="@string/title_activity_view" >
+            android:name=".TaskViewActivity"
+            android:label="@string/title_activity_task_view" >
         </activity>
     </application>
 

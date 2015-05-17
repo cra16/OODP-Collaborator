@@ -10,6 +10,12 @@ public class TaskJob extends AbstractJob {
     private List<SubTaskJob> subTaskArray;
     private boolean isFinished;
 
+    public TaskJob(int id, String title) {
+        super(id, title);
+//        setAssignee(assignee);
+//        setIsFinished(isFinished);
+    }
+
     public String getAssignee() {
         return assignee;
     }
