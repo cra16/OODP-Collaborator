@@ -9,7 +9,7 @@
     tools:context="cra.oodp2nd.TaskManagement">
 
     <Button android:text="Add new Task"
-        android:id="@+id/b_add_new_task"
+        android:id="@+id/button_add_new_job"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onButtonAddNewTask"
@@ -19,7 +19,7 @@
 
     <ListView
         android:id="@+id/task_list_view"
-        android:layout_below="@id/b_add_new_task"
+        android:layout_below="@id/button_add_new_job"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical">
