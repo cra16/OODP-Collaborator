@@ -126,6 +126,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         result.moveToFirst();
         while(!result.isAfterLast()) {
             inflateJobList(result);
+            result.moveToNext();
         }
         result.close();
     }
