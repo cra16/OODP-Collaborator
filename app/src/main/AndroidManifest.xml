@@ -25,12 +25,12 @@
                 android:value="cra.oodp2nd.MainActivity" />
         </activity>
         <activity
-            android:name=".AbstractModelActivity"
-            android:label="@string/title_activity_abstract_model"
-            android:parentActivityName=".MainActivity" >
+            android:name=".TaskAddActivity"
+            android:label="@string/title_activity_task_model"
+            android:parentActivityName=".TaskViewActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="cra.oodp2nd.MainActivity" />
+                android:value="cra.oodp2nd.TaskViewActivity" />
         </activity>
     </application>
 
