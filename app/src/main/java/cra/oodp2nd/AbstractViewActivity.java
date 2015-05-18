@@ -105,7 +105,12 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
 
                 dialog.dismiss();
                 sqLiteDatabase.delete(TABLE_NAME, "id=" + position, null);
-                displayJobList();
+//                jobList.remove(selectedPos);
+//                setJobAdapter();
+//                displayJobList();
+//                jobListView.invalidate();
+                Intent intent = new Intent(getApplicationContext(), TaskViewActivity.class);
+                startActivity(intent);
             }
         });
 
