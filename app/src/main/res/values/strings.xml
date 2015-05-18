@@ -10,6 +10,7 @@
     <string name="title_activity_task_model">TaskModelActivity</string>
     <string name="title_activity_task_update">TaskUpdateActivity</string>
 
+    <string name="title_activity_record_view">RecordViewActivity</string>
 
     <string name="button_show_task">Task Management</string>
     <string name="button_show_record">Meeting Records</string>
