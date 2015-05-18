@@ -7,8 +7,9 @@
     <string name="title_activity_view">ViewActivity</string>
     <string name="title_activity_task_view">TaskViewActivity</string>
     <string name="title_activity_task_model">TaskModelActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
 
     <string name="button_show_task">Task Management</string>
     <string name="button_save">Save</string>
-
 </resources>
