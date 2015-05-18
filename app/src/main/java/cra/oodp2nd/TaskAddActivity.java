@@ -44,7 +44,8 @@ public class TaskAddActivity extends AbstractModelActivity implements TaskInterf
 
     @Override
     protected void setSaveButton() {
-        Button saveButton = (Button) findViewById(R.id.button_save);
+        Button saveButton = (Button) findViewById(R.id.button_add_update);
+        saveButton.setText("Save");
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
