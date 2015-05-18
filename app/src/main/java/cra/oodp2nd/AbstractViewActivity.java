@@ -27,7 +27,6 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
     protected List<AbstractJob> jobList; // Job 오브젝트를 담는 배열
     protected ListView jobListView;
     protected JobAdapter jobAdapter;
-    protected String test_tableTask = "table_task"; // temp var for testing
     protected String alertDialogTitle;
     protected String[] columns;
     protected Button addNewJobButton;
@@ -36,6 +35,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
     protected abstract void setAlertDialogTitle();
     protected abstract void setJobAdapter();
     protected abstract void selectData(String[] columns);
+    protected abstract void dbDeleteSingleJob(int position);
 
     public abstract void onButtonAddNewJob(View v);
 
@@ -105,8 +105,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
                 int position = jobList.get(selectedPos).getId();
 
                 dialog.dismiss();
-                // TODO: Extract next line into abstract method
-                sqLiteDatabase.delete(TABLE_NAME, "id=" + position, null);
+                dbDeleteSingleJob(position);
                 // TODO: Refresh jobListView instead recall this activity
 //                jobList.remove(selectedPos);
 //                setJobAdapter();

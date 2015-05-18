@@ -81,6 +81,11 @@ public class TaskViewActivity extends AbstractViewActivity implements TaskInterf
         result.close();
     }
 
+    @Override
+    protected void dbDeleteSingleJob(int position) {
+        sqLiteDatabase.delete(TABLE_NAME, "id=" + position, null);
+    }
+
     protected class TaskAdapter extends JobAdapter {
         public TaskAdapter(Context context, int textViewResourceId, List<AbstractJob> objects) {
             super(context, textViewResourceId, objects);
