@@ -50,7 +50,8 @@ public class TaskViewActivity extends AbstractViewActivity {
 
     @Override
     public void onButtonAddNewJob(View v) {
-
+        Intent intent = new Intent(getApplicationContext(), TaskAddActivity.class);
+        startActivity(intent);
     }
 
     @Override
