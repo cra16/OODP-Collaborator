@@ -24,7 +24,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
     protected List<AbstractJob> jobList; // Job 오브젝트를 담는 배열
     protected ListView jobListView;
     protected JobAdapter jobAdapter;
-    protected String tableName;
+    protected String TABLE_NAME = "table_task";
     protected String alertDialogTitle;
     protected String[] columns;
     protected DatabaseHelper myDBHelper;
