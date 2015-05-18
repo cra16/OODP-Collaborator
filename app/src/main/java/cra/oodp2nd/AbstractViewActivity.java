@@ -42,6 +42,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // TODO: Rearrange and rename methods, or extract method, make them plain
         setContentView(R.layout.activity_abstract_view);
 
         myDBHelper = DatabaseHelper.getInstance(this);
@@ -104,7 +105,9 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
                 int position = jobList.get(selectedPos).getId();
 
                 dialog.dismiss();
+                // TODO: Extract next line into abstract method
                 sqLiteDatabase.delete(TABLE_NAME, "id=" + position, null);
+                // TODO: Refresh jobListView instead recall this activity
 //                jobList.remove(selectedPos);
 //                setJobAdapter();
 //                displayJobList();
@@ -131,6 +134,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         return false;
     }
 
+    // TODO: Make abstract
     protected final void selectData(String[] columns){
 
         Cursor result = sqLiteDatabase.query(TABLE_NAME,columns,null,null,null,null,null);
