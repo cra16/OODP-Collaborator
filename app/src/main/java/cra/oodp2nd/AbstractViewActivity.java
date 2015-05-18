@@ -95,7 +95,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
                 int position = jobList.get(selectedPos).getId();
 
                 dialog.dismiss();
-                DatabaseHelper.myDBHelper.Querydelete(tableName, "id=" + position, null);
+                DatabaseHelper.myDBHelper.QueryDelete(tableName, "id=" + position, null);
                 displayJobList();
             }
         });
