@@ -78,7 +78,7 @@ public class TaskViewActivity extends AbstractViewActivity {
 
     @Override
     protected void setTableName() {
-        tableName = "table_task";
+        tableName = TABLE_NAME;
     }
 
     protected class TaskAdapter extends JobAdapter {
