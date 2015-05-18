@@ -119,7 +119,6 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         return false;
     }
 
-
     protected final void selectData(String[] columns){
 
         Cursor result = DatabaseHelper.myDBHelper.QuerySelect(tableName,columns,null,null,null,null,null);
@@ -145,6 +144,10 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
 
     protected final void setJobList(){
         jobList = new ArrayList<>();
+    }
+
+    protected final void setAddNewJobButtonText(String text) {
+        addNewJobButton.setText(text);
     }
 
     protected class JobAdapter extends ArrayAdapter<AbstractJob> {
