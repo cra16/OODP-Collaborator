@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -59,6 +60,15 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         displayJobList();
 
         jobListView.setOnItemLongClickListener(this);
+
+        // addNewJobButton listener 추가
+        addNewJobButton = (Button) findViewById(R.id.button_add_new_job);
+        addNewJobButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onButtonAddNewJob(v);
+            }
+        });
     }
 
     @Override
