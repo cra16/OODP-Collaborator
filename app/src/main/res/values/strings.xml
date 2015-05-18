@@ -3,8 +3,11 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
     <string name="title_activity_view">ViewActivity</string>
     <string name="title_activity_task_view">TaskViewActivity</string>
+    <string name="title_activity_task_model">TaskModelActivity</string>
+
     <string name="button_show_task">Task Management</string>
     <string name="title_activity_abstract_model">AbstractModelActivity</string>
 
