@@ -53,7 +53,7 @@ public class DatabaseHelper {
     {
         return myDatabase.update(TableName, UpRowValue, whereClause, whereArgs);
     }
-    public int Querydelete(String TableName, String whereClause, String[] whereArgs)
+    public int QueryDelete(String TableName, String whereClause, String[] whereArgs)
     {
         return myDatabase.delete(TableName, whereClause, whereArgs);
     }
