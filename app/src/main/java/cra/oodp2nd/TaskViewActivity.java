@@ -22,11 +22,6 @@ public class TaskViewActivity extends AbstractViewActivity {
     }
 
     @Override
-    public void setJobList() {
-        jobList = new ArrayList<>();
-        jobList.add(new TaskJob(1, "title"));
-    }
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_task_view, menu);
