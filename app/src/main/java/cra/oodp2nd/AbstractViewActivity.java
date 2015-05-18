@@ -120,7 +120,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
             public void onClick( DialogInterface dialog, int which ) {
                 int position = jobList.get(selectedPos).getId();
                 dialog.dismiss();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), TaskUpdateActivity.class);
                 intent.putExtra("p_id", position);
                 startActivity(intent);
             }

@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"
         >
 
-        <Button android:text="@string/button_save"
-            android:id="@+id/button_save"
+        <Button
+            android:id="@+id/button_add_update"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
