@@ -6,16 +6,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,85 +22,53 @@ import java.util.List;
 
 public abstract class AbstractViewActivity extends Activity implements AdapterView.OnItemLongClickListener {
 
-    public DatabaseHelper myDBHelper;
+    public static DatabaseHelper myDBHelper;
+    protected SQLiteDatabase sqLiteDatabase;
 
-    // Job 오브젝트를 담는 배열
-    protected List<AbstractJob> jobList;
-
-    protected String tableName;
-
-    private String createTableQuery;
-
+    protected List<AbstractJob> jobList; // Job 오브젝트를 담는 배열
     protected ListView jobListView;
-
-    protected String alertDialogTitle;
-
-    protected String[] columns;
-
     protected JobAdapter jobAdapter;
+    protected String TABLE_NAME = "table_task";
+    protected String alertDialogTitle;
+    protected String[] columns;
+    protected Button addNewJobButton;
 
-    public abstract void setColumns();
-    public abstract void setAlertDialogTitle();
-    public abstract void setTableName();
+    protected abstract void setColumns();
+    protected abstract void setAlertDialogTitle();
     protected abstract void setJobAdapter();
-
-    public void setJobListView(){
-        jobListView = (ListView)findViewById(R.id.task_list_view);
-    }
-    public void setJobList(){
-        jobList = new ArrayList<>();
-    }
+    public abstract void onButtonAddNewJob(View v);
+    protected abstract void inflateJobList(Cursor cursor);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_abstract_view);
 
-//        myDBHelper = DatabaseHelper.getInstance(this);
+        myDBHelper = DatabaseHelper.getInstance(this);
+        sqLiteDatabase = myDBHelper.getWritableDatabase();
 
-//        setColumns();
+        setColumns();
         setAlertDialogTitle();
         setJobListView();
-        setTableName();
-        setCreateTableQuery(tableName);
+
         setJobList();
 
-//        myDBHelper.CreateTable(createTableQuery);
-//        selectData(columns);
+        selectData(columns);
 
         setJobAdapter();
         displayJobList();
 
         jobListView.setOnItemLongClickListener(this);
+
+        // addNewJobButton listener 추가
+        addNewJobButton = (Button) findViewById(R.id.button_add_new_job);
+        addNewJobButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onButtonAddNewJob(v);
+            }
+        });
     }
-
-    protected void displayJobList() {
-        jobListView.setAdapter(jobAdapter);
-    }
-    protected abstract void inflateJobList(Cursor cursor);
-
-    protected final void selectData(String[] columns){
-
-        Cursor result = DatabaseHelper.myDBHelper.QuerySelect(tableName,columns,null,null,null,null,null);
-        result.moveToFirst();
-        while(!result.isAfterLast()) {
-            inflateJobList(result);
-        }
-        result.close();
-    }
-
-    public void setCreateTableQuery(String tableName) {
-        this.createTableQuery = "create table if not exists "+ tableName + " (id integer primary key, title text);";
-    }
-
-    protected class JobAdapter extends ArrayAdapter<AbstractJob> {
-        protected List<AbstractJob> jobList;
-        public JobAdapter(Context context, int textViewResourceId, List<AbstractJob> objects) {
-            super(context, textViewResourceId, objects);
-            jobList = objects;
-        }
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -137,8 +104,13 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
                 int position = jobList.get(selectedPos).getId();
 
                 dialog.dismiss();
-                DatabaseHelper.myDBHelper.Querydelete(tableName, "id=" + position, null);
-                displayJobList();
+                sqLiteDatabase.delete(TABLE_NAME, "id=" + position, null);
+//                jobList.remove(selectedPos);
+//                setJobAdapter();
+//                displayJobList();
+//                jobListView.invalidate();
+                Intent intent = new Intent(getApplicationContext(), TaskViewActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -148,7 +120,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
             public void onClick( DialogInterface dialog, int which ) {
                 int position = jobList.get(selectedPos).getId();
                 dialog.dismiss();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), TaskUpdateActivity.class);
                 intent.putExtra("p_id", position);
                 startActivity(intent);
             }
@@ -159,5 +131,40 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         return false;
     }
 
-    public abstract void onButtonAddNewJob(View v);
+    protected final void selectData(String[] columns){
+
+        Cursor result = sqLiteDatabase.query(TABLE_NAME,columns,null,null,null,null,null);
+        result.moveToFirst();
+        while(!result.isAfterLast()) {
+            inflateJobList(result);
+            result.moveToNext();
+        }
+        result.close();
+    }
+
+    protected final void displayJobList() {
+        jobListView.setAdapter(jobAdapter);
+    }
+
+    protected final void setJobListView(){
+        jobListView = (ListView)findViewById(R.id.task_list_view);
+    }
+
+    protected final void setJobList(){
+        jobList = new ArrayList<>();
+    }
+
+    protected final void setAddNewJobButtonText(String text) {
+        addNewJobButton.setText(text);
+    }
+
+    protected class JobAdapter extends ArrayAdapter<AbstractJob> {
+
+        protected List<AbstractJob> jobList;
+
+        public JobAdapter(Context context, int textViewResourceId, List<AbstractJob> objects) {
+            super(context, textViewResourceId, objects);
+            jobList = objects;
+        }
+    }
 }
