@@ -20,24 +20,22 @@ import java.util.List;
 
 public abstract class AbstractViewActivity extends Activity implements AdapterView.OnItemLongClickListener {
 
-    public DatabaseHelper myDBHelper;
-
-    private String createTableQuery;
-
-    protected String tableName;
     protected List<AbstractJob> jobList; // Job 오브젝트를 담는 배열
     protected ListView jobListView;
+    protected JobAdapter jobAdapter;
+    protected String tableName;
     protected String alertDialogTitle;
     protected String[] columns;
-    protected JobAdapter jobAdapter;
+    protected DatabaseHelper myDBHelper;
+    protected Button addNewJobButton;
+    private String createTableQuery;
 
     protected abstract void setColumns();
     protected abstract void setAlertDialogTitle();
     protected abstract void setJobAdapter();
     protected abstract void setTableName();
-    protected abstract void inflateJobList(Cursor cursor);
-
     public abstract void onButtonAddNewJob(View v);
+    protected abstract void inflateJobList(Cursor cursor);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
