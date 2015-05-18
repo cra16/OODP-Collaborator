@@ -43,16 +43,6 @@ public class TaskAddActivity extends AbstractModelActivity implements TaskInterf
     }
 
     @Override
-    protected void setTableName() {
-        tableName = "table_task";
-    }
-
-    @Override
-    protected void setCreateTableQuery(String tableName) {
-        createTableQuery = "create table if not exists" +  tableName +" (id integer primary key, title text);";
-    }
-
-    @Override
     protected void setSaveButton() {
         Button saveButton = (Button) findViewById(R.id.button_save);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +53,7 @@ public class TaskAddActivity extends AbstractModelActivity implements TaskInterf
                 ContentValues addRowValue = new ContentValues();
 
                 addRowValue.put("title", title);
-                myDBHelper.QueryInsert(tableName, addRowValue);
+                sqLiteDatabase.insert(TABLE_NAME, null, addRowValue) ;
 
                 Intent intent = new Intent(getApplicationContext(), TaskViewActivity.class);
                 startActivity(intent);

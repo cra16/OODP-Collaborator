@@ -73,11 +73,6 @@ public class TaskViewActivity extends AbstractViewActivity implements TaskInterf
         jobAdapter = new TaskAdapter(this, R.layout.task_list_item, jobList);
     }
 
-    @Override
-    protected void setTableName() {
-        tableName = TABLE_NAME;
-    }
-
     protected class TaskAdapter extends JobAdapter {
         public TaskAdapter(Context context, int textViewResourceId, List<AbstractJob> objects) {
             super(context, textViewResourceId, objects);

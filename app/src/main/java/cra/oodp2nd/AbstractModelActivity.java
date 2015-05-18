@@ -1,6 +1,7 @@
 package cra.oodp2nd;
 
 import android.app.Activity;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,14 +12,12 @@ import android.widget.EditText;
 
 public abstract class AbstractModelActivity extends Activity {
 
-    protected DatabaseHelper myDBHelper;
-    protected String tableName;
-    protected String createTableQuery;
+    public static DatabaseHelper myDBHelper;
+    protected SQLiteDatabase sqLiteDatabase;
+
 //    protected Button saveButton;
 //    protected Button updateButton;
 
-    protected abstract void setTableName();
-    protected abstract void setCreateTableQuery(String tableName);
     protected abstract void setSaveButton();
     protected abstract void setUpdateButton();
 
@@ -26,8 +25,7 @@ public abstract class AbstractModelActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myDBHelper = DatabaseHelper.getInstance(this);
-        setTableName();
-        setCreateTableQuery(tableName);
+        sqLiteDatabase = myDBHelper.getWritableDatabase();
     }
 
 }

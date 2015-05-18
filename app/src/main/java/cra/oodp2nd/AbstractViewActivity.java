@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,20 +22,20 @@ import java.util.List;
 
 public abstract class AbstractViewActivity extends Activity implements AdapterView.OnItemLongClickListener {
 
+    public static DatabaseHelper myDBHelper;
+    protected SQLiteDatabase sqLiteDatabase;
+
     protected List<AbstractJob> jobList; // Job 오브젝트를 담는 배열
     protected ListView jobListView;
     protected JobAdapter jobAdapter;
     protected String TABLE_NAME = "table_task";
     protected String alertDialogTitle;
     protected String[] columns;
-    protected DatabaseHelper myDBHelper;
     protected Button addNewJobButton;
-    private String createTableQuery;
 
     protected abstract void setColumns();
     protected abstract void setAlertDialogTitle();
     protected abstract void setJobAdapter();
-    protected abstract void setTableName();
     public abstract void onButtonAddNewJob(View v);
     protected abstract void inflateJobList(Cursor cursor);
 
@@ -44,16 +45,14 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         setContentView(R.layout.activity_abstract_view);
 
         myDBHelper = DatabaseHelper.getInstance(this);
+        sqLiteDatabase = myDBHelper.getWritableDatabase();
 
         setColumns();
         setAlertDialogTitle();
         setJobListView();
 
-        setTableName();
-        setCreateTableQuery(tableName);
         setJobList();
 
-        myDBHelper.CreateTable(createTableQuery);
         selectData(columns);
 
         setJobAdapter();
@@ -105,7 +104,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
                 int position = jobList.get(selectedPos).getId();
 
                 dialog.dismiss();
-                DatabaseHelper.myDBHelper.QueryDelete(tableName, "id=" + position, null);
+                sqLiteDatabase.delete(TABLE_NAME, "id=" + position, null);
                 displayJobList();
             }
         });
@@ -129,7 +128,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
 
     protected final void selectData(String[] columns){
 
-        Cursor result = DatabaseHelper.myDBHelper.QuerySelect(tableName,columns,null,null,null,null,null);
+        Cursor result = sqLiteDatabase.query(TABLE_NAME,columns,null,null,null,null,null);
         result.moveToFirst();
         while(!result.isAfterLast()) {
             inflateJobList(result);
@@ -140,10 +139,6 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
 
     protected final void displayJobList() {
         jobListView.setAdapter(jobAdapter);
-    }
-
-    protected final void setCreateTableQuery(String tableName) {
-        this.createTableQuery = "create table if not exists "+ tableName + " (id integer primary key, title text);";
     }
 
     protected final void setJobListView(){
