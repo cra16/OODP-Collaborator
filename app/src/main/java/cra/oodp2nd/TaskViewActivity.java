@@ -52,13 +52,6 @@ public class TaskViewActivity extends AbstractViewActivity implements TaskInterf
     }
 
     @Override
-    protected void inflateJobList(Cursor cursor) {
-        int id = Integer.parseInt(cursor.getString(0));
-        String title = cursor.getString(1);
-        jobList.add(new TaskJob(id, title));
-    }
-
-    @Override
     public void setColumns() {
         columns = new String[]{"id", "title"};
     }
@@ -71,6 +64,21 @@ public class TaskViewActivity extends AbstractViewActivity implements TaskInterf
     @Override
     protected void setJobAdapter() {
         jobAdapter = new TaskAdapter(this, R.layout.task_list_item, jobList);
+    }
+
+    @Override
+    protected void selectData(String[] columns) {
+        Cursor result = sqLiteDatabase.query(TABLE_NAME,columns,null,null,null,null,null);
+        result.moveToFirst();
+        while(!result.isAfterLast()) {
+
+            int id = Integer.parseInt(result.getString(0));
+            String title = result.getString(1);
+            jobList.add(new TaskJob(id, title));
+
+            result.moveToNext();
+        }
+        result.close();
     }
 
     protected class TaskAdapter extends JobAdapter {

@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
@@ -28,7 +27,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
     protected List<AbstractJob> jobList; // Job 오브젝트를 담는 배열
     protected ListView jobListView;
     protected JobAdapter jobAdapter;
-    protected String TABLE_NAME = "table_task";
+    protected String test_tableTask = "table_task"; // temp var for testing
     protected String alertDialogTitle;
     protected String[] columns;
     protected Button addNewJobButton;
@@ -36,8 +35,9 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
     protected abstract void setColumns();
     protected abstract void setAlertDialogTitle();
     protected abstract void setJobAdapter();
+    protected abstract void selectData(String[] columns);
+
     public abstract void onButtonAddNewJob(View v);
-    protected abstract void inflateJobList(Cursor cursor);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,18 +132,6 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         alertDlg.setMessage("Select an action");
         alertDlg.show();
         return false;
-    }
-
-    // TODO: Make abstract
-    protected final void selectData(String[] columns){
-
-        Cursor result = sqLiteDatabase.query(TABLE_NAME,columns,null,null,null,null,null);
-        result.moveToFirst();
-        while(!result.isAfterLast()) {
-            inflateJobList(result);
-            result.moveToNext();
-        }
-        result.close();
     }
 
     protected final void displayJobList() {
