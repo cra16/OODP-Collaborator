@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TaskViewActivity extends AbstractViewActivity {
+public class TaskViewActivity extends AbstractViewActivity implements TaskInterface {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
