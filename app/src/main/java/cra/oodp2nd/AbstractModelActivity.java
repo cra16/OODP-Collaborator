@@ -6,7 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class AbstractModelActivity extends Activity {
+public abstract class AbstractModelActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
