@@ -19,6 +19,7 @@ public class TaskViewActivity extends AbstractViewActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setAddNewJobButtonText("Add New Task");
     }
 
     @Override
