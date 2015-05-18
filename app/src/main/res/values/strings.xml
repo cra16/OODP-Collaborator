@@ -9,5 +9,6 @@
     <string name="title_activity_task_model">TaskModelActivity</string>
 
     <string name="button_show_task">Task Management</string>
+    <string name="button_save">Save</string>
 
 </resources>
