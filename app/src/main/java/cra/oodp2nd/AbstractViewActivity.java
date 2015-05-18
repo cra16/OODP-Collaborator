@@ -43,7 +43,6 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: Rearrange and rename methods, or extract method, make them plain
-        setContentView(R.layout.activity_abstract_view);
 
         myDBHelper = DatabaseHelper.getInstance(this);
         sqLiteDatabase = myDBHelper.getWritableDatabase();

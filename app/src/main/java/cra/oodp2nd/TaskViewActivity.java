@@ -20,6 +20,7 @@ public class TaskViewActivity extends AbstractViewActivity implements TaskInterf
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_task_view);
         setAddNewJobButtonText("Add New Task");
     }
 
