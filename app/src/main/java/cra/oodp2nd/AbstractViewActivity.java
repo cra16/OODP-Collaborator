@@ -131,19 +131,19 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         result.close();
     }
 
-    protected void displayJobList() {
+    protected final void displayJobList() {
         jobListView.setAdapter(jobAdapter);
     }
 
-    protected void setCreateTableQuery(String tableName) {
+    protected final void setCreateTableQuery(String tableName) {
         this.createTableQuery = "create table if not exists "+ tableName + " (id integer primary key, title text);";
     }
 
-    protected void setJobListView(){
+    protected final void setJobListView(){
         jobListView = (ListView)findViewById(R.id.task_list_view);
     }
 
-    protected void setJobList(){
+    protected final void setJobList(){
         jobList = new ArrayList<>();
     }
 
