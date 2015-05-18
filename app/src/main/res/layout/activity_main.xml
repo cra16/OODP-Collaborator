@@ -1,14 +1,35 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical" >
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="188dip"
+        android:layout_height="50dip"
         android:id="@+id/b_task_management"
         android:text="@string/button_show_task"
+        android:layout_centerInParent="true"
         android:onClick="onButtonShowTasks"/>
 
-</LinearLayout>
+    <Button
+        android:layout_width="188dip"
+        android:layout_height="50dip"
+        android:id="@+id/b_record_management"
+        android:text="@string/button_show_record"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/b_task_management"
+        android:layout_marginBottom="30dip"
+        android:onClick="onButtonShowRecords"/>
+
+    <Button
+        android:layout_width="188dip"
+        android:layout_height="50dip"
+        android:id="@+id/b_schedule_management"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/b_task_management"
+        android:layout_marginTop="30dip"
+        android:text="@string/button_show_schedule"
+        android:onClick="onButtonShowSchedules"/>
+
+</RelativeLayout>
