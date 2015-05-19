@@ -80,6 +80,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cra.oodp2nd.MainActivity" />
         </activity>
+        <activity
+            android:name=".ScheduleAddActivity"
+            android:label="@string/title_activity_schedule_add"
+            android:parentActivityName=".ScheduleViewActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cra.oodp2nd.ScheduleViewActivity" />
+        </activity>
     </application>
 
 </manifest>
