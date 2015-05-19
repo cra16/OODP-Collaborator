@@ -19,7 +19,7 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_add);
+        setContentView(R.layout.activity_task_add_update);
 
         Bundle bundle = getIntent().getExtras();
         id = bundle.getInt("p_id");

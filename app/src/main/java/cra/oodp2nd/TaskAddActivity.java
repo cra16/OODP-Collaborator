@@ -15,7 +15,7 @@ public class TaskAddActivity extends AbstractModelActivity implements TaskInterf
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_add);
+        setContentView(R.layout.activity_task_add_update);
         setSaveButton();
 
     }

@@ -40,7 +40,7 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_record_add);
+        setContentView(R.layout.activity_record_add_update);
         setSaveButton();
     }
 
