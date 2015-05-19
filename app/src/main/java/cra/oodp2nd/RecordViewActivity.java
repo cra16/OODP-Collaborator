@@ -55,8 +55,8 @@ public class RecordViewActivity extends AbstractViewActivity implements RecordIn
 
     @Override
     public void onButtonAddNewJob(View v) {
-//        Intent intent = new Intent(getApplicationContext(), TaskAddActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(getApplicationContext(), RecordAddActivity.class);
+        startActivity(intent);
     }
 
     @Override

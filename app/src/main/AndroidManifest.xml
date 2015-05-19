@@ -34,7 +34,7 @@
         </activity>
         <activity
             android:name=".TaskAddActivity"
-            android:label="@string/title_activity_task_model"
+            android:label="@string/title_activity_task_add"
             android:parentActivityName=".TaskViewActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -55,6 +55,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cra.oodp2nd.MainActivity" />
+        </activity>
+        <activity
+            android:name=".RecordAddActivity"
+            android:label="@string/title_activity_record_add"
+            android:parentActivityName=".RecordViewActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cra.oodp2nd.RecordViewActivity" />
         </activity>
     </application>
 

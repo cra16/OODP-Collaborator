@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="cra.oodp2nd.TaskAddActivity"
-    >
+    tools:context="cra.oodp2nd.RecordAddActivity">
 
     <LinearLayout
         android:background="#ff9ed3ff"
@@ -48,7 +47,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/edit_text_task_title"
+            android:id="@+id/edit_text_record_title"
             android:layout_margin="15dp"
             android:inputType="text"
             android:imeOptions="actionDone"/>

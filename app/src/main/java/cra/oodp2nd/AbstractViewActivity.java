@@ -42,7 +42,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ACTIVITY_JOB_VIEW);
+        setContentView(R.layout.activity_job_view);
         // TODO: Rearrange and rename methods, or extract method, make them plain
 
         myDBHelper = DatabaseHelper.getInstance(this);
