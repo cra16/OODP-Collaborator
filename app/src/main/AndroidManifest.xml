@@ -72,6 +72,30 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cra.oodp2nd.RecordViewActivity" />
         </activity>
+        <activity
+            android:name=".ScheduleViewActivity"
+            android:label="@string/title_activity_schedule_view"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cra.oodp2nd.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ScheduleAddActivity"
+            android:label="@string/title_activity_schedule_add"
+            android:parentActivityName=".ScheduleViewActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cra.oodp2nd.ScheduleViewActivity" />
+        </activity>
+        <activity
+            android:name=".ScheduleUpdateActivity"
+            android:label="@string/title_activity_schedule_update"
+            android:parentActivityName=".ScheduleViewActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cra.oodp2nd.ScheduleViewActivity" />
+        </activity>
     </application>
 
 </manifest>
