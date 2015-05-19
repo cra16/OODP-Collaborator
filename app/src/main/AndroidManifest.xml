@@ -64,6 +64,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cra.oodp2nd.RecordViewActivity" />
         </activity>
+        <activity
+            android:name=".RecordUpdateActivity"
+            android:label="@string/title_activity_record_update"
+            android:parentActivityName=".RecordViewActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cra.oodp2nd.RecordViewActivity" />
+        </activity>
     </application>
 
 </manifest>
