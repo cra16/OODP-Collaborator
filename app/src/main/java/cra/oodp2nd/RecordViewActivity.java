@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -51,6 +50,16 @@ public class RecordViewActivity extends AbstractViewActivity implements RecordIn
     @Override
     protected void dbDeleteSingleJob(int position) {
         sqLiteDatabase.delete(TABLE_NAME, "id=" + position, null);
+    }
+
+    @Override
+    protected Class getJobUpdateActivityClass() {
+        return RecordUpdateActivity.class;
+    }
+
+    @Override
+    protected Class getThisActivityClass() {
+        return this.getClass();
     }
 
     @Override

@@ -12,6 +12,11 @@
 
     <string name="title_activity_record_view">RecordViewActivity</string>
     <string name="title_activity_record_add">RecordAddActivity</string>
+    <string name="title_activity_record_update">RecordUpdateActivity</string>
+
+    <string name="title_activity_schedule_view">ScheduleViewActivity</string>
+    <string name="title_activity_schedule_add">ScheduleAddActivity</string>
+    <string name="title_activity_schedule_update">ScheduleUpdateActivity</string>
 
     <string name="button_show_task">Task Management</string>
     <string name="button_show_record">Meeting Records</string>

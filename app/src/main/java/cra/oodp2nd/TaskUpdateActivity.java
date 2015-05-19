@@ -19,7 +19,7 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_add);
+        setContentView(R.layout.activity_task_add_update);
 
         Bundle bundle = getIntent().getExtras();
         id = bundle.getInt("p_id");
@@ -81,8 +81,6 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
         Cursor result = sqLiteDatabase.query(TABLE_NAME, columns, "id=" + id, null, null, null, null);
 
         result.moveToFirst();
-        if (result == null)
-            Log.e("error", "result null");
         String title = result.getString(0);
 
         EditText titleEditText = (EditText) findViewById(R.id.edit_text_task_title);

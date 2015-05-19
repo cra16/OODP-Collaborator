@@ -85,6 +85,16 @@ public class TaskViewActivity extends AbstractViewActivity implements TaskInterf
         sqLiteDatabase.delete(TABLE_NAME, "id=" + position, null);
     }
 
+    @Override
+    protected Class getJobUpdateActivityClass() {
+        return TaskUpdateActivity.class;
+    }
+
+    @Override
+    protected Class getThisActivityClass() {
+        return this.getClass();
+    }
+
     protected class TaskAdapter extends JobAdapter {
         public TaskAdapter(Context context, int textViewResourceId, List<AbstractJob> objects) {
             super(context, textViewResourceId, objects);
