@@ -6,14 +6,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    static final String DataBase = "Project_DB";
+    static final String dbInstance = "Project_DB";
     private static DatabaseHelper myDBHelper;
 
     public static DatabaseHelper getInstance(Context context)//singleton
     {
 
         if(myDBHelper ==null)
-            myDBHelper = new DatabaseHelper(context, DataBase, null,1);
+            myDBHelper = new DatabaseHelper(context, dbInstance, null,1);
 
         return myDBHelper;
     }
