@@ -36,6 +36,8 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
     protected abstract void setJobAdapter();
     protected abstract void selectData(String[] columns);
     protected abstract void dbDeleteSingleJob(int position);
+    protected abstract Class getJobUpdateActivityClass();
+    protected abstract Class getThisActivityClass();
 
     public abstract void onButtonAddNewJob(View v);
 
@@ -98,7 +100,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         final Integer selectedPos = position;
         AlertDialog.Builder alertDlg = new AlertDialog.Builder(view.getContext());
         alertDlg.setTitle(alertDialogTitle);
-        alertDlg.setPositiveButton("Delete", new DialogInterface.OnClickListener(){
+        alertDlg.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -111,18 +113,20 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
 //                setJobAdapter();
 //                displayJobList();
 //                jobListView.invalidate();
-                Intent intent = new Intent(getApplicationContext(), TaskViewActivity.class);
+
+                // TODO: Make intent dynamically call activity
+                Intent intent = new Intent(getApplicationContext(), getThisActivityClass());
                 startActivity(intent);
             }
         });
 
-        alertDlg.setNegativeButton("Modify", new DialogInterface.OnClickListener(){
+        alertDlg.setNegativeButton("Modify", new DialogInterface.OnClickListener() {
 
             @Override
-            public void onClick( DialogInterface dialog, int which ) {
+            public void onClick(DialogInterface dialog, int which) {
                 int position = jobList.get(selectedPos).getId();
                 dialog.dismiss();
-                Intent intent = new Intent(getApplicationContext(), TaskUpdateActivity.class);
+                Intent intent = new Intent(getApplicationContext(), getJobUpdateActivityClass());
                 intent.putExtra("p_id", position);
                 startActivity(intent);
             }
