@@ -42,8 +42,8 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.ACTIVITY_JOB_VIEW);
         // TODO: Rearrange and rename methods, or extract method, make them plain
-        setContentView(R.layout.activity_abstract_view);
 
         myDBHelper = DatabaseHelper.getInstance(this);
         sqLiteDatabase = myDBHelper.getWritableDatabase();
@@ -62,7 +62,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         jobListView.setOnItemLongClickListener(this);
 
         // addNewJobButton listener 추가
-        addNewJobButton = (Button) findViewById(R.id.button_add_new_job);
+        addNewJobButton = (Button) findViewById(R.id.BUTTON_ADD_NEW_JOB);
         addNewJobButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,8 +137,8 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         jobListView.setAdapter(jobAdapter);
     }
 
-    protected final void setJobListView(){
-        jobListView = (ListView)findViewById(R.id.task_list_view);
+    protected final void setJobListView() {
+        jobListView = (ListView)findViewById(R.id.JOB_LIST_VIEW);
     }
 
     protected final void setJobList(){
