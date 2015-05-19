@@ -53,8 +53,7 @@ public class ScheduleViewActivity extends AbstractViewActivity implements Schedu
 
     @Override
     protected Class getJobUpdateActivityClass() {
-//        return ScheduleUpdateActivity.class;;
-        return this.getClass();
+        return ScheduleUpdateActivity.class;
     }
 
     @Override

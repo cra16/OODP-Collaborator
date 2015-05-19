@@ -88,6 +88,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cra.oodp2nd.ScheduleViewActivity" />
         </activity>
+        <activity
+            android:name=".ScheduleUpdateActivity"
+            android:label="@string/title_activity_schedule_update"
+            android:parentActivityName=".ScheduleViewActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cra.oodp2nd.ScheduleViewActivity" />
+        </activity>
     </application>
 
 </manifest>
