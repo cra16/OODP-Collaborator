@@ -1,6 +1,7 @@
 package cra.oodp2nd;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -63,8 +64,8 @@ public class ScheduleViewActivity extends AbstractViewActivity implements Schedu
 
     @Override
     public void onButtonAddNewJob(View v) {
-//        Intent intent = new Intent(getApplicationContext(), ScheduleAddActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(getApplicationContext(), ScheduleAddActivity.class);
+        startActivity(intent);
     }
 
     @Override

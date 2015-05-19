@@ -1,15 +1,35 @@
 package cra.oodp2nd;
 
+import android.content.ContentValues;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 
 public class ScheduleAddActivity extends AbstractModelActivity implements ScheduleInterface {
 
     @Override
     protected void setSaveButton() {
+        Button saveButton = (Button) findViewById(R.id.button_add_update);
+        saveButton.setText("Save");
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText titleEditText = (EditText) findViewById(R.id.edit_text_schedule_title);
+                String title = titleEditText.getText().toString();
+                ContentValues addRowValue = new ContentValues();
 
+                addRowValue.put("title", title);
+                sqLiteDatabase.insert(TABLE_NAME, null, addRowValue) ;
+
+                Intent intent = new Intent(getApplicationContext(), ScheduleViewActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -21,6 +41,7 @@ public class ScheduleAddActivity extends AbstractModelActivity implements Schedu
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_add_update);
+        setSaveButton();
     }
 
     @Override
