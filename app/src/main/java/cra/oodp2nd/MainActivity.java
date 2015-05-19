@@ -42,4 +42,13 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(this, TaskViewActivity.class);
         startActivity(intent);
     }
+
+    public void onButtonShowRecords(View view) {
+        Intent intent = new Intent(this, RecordViewActivity.class);
+        startActivity(intent);
+    }
+
+    public void onButtonShowSchedules(View view) {
+        
+    }
 }
