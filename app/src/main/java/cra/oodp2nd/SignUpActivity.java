@@ -35,7 +35,7 @@ public class SignUpActivity extends Activity {
                     Toast.makeText(getApplicationContext(), "Passwords aren't matched. Please retry", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                String tableName = "memberTable";
+                String tableName = "table_member";
                 ContentValues addRowValue = new ContentValues();
                 addRowValue.put("userId", userId.getText().toString());
                 addRowValue.put("password", password.getText().toString());

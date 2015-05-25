@@ -61,6 +61,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         setJobAdapter();
         displayJobList();
 
+        jobListView.setOnItemClickListener(this);
 
         jobListView.setOnItemLongClickListener(this);
 
@@ -96,6 +97,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         return super.onOptionsItemSelected(item);
     }
 
+
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         final Integer selectedPos = position;
@@ -121,6 +123,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
             }
         });
 
+
         /*alertDlg.setNegativeButton("Modify", new DialogInterface.OnClickListener() {
 
             @Override
@@ -135,24 +138,10 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
 
         alertDlg.setMessage("Select an action");
         alertDlg.show();
-        return false;
+        return true;
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        final Integer selectedPos = position;
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int position = jobList.get(selectedPos).getId();
-                Intent intent = new Intent(getApplicationContext(), getJobUpdateActivityClass());
-                intent.putExtra("p_id", position);
-                startActivity(intent);
-
-            }
-        });
-    }
 
     protected final void displayJobList() {
         jobListView.setAdapter(jobAdapter);
@@ -179,5 +168,16 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
             jobList = objects;
         }
     }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        final Integer selectedPos = position;
+        int Item_position = jobList.get(selectedPos).getId();
+        Intent intent = new Intent(getApplicationContext(), getJobUpdateActivityClass());
+        intent.putExtra("p_id", Item_position);
+        startActivity(intent);
+
+    }
+
 
 }

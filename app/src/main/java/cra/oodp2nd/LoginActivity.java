@@ -38,7 +38,7 @@ public class LoginActivity extends Activity {
         login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                String tableName = "memberTable";
+                String tableName = "table_member";
                 String[] columns = new String[]{"id", "userId", "password"};
                 if(userId.getText().toString().isEmpty() || password.getText().toString().isEmpty()){
                     Toast.makeText(getApplicationContext(), "Please input ID/PS correctly",Toast.LENGTH_SHORT).show();
