@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public abstract class AbstractViewActivity extends Activity implements AdapterView.OnItemLongClickListener {
+public abstract class AbstractViewActivity extends Activity implements AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
 
     public static DatabaseHelper myDBHelper;
     protected SQLiteDatabase sqLiteDatabase;
@@ -60,6 +60,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
 
         setJobAdapter();
         displayJobList();
+
 
         jobListView.setOnItemLongClickListener(this);
 
@@ -120,7 +121,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
             }
         });
 
-        alertDlg.setNegativeButton("Modify", new DialogInterface.OnClickListener() {
+        /*alertDlg.setNegativeButton("Modify", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -130,11 +131,27 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
                 intent.putExtra("p_id", position);
                 startActivity(intent);
             }
-        });
+        });*/
 
         alertDlg.setMessage("Select an action");
         alertDlg.show();
         return false;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        final Integer selectedPos = position;
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = jobList.get(selectedPos).getId();
+                Intent intent = new Intent(getApplicationContext(), getJobUpdateActivityClass());
+                intent.putExtra("p_id", position);
+                startActivity(intent);
+
+            }
+        });
     }
 
     protected final void displayJobList() {
@@ -162,4 +179,5 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
             jobList = objects;
         }
     }
+
 }
