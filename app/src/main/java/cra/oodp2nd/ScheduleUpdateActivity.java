@@ -42,9 +42,15 @@ public class ScheduleUpdateActivity extends AbstractModelActivity implements Sch
     }
 
     @Override
-    protected void setDatePicker() {
-
+    protected Activity getThisActivity() {
+        return ScheduleUpdateActivity.this;
     }
+
+    @Override
+    protected int getLayout() {
+        return R.id.edit_text_schedule_date;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -52,9 +52,15 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
     }
 
     @Override
-    protected void setDatePicker() {
-
+    protected Activity getThisActivity() {
+        return RecordUpdateActivity.this;
     }
+
+    @Override
+    protected int getLayout() {
+        return R.id.edit_text_record_date;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

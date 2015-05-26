@@ -1,5 +1,6 @@
 package cra.oodp2nd;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -76,9 +77,15 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
     }
 
     @Override
-    protected void setDatePicker() {
-
+    protected Activity getThisActivity() {
+        return TaskUpdateActivity.this;
     }
+
+    @Override
+    protected int getLayout() {
+        return R.id.edit_text_task_date;
+    }
+
 
     private void getTaskTitle() {
         String[] columns = {"title"};

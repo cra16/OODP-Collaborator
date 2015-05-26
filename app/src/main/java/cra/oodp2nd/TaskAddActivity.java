@@ -1,5 +1,6 @@
 package cra.oodp2nd;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
@@ -68,8 +69,14 @@ public class TaskAddActivity extends AbstractModelActivity implements TaskInterf
     }
 
     @Override
-    protected void setDatePicker() {
-
+    protected Activity getThisActivity() {
+        return TaskAddActivity.this;
     }
+
+    @Override
+    protected int getLayout() {
+        return R.id.edit_text_task_date;
+    }
+
 
 }
