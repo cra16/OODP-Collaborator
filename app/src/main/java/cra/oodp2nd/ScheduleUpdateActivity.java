@@ -42,6 +42,11 @@ public class ScheduleUpdateActivity extends AbstractModelActivity implements Sch
     }
 
     @Override
+    protected void setDatePicker() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_add_update);

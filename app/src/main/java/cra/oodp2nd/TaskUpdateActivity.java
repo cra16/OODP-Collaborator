@@ -75,6 +75,11 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
         });
     }
 
+    @Override
+    protected void setDatePicker() {
+
+    }
+
     private void getTaskTitle() {
         String[] columns = {"title"};
 

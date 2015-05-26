@@ -30,16 +30,30 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
             @Override
             public void onClick(View v) {
                 EditText titleEditText = (EditText) findViewById(R.id.edit_text_record_title);
+                EditText NameEditText = (EditText)findViewById(R.id.edit_text_record_name);
+                EditText dateEditText = (EditText)findViewById(R.id.edit_text_record_date);
+
                 String title = titleEditText.getText().toString();
+                String name = NameEditText.getText().toString();
+                String date = dateEditText.getText().toString();
+
                 ContentValues updateRowValue = new ContentValues();
 
                 updateRowValue.put("title", title);
+                updateRowValue.put("name", name);
+                updateRowValue.put("date", date);
+
                 sqLiteDatabase.update(TABLE_NAME, updateRowValue, "id=" + id, null);
 
                 Intent intent = new Intent(getApplicationContext(), RecordViewActivity.class);
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void setDatePicker() {
+
     }
 
     @Override
@@ -55,16 +69,22 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
     }
 
     private void getRecordTitle() {
-        String[] columns = {"title"};
+        String[] columns = {"title","name","date"};
 
         Cursor result = sqLiteDatabase.query(TABLE_NAME, columns, "id=" + id, null, null, null, null);
 
         result.moveToFirst();
         String title = result.getString(0);
+        String name = result.getString(1);
+        String date = result.getString(2);
 
         EditText titleEditText = (EditText) findViewById(R.id.edit_text_record_title);
-        titleEditText.setText(title);
+        EditText nameEditText = (EditText)findViewById(R.id.edit_text_record_name);
+        EditText dateEditText = (EditText)findViewById(R.id.edit_text_record_date);
 
+        titleEditText.setText(title);
+        nameEditText.setText(name);
+        dateEditText.setText(date);
         result.close();
     }
 

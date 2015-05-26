@@ -67,4 +67,9 @@ public class TaskAddActivity extends AbstractModelActivity implements TaskInterf
 
     }
 
+    @Override
+    protected void setDatePicker() {
+
+    }
+
 }

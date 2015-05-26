@@ -20,6 +20,7 @@ public abstract class AbstractModelActivity extends Activity {
 
     protected abstract void setSaveButton();
     protected abstract void setUpdateButton();
+    protected abstract void setDatePicker();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

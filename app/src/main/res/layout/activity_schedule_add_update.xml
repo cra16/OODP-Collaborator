@@ -25,7 +25,7 @@
             android:inputType="textPersonName"
             android:text="Manager"
             android:ems="10"
-            android:id="@+id/e_manager"
+            android:id="@+id/edit_text_schedule_name"
             android:layout_weight="1"
             android:imeOptions="actionDone"/>
     </LinearLayout>
