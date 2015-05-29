@@ -14,7 +14,6 @@ import android.widget.EditText;
  */
 public class SubTaskAddActivity extends AbstractModelActivity{
     protected int T_ID;
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -50,6 +49,7 @@ public class SubTaskAddActivity extends AbstractModelActivity{
             }
         });
     }
+
     @Override
     protected void setUpdateButton() {
 

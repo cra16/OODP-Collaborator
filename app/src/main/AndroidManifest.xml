@@ -104,6 +104,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cra.oodp2nd.SubTaskAddActivity" />
         </activity>
+        <activity
+            android:name=".CalendarSchedule"
+
+            android:parentActivityName=".CalendarSchedule" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cra.oodp2nd.CalendarSchedule" />
+        </activity>
     </application>
 
 </manifest>

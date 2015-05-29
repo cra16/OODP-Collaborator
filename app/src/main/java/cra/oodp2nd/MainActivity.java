@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
     }
 
     public void onButtonShowSchedules(View view) {
-        Intent intent = new Intent(this, ScheduleViewActivity.class);
+        Intent intent = new Intent(this, CalendarSchedule.class);
         startActivity(intent);
     }
 }

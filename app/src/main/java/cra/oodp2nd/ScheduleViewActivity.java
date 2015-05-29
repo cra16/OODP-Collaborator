@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -70,7 +71,9 @@ public class ScheduleViewActivity extends AbstractViewActivity implements Schedu
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_job_view);
         setAddNewJobButtonText("Add a New Meeting Schedule");
+
     }
 
     @Override
@@ -96,7 +99,6 @@ public class ScheduleViewActivity extends AbstractViewActivity implements Schedu
     }
 
     protected class ScheduleAdapter extends JobAdapter {
-
         public ScheduleAdapter(Context context, int textViewResourceId, List<AbstractJob> objects) {
             super(context, textViewResourceId, objects);
         }
@@ -106,7 +108,7 @@ public class ScheduleViewActivity extends AbstractViewActivity implements Schedu
             View v = convertView;
             if(v == null) {
                 LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = vi.inflate(R.layout.schedule_list_item, null);
+                 v = vi.inflate(R.layout.schedule_list_item, null);
             }
             ScheduleJob scheduleJob = (ScheduleJob) jobList.get(position);
             if(scheduleJob != null) {

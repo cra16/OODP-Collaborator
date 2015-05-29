@@ -28,7 +28,8 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
     protected int id;
     ArrayList<SubTaskJob> subJobList = new ArrayList<SubTaskJob>();
     ArrayList<AbstractJob> JobList = new ArrayList<AbstractJob>();
-
+    SubTaskAdapter adapter;
+    ListView list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,22 +38,19 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
 
         id = bundle.getInt("p_id");
 
-
-
         getTaskTitle();
 
         setUpdateButton();
         setSubTaskButton();
         ShowSubTask();
-        SubTaskAdapter adapter = new SubTaskAdapter(this, R.layout.task_list_item, subJobList);
+        adapter= new SubTaskAdapter(this, R.layout.task_list_item, subJobList);
 
 
-        ListView list = (ListView) findViewById(R.id.sub_task_view);
+        list = (ListView) findViewById(R.id.sub_task_view);
         list.setAdapter(adapter);
 
 
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -98,7 +96,6 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
             }
         });
     }
-
     @Override
     protected Activity getThisActivity() {
         return TaskUpdateActivity.this;
@@ -133,7 +130,6 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
                 Intent intent = new Intent(TaskUpdateActivity.this, SubTaskAddActivity.class);
                 intent.putExtra("T_ID", id);
                 startActivity(intent);
-                
             }
         });
 
@@ -167,7 +163,6 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
    protected class SubTaskAdapter extends ArrayAdapter<SubTaskJob> {
 
         ArrayList<SubTaskJob> list;
-       int P=0;
 
        public SubTaskAdapter(Context context, int resource, ArrayList<SubTaskJob> objects) {
             super(context, resource, objects);
@@ -196,6 +191,15 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
             return contentView;
         }
     }
+        @Override
+        public void onResume()
+        {
+            adapter.clear();
+            ShowSubTask();
+            adapter.notifyDataSetChanged();
+            super.onResume();
+
+        }
 
 }
 
