@@ -2,31 +2,55 @@ package cra.oodp2nd;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class TaskUpdateActivity extends AbstractModelActivity implements TaskInterface {
 
     protected int id;
+    ArrayList<SubTaskJob> subJobList = new ArrayList<SubTaskJob>();
+    ArrayList<AbstractJob> JobList = new ArrayList<AbstractJob>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_add_update);
-
         Bundle bundle = getIntent().getExtras();
+
         id = bundle.getInt("p_id");
+
+
+
         getTaskTitle();
 
         setUpdateButton();
+        setSubTaskButton();
+        ShowSubTask();
+        SubTaskAdapter adapter = new SubTaskAdapter(this, R.layout.task_list_item, subJobList);
+
+
+        ListView list = (ListView) findViewById(R.id.sub_task_view);
+        list.setAdapter(adapter);
+
+
     }
 
     @Override
@@ -70,8 +94,7 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
                 updateRowValue.put("title", title);
                 sqLiteDatabase.update(TABLE_NAME, updateRowValue, "id=" + id, null);
 
-                Intent intent = new Intent(getApplicationContext(), TaskViewActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
     }
@@ -83,7 +106,7 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
 
     @Override
     protected int getLayout() {
-        return R.id.edit_text_task_date;
+        return 0;
     }
 
 
@@ -101,4 +124,78 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
         result.close();
     }
 
+    public void setSubTaskButton() {
+        Button SubTaskButton = (Button) findViewById(R.id.sub_task_button);
+
+        SubTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TaskUpdateActivity.this, SubTaskAddActivity.class);
+                intent.putExtra("T_ID", id);
+                startActivity(intent);
+                
+            }
+        });
+
+    }
+
+    protected void ShowSubTask() {
+
+
+        String[] columns = new String[]{"id", "title"};
+
+        Cursor result = sqLiteDatabase.query("table_task", columns, "id=" + id, null, null, null, null);
+
+        result.moveToFirst();
+        JobList.add(new TaskJob(result));
+        TaskJob taskJob = (TaskJob) JobList.get(0);
+
+        columns = new String[]{"id", "title", "titleId", "clear", "state"};
+        result = sqLiteDatabase.query("table_subtask", columns, "titleId=" + id, null, null, null, null);
+        result.moveToFirst();
+        while (!result.isAfterLast()) {
+            subJobList.add(new SubTaskJob(result));
+            result.moveToNext();
+        }
+
+        result.close();
+
+
+
+
+    }
+   protected class SubTaskAdapter extends ArrayAdapter<SubTaskJob> {
+
+        ArrayList<SubTaskJob> list;
+       int P=0;
+
+       public SubTaskAdapter(Context context, int resource, ArrayList<SubTaskJob> objects) {
+            super(context, resource, objects);
+            this.list = objects;
+        }
+
+        public View getView(int position, View contentView, ViewGroup parent) {
+            if (contentView == null) {
+                LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                contentView = vi.inflate(R.layout.task_list_item, null);
+            }
+
+            SubTaskJob subTask = list.get(position);
+
+            if (subTask != null) {
+                TextView id = (TextView) contentView.findViewById(R.id.task_list_item_id);
+                TextView title = (TextView) contentView.findViewById(R.id.task_list_item_title);
+
+                if (id != null) {
+                    id.setText(Integer.toString(subTask.getId()));
+                }
+                if (title != null) {
+                    title.setText(subTask.getTitle());
+                }
+            }
+            return contentView;
+        }
+    }
+
 }
+

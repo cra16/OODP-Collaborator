@@ -39,7 +39,7 @@ public class ScheduleViewActivity extends AbstractViewActivity implements Schedu
 
             int id = Integer.parseInt(result.getString(0));
             String title = result.getString(1);
-            jobList.add(new ScheduleJob(id, title));
+            jobList.add(JFactory.create(result,alertDialogTitle));
 
             result.moveToNext();
         }

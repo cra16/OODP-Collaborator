@@ -18,7 +18,7 @@ public class RecordViewActivity extends AbstractViewActivity implements RecordIn
 
     @Override
     protected void setColumns() {
-        columns = new String[]{"id", "title","name"};
+        columns = new String[]{"id", "title","name", "date", "location"};
     }
 
     @Override
@@ -39,9 +39,11 @@ public class RecordViewActivity extends AbstractViewActivity implements RecordIn
 
             int id = Integer.parseInt(result.getString(0));
             String title = result.getString(1);
-            String date = result.getString(2);
+            String name = result.getString(2);
+            String date = result.getString(3);
+            String location = result.getString(4);
 
-            jobList.add(new RecordJob(id, title,date));
+            jobList.add(JFactory.create(result,alertDialogTitle));
 
             result.moveToNext();
         }
@@ -115,15 +117,12 @@ public class RecordViewActivity extends AbstractViewActivity implements RecordIn
             if(recordJob != null) {
                 TextView id = (TextView) v.findViewById(R.id.record_list_item_id);
                 TextView title = (TextView) v.findViewById(R.id.record_list_item_title);
-                TextView date = (TextView)v.findViewById(R.id.edit_text_record_date);
+
                 if (id != null) {
                     id.setText(Integer.toString(recordJob.getId()));
                 }
                 if (title != null) {
                     title.setText(recordJob.getTitle());
-                }
-                if(date!= null){
-                    date.setText(recordJob.getDate());
                 }
 
             }

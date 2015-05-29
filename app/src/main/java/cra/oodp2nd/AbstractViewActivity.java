@@ -23,6 +23,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
 
     public static DatabaseHelper myDBHelper;
     protected SQLiteDatabase sqLiteDatabase;
+    protected JobFactory JFactory= new JobFactory();
 
     protected List<AbstractJob> jobList; // Job 오브젝트를 담는 배열
     protected ListView jobListView;

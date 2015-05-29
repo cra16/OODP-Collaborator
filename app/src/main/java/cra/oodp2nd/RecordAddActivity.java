@@ -32,16 +32,21 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
                 EditText titleEditText = (EditText) findViewById(R.id.edit_text_record_title);
                 EditText nameEditText = (EditText)findViewById(R.id.edit_text_record_name);
                 EditText dateEditText = (EditText)findViewById(R.id.edit_text_record_date);
+                EditText locationEditText =(EditText)findViewById(R.id.edit_text_record_location);
 
                 String title = titleEditText.getText().toString();
                 String name = nameEditText.getText().toString();
                 String date= dateEditText.getText().toString();
+                String location = locationEditText.getText().toString();
+
 
                 ContentValues addRowValue = new ContentValues();
 
                 addRowValue.put("title", title);
                 addRowValue.put("name", name);
                 addRowValue.put("date", date);
+                addRowValue.put("location",location);
+
                 sqLiteDatabase.insert(TABLE_NAME, null, addRowValue) ;
 
                 Intent intent = new Intent(getApplicationContext(), RecordViewActivity.class);

@@ -48,6 +48,7 @@ public class TaskViewActivity extends AbstractViewActivity implements TaskInterf
     public void onButtonAddNewJob(View v) {
         Intent intent = new Intent(getApplicationContext(), TaskAddActivity.class);
         startActivity(intent);
+        onRestart();
     }
 
     @Override
@@ -73,7 +74,7 @@ public class TaskViewActivity extends AbstractViewActivity implements TaskInterf
 
             int id = Integer.parseInt(result.getString(0));
             String title = result.getString(1);
-            jobList.add(new TaskJob(id, title));
+            jobList.add(JFactory.create(result,alertDialogTitle));
 
             result.moveToNext();
         }
@@ -96,31 +97,31 @@ public class TaskViewActivity extends AbstractViewActivity implements TaskInterf
     }
 
     protected class TaskAdapter extends JobAdapter {
-        public TaskAdapter(Context context, int textViewResourceId, List<AbstractJob> objects) {
-            super(context, textViewResourceId, objects);
-        }
+            public TaskAdapter(Context context, int textViewResourceId, List<AbstractJob> objects) {
+                super(context, textViewResourceId, objects);
+            }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View v = convertView;
-            if(v == null) {
-                LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = vi.inflate(R.layout.task_list_item, null);
-            }
-            TaskJob taskJob = (TaskJob) jobList.get(position);
-            if(taskJob != null) {
-                TextView id = (TextView) v.findViewById(R.id.task_list_item_id);
-                TextView title = (TextView) v.findViewById(R.id.task_list_item_title);
-                if (id != null) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View v = convertView;
+                if(v == null) {
+                    LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    v = vi.inflate(R.layout.task_list_item, null);
+                }
+                TaskJob taskJob = (TaskJob) jobList.get(position);
+                if(taskJob != null) {
+                    TextView id = (TextView) v.findViewById(R.id.task_list_item_id);
+                    TextView title = (TextView) v.findViewById(R.id.task_list_item_title);
+                    if (id != null) {
 //                    Log.i("i", taskJob.getId() + "");
-                    id.setText(Integer.toString(taskJob.getId()));
+                        id.setText(Integer.toString(taskJob.getId()));
+                    }
+                    if (title != null) {
+                        title.setText(taskJob.getTitle());
+                    }
                 }
-                if (title != null) {
-                    title.setText(taskJob.getTitle());
-                }
+                return  v;
             }
-            return  v;
-        }
 
 
     }

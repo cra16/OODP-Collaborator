@@ -2,13 +2,21 @@ package cra.oodp2nd;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class TaskAddActivity extends AbstractModelActivity implements TaskInterface {
@@ -18,6 +26,7 @@ public class TaskAddActivity extends AbstractModelActivity implements TaskInterf
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_add_update);
         setSaveButton();
+
 
     }
 
@@ -55,13 +64,18 @@ public class TaskAddActivity extends AbstractModelActivity implements TaskInterf
                 ContentValues addRowValue = new ContentValues();
 
                 addRowValue.put("title", title);
-                sqLiteDatabase.insert(TABLE_NAME, null, addRowValue) ;
+                sqLiteDatabase.insert(TABLE_NAME, null, addRowValue);
+
 
                 Intent intent = new Intent(getApplicationContext(), TaskViewActivity.class);
                 startActivity(intent);
             }
         });
     }
+
+
+
+
 
     @Override
     protected void setUpdateButton() {
@@ -75,8 +89,9 @@ public class TaskAddActivity extends AbstractModelActivity implements TaskInterf
 
     @Override
     protected int getLayout() {
-        return R.id.edit_text_task_date;
+        return 0;
     }
+
 
 
 }
