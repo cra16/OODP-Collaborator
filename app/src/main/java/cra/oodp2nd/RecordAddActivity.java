@@ -49,8 +49,7 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
 
                 sqLiteDatabase.insert(TABLE_NAME, null, addRowValue) ;
 
-                Intent intent = new Intent(getApplicationContext(), RecordViewActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
     }
@@ -85,7 +84,8 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_record_add, menu);
+        getMenuInflater().inflate(R.menu.menu_schedule_update_activty, menu);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         return true;
     }
 
@@ -98,6 +98,12 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if(id== android.R.id.home) {
+
+            // NavUtils.navigateUpFromSameTask(this);
+            finish();
             return true;
         }
 

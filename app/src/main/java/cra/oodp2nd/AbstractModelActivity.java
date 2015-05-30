@@ -62,7 +62,8 @@ public abstract class AbstractModelActivity extends Activity {
     protected final void setTimePicker()
     {
         final EditText dateEditText = (EditText)findViewById(getLayout());
-        final String date = dateEditText.getText().toString();
+        final String date = dateEditText.getText().toString().substring(0,dateEditText.getText().toString().indexOf(" ")>=0
+                ?dateEditText.getText().toString().indexOf(" "):dateEditText.getText().toString().length());
         dateEditText.setOnClickListener(new View.OnClickListener() {
 
         int mhour;

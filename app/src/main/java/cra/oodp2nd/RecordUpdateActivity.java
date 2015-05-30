@@ -36,7 +36,8 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
 
                 String title = titleEditText.getText().toString();
                 String name = NameEditText.getText().toString();
-                String date = dateEditText.getText().toString();
+                String date = dateEditText.getText().toString().substring(0, dateEditText.getText().toString().indexOf(" "));
+                String time = dateEditText.getText().toString().substring(dateEditText.getText().toString().indexOf(" ")+1);
                 String location = locationEditText.getText().toString();
 
                 ContentValues updateRowValue = new ContentValues();
@@ -44,12 +45,12 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
                 updateRowValue.put("title", title);
                 updateRowValue.put("name", name);
                 updateRowValue.put("date", date);
+                updateRowValue.put("time", time);
                 updateRowValue.put("location", location);
 
                 sqLiteDatabase.update(TABLE_NAME, updateRowValue, "id=" + id, null);
 
-                Intent intent = new Intent(getApplicationContext(), RecordViewActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
     }
@@ -103,7 +104,8 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_record_update, menu);
+        getMenuInflater().inflate(R.menu.menu_schedule_update_activty, menu);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         return true;
     }
 
@@ -116,6 +118,12 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if(id== android.R.id.home) {
+
+            // NavUtils.navigateUpFromSameTask(this);
+            finish();
             return true;
         }
 
