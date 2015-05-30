@@ -29,14 +29,21 @@ public class ScheduleUpdateActivity extends AbstractModelActivity implements Sch
             @Override
             public void onClick(View v) {
                 EditText titleEditText = (EditText) findViewById(R.id.edit_text_schedule_title);
+                EditText dateEditText = (EditText)findViewById(R.id.edit_text_schedule_date);
+
+
                 String title = titleEditText.getText().toString();
+                String datetext = dateEditText.getText().toString();
+                String date = datetext.substring(0, datetext.indexOf(" ")>=0?datetext.indexOf(" "):datetext.length());
+                String time = datetext.substring(datetext.indexOf(" ")+1);
                 ContentValues updateRowValue = new ContentValues();
 
                 updateRowValue.put("title", title);
+                updateRowValue.put("date", date);
+                updateRowValue.put("time", time);
                 sqLiteDatabase.update(TABLE_NAME, updateRowValue, "id=" + id, null);
 
-                Intent intent = new Intent(getApplicationContext(), ScheduleViewActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
     }
@@ -61,19 +68,24 @@ public class ScheduleUpdateActivity extends AbstractModelActivity implements Sch
         id = bundle.getInt("p_id");
         getScheduleTitle();
 
+        setTimePicker();
         setUpdateButton();
     }
 
     private void getScheduleTitle() {
-        String[] columns = {"title"};
+        String[] columns = {"title","date","time"};
 
         Cursor result = sqLiteDatabase.query(TABLE_NAME, columns, "id=" + id, null, null, null, null);
 
         result.moveToFirst();
         String title = result.getString(0);
+        String date = result.getString(1);
+        String time = result.getString(2);
 
         EditText titleEditText = (EditText) findViewById(R.id.edit_text_schedule_title);
+        EditText dateEditText = (EditText)findViewById(R.id.edit_text_schedule_date);
         titleEditText.setText(title);
+        dateEditText.setText(date+" " + time);
 
         result.close();
     }
@@ -82,6 +94,7 @@ public class ScheduleUpdateActivity extends AbstractModelActivity implements Sch
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_schedule_update_activty, menu);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         return true;
     }
 
@@ -96,7 +109,15 @@ public class ScheduleUpdateActivity extends AbstractModelActivity implements Sch
         if (id == R.id.action_settings) {
             return true;
         }
+        if(id== android.R.id.home) {
+
+            // NavUtils.navigateUpFromSameTask(this);
+            finish();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

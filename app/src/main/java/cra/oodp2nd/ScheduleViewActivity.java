@@ -10,16 +10,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.List;
 
 
 public class ScheduleViewActivity extends AbstractViewActivity implements ScheduleInterface {
+    String date;
+
+
 
     @Override
     protected void setColumns() {
-        columns = new String[]{"id", "title"};
+        columns = new String[]{"id", "title", "date","time"};
     }
 
     @Override
@@ -34,12 +38,19 @@ public class ScheduleViewActivity extends AbstractViewActivity implements Schedu
 
     @Override
     protected void selectData(String[] columns) {
-        Cursor result = sqLiteDatabase.query(TABLE_NAME,columns,null,null,null,null,null);
+        Bundle bundle = getIntent().getExtras();
+        if (getIntent().getExtras()!=null  ) {
+            date = "\""+bundle.getInt("year") + "/" + bundle.getInt("month") + "/" + bundle.getInt("day")+"\"";
+        }
+
+        Cursor result = sqLiteDatabase.query(TABLE_NAME, columns,"date="+date,null,null,null,null);
         result.moveToFirst();
         while(!result.isAfterLast()) {
 
             int id = Integer.parseInt(result.getString(0));
             String title = result.getString(1);
+            String date = result.getString(2);
+            String time = result.getString(3);
             jobList.add(JFactory.create(result,alertDialogTitle));
 
             result.moveToNext();
@@ -65,13 +76,19 @@ public class ScheduleViewActivity extends AbstractViewActivity implements Schedu
     @Override
     public void onButtonAddNewJob(View v) {
         Intent intent = new Intent(getApplicationContext(), ScheduleAddActivity.class);
+        Bundle bundle = getIntent().getExtras();
+        intent.putExtra("userId", userId);
+        intent.putExtra("year",bundle.getInt("year"));
+        intent.putExtra("month",bundle.getInt("month"));
+        intent.putExtra("day", bundle.getInt("day"));
+
         startActivity(intent);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_job_view);
         setAddNewJobButtonText("Add a New Meeting Schedule");
 
     }
@@ -79,7 +96,8 @@ public class ScheduleViewActivity extends AbstractViewActivity implements Schedu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_schdule_view, menu);
+        getMenuInflater().inflate(R.menu.menu_schedule_update_activty, menu);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         return true;
     }
 
@@ -92,6 +110,12 @@ public class ScheduleViewActivity extends AbstractViewActivity implements Schedu
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if(id== android.R.id.home) {
+
+            // NavUtils.navigateUpFromSameTask(this);
+            finish();
             return true;
         }
 
@@ -124,4 +148,19 @@ public class ScheduleViewActivity extends AbstractViewActivity implements Schedu
             return  v;
         }
     }
+    @Override
+    public void onRestart()
+    {
+
+        super.onRestart();
+        Bundle bundle = getIntent().getExtras();
+        date = bundle.getInt("year") +"/" + bundle.getInt("month")+"/"+bundle.getInt("day");
+
+        jobAdapter.clear();
+        jobAdapter.notifyDataSetChanged();
+        selectData(columns);
+
+
+    }
+
 }

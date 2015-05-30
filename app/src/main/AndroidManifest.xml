@@ -12,7 +12,6 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -22,7 +21,12 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:parentActivityName=".LoginActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cra.oodp2nd.LoginActivity" />
+
         </activity>
         <activity
             android:name=".TaskViewActivity"
@@ -99,18 +103,18 @@
         <activity
             android:name=".SubTaskAddActivity"
 
-            android:parentActivityName=".SubTaskAddActivity" >
+            android:parentActivityName=".TaskAddActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cra.oodp2nd.SubTaskAddActivity" />
         </activity>
         <activity
             android:name=".CalendarSchedule"
-
-            android:parentActivityName=".CalendarSchedule" >
+            android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="cra.oodp2nd.CalendarSchedule" />
+                android:value="cra.oodp2nd.MainActivity" />
+
         </activity>
     </application>
 

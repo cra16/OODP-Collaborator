@@ -19,13 +19,16 @@ public class TaskViewActivity extends AbstractViewActivity implements TaskInterf
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle bundle = getIntent().getExtras();
+        userId=bundle.getString("userId");
         setAddNewJobButtonText("Add New Task");
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_task_view, menu);
+        getMenuInflater().inflate(R.menu.menu_schedule_update_activty, menu);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         return true;
     }
 
@@ -40,6 +43,12 @@ public class TaskViewActivity extends AbstractViewActivity implements TaskInterf
         if (id == R.id.action_settings) {
             return true;
         }
+        if(id== android.R.id.home) {
+
+            // NavUtils.navigateUpFromSameTask(this);
+            finish();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -47,13 +56,15 @@ public class TaskViewActivity extends AbstractViewActivity implements TaskInterf
     @Override
     public void onButtonAddNewJob(View v) {
         Intent intent = new Intent(getApplicationContext(), TaskAddActivity.class);
+        Bundle bundle = getIntent().getExtras();
+        intent.putExtra("userId", userId);
         startActivity(intent);
-        onRestart();
+
     }
 
     @Override
     public void setColumns() {
-        columns = new String[]{"id", "title"};
+        columns = new String[]{"id", "userId","title"};
     }
 
     @Override
@@ -68,7 +79,7 @@ public class TaskViewActivity extends AbstractViewActivity implements TaskInterf
 
     @Override
     protected void selectData(String[] columns) {
-        Cursor result = sqLiteDatabase.query(TABLE_NAME,columns,null,null,null,null,null);
+        Cursor result = sqLiteDatabase.query(TABLE_NAME,columns,"userId="+"\""+userId+"\"",null,null,null,null,null);
         result.moveToFirst();
         while(!result.isAfterLast()) {
 
@@ -122,6 +133,19 @@ public class TaskViewActivity extends AbstractViewActivity implements TaskInterf
                 }
                 return  v;
             }
+
+
+    }
+    @Override
+    public void onRestart()
+    {
+
+        super.onRestart();
+
+
+        jobAdapter.clear();
+        jobAdapter.notifyDataSetChanged();
+        selectData(columns);
 
 
     }

@@ -21,9 +21,11 @@ import java.util.List;
 
 public abstract class AbstractViewActivity extends Activity implements AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
 
+
     public static DatabaseHelper myDBHelper;
     protected SQLiteDatabase sqLiteDatabase;
     protected JobFactory JFactory= new JobFactory();
+    protected String userId;
 
     protected List<AbstractJob> jobList; // Job 오브젝트를 담는 배열
     protected ListView jobListView;
@@ -56,7 +58,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         setJobListView();
 
         setJobList();
-
+        setuserId();
         selectData(columns);
 
         setJobAdapter();
@@ -180,5 +182,9 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
 
     }
 
-
+    protected final void setuserId()
+    {
+        Bundle bundle = getIntent().getExtras();
+        this.userId=bundle.getString("userId");
+    }
 }

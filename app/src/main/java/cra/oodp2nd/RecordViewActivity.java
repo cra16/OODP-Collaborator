@@ -69,6 +69,8 @@ public class RecordViewActivity extends AbstractViewActivity implements RecordIn
     @Override
     public void onButtonAddNewJob(View v) {
         Intent intent = new Intent(getApplicationContext(), RecordAddActivity.class);
+        Bundle bundle = getIntent().getExtras();
+        intent.putExtra("userId", userId);
         startActivity(intent);
     }
 
@@ -81,7 +83,8 @@ public class RecordViewActivity extends AbstractViewActivity implements RecordIn
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_record_view, menu);
+        getMenuInflater().inflate(R.menu.menu_schedule_update_activty, menu);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         return true;
     }
 
@@ -94,6 +97,12 @@ public class RecordViewActivity extends AbstractViewActivity implements RecordIn
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if(id== android.R.id.home) {
+
+            // NavUtils.navigateUpFromSameTask(this);
+            finish();
             return true;
         }
 
@@ -128,5 +137,19 @@ public class RecordViewActivity extends AbstractViewActivity implements RecordIn
             }
             return  v;
         }
+    }
+
+    @Override
+    public void onRestart()
+    {
+
+        super.onRestart();
+
+
+        jobAdapter.clear();
+        jobAdapter.notifyDataSetChanged();
+        selectData(columns);
+
+
     }
 }

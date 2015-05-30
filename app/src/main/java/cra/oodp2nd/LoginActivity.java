@@ -51,6 +51,7 @@ public class LoginActivity extends Activity {
                     if (userId.getText().toString().equals(result.getString(1)) && password.getText().toString().equals(result.getString(2))) {
                         Toast.makeText(getApplicationContext(), "The User \'" + userId.getText().toString() + "\' login successful", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.putExtra("userId", userId.getText().toString());
                         startActivity(intent);
                         return;
                     }
@@ -111,6 +112,7 @@ public class LoginActivity extends Activity {
         if (id == R.id.action_settings) {
             return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }

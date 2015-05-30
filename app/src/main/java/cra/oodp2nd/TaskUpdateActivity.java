@@ -54,7 +54,8 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_task_update, menu);
+        getMenuInflater().inflate(R.menu.menu_schedule_update_activty, menu);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         return true;
     }
 
@@ -67,6 +68,12 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if(id== android.R.id.home) {
+
+            // NavUtils.navigateUpFromSameTask(this);
+            finish();
             return true;
         }
 
@@ -108,7 +115,7 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
 
 
     private void getTaskTitle() {
-        String[] columns = {"title"};
+        String[] columns = {"title,userId"};
 
         Cursor result = sqLiteDatabase.query(TABLE_NAME, columns, "id=" + id, null, null, null, null);
 
@@ -138,7 +145,7 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
     protected void ShowSubTask() {
 
 
-        String[] columns = new String[]{"id", "title"};
+        String[] columns = new String[]{"id", "title","userId"};
 
         Cursor result = sqLiteDatabase.query("table_task", columns, "id=" + id, null, null, null, null);
 
@@ -146,7 +153,7 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
         JobList.add(new TaskJob(result));
         TaskJob taskJob = (TaskJob) JobList.get(0);
 
-        columns = new String[]{"id", "title", "titleId", "clear", "state"};
+        columns = new String[]{"id","userId", "title", "titleId", "clear", "state"};
         result = sqLiteDatabase.query("table_subtask", columns, "titleId=" + id, null, null, null, null);
         result.moveToFirst();
         while (!result.isAfterLast()) {
@@ -200,6 +207,8 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
             super.onResume();
 
         }
+
+
 
 }
 

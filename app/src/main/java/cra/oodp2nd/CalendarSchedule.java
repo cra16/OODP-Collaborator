@@ -18,7 +18,12 @@ public class CalendarSchedule extends Activity {
         can.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+
                 Intent intent = new Intent(getApplicationContext(),ScheduleViewActivity.class);
+                intent.putExtra("year",year);
+                intent.putExtra("month",month+1);
+                intent.putExtra("day", dayOfMonth);
+
                 startActivity(intent);
             }
         });

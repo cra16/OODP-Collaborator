@@ -30,10 +30,12 @@ public class TaskAddActivity extends AbstractModelActivity implements TaskInterf
 
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_task_add, menu);
+        getMenuInflater().inflate(R.menu.menu_schedule_update_activty, menu);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         return true;
     }
 
@@ -46,6 +48,12 @@ public class TaskAddActivity extends AbstractModelActivity implements TaskInterf
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if(id== android.R.id.home) {
+
+            // NavUtils.navigateUpFromSameTask(this);
+            finish();
             return true;
         }
 
@@ -64,11 +72,11 @@ public class TaskAddActivity extends AbstractModelActivity implements TaskInterf
                 ContentValues addRowValue = new ContentValues();
 
                 addRowValue.put("title", title);
+                addRowValue.put("userId",userId);
                 sqLiteDatabase.insert(TABLE_NAME, null, addRowValue);
 
 
-                Intent intent = new Intent(getApplicationContext(), TaskViewActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
     }
