@@ -139,14 +139,9 @@ public class TaskViewActivity extends AbstractViewActivity implements TaskInterf
     @Override
     public void onRestart()
     {
-
         super.onRestart();
-
-
         jobAdapter.clear();
         jobAdapter.notifyDataSetChanged();
         selectData(columns);
-
-
     }
 }

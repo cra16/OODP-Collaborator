@@ -26,6 +26,7 @@ import java.util.List;
 public class TaskUpdateActivity extends AbstractModelActivity implements TaskInterface {
 
     protected int id;
+    protected int titleId;
     ArrayList<SubTaskJob> subJobList = new ArrayList<SubTaskJob>();
     ArrayList<AbstractJob> JobList = new ArrayList<AbstractJob>();
     SubTaskAdapter adapter;
@@ -199,13 +200,12 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
         }
     }
         @Override
-        public void onResume()
+        public void onRestart()
         {
             adapter.clear();
             ShowSubTask();
             adapter.notifyDataSetChanged();
-            super.onResume();
-
+            super.onRestart();
         }
 
 

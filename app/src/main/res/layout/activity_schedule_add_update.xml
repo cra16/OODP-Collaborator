@@ -140,6 +140,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ListView
+                android:id="@+id/sub_task_view"
+                android:layout_width="match_parent"
+                android:layout_height="146dp"
+                android:layout_gravity="center_vertical"/>
+
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

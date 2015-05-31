@@ -101,12 +101,6 @@
                 android:text="Completed"
                 android:id="@+id/checkbox_completed" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="next"
-                android:id="@+id/nextbutton" />
-
         </LinearLayout>
     </ScrollView>
 

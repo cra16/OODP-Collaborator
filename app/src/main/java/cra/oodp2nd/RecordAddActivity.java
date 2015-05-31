@@ -4,22 +4,34 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 
 public class RecordAddActivity extends AbstractModelActivity implements RecordInterface {
+
+    ArrayList<String> PersonList = new ArrayList<String>();
+    PersonAdapter adapter;
+    ListView list;
 
     @Override
     protected void setSaveButton() {
@@ -76,7 +88,7 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
         setContentView(R.layout.activity_record_add_update);
         setSaveButton();
         setDatePicker();
-
+        adapter = new PersonAdapter(this, android.R.layout.simple_list_item_multiple_choice,PersonList);
 
 
     }
@@ -108,5 +120,47 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void ShowSubTask() {
+
+
+        String[] columns = new String[]{"id","userId"};
+
+        Cursor result = sqLiteDatabase.query("table_member", columns,null, null, null, null, null);
+
+        result.moveToFirst();
+        while (!result.isAfterLast()) {
+            PersonList.add(new String(result.getString(1)));
+            result.moveToNext();
+        }
+        result.close();
+    }
+    protected class PersonAdapter extends ArrayAdapter<String> {
+
+        ArrayList<String> list;
+
+        public PersonAdapter(Context context, int resource, ArrayList<String> objects) {
+            super(context, resource, objects);
+            this.list = objects;
+        }
+
+        public View getView(int position, View contentView, ViewGroup parent) {
+            if (contentView == null) {
+                LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                contentView = vi.inflate(R.layout.task_list_item, null);
+            }
+
+            String Person = PersonList.get(position);
+
+            if (Person != null) {
+                TextView id = (TextView) contentView.findViewById(R.id.task_list_item_id);
+
+                if (id != null) {
+                    id.setText(Person);
+                }
+            }
+            return contentView;
+        }
     }
 }
