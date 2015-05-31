@@ -1,20 +1,36 @@
 package cra.oodp2nd;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 
 public class RecordUpdateActivity extends AbstractModelActivity implements RecordInterface {
 
+    ArrayList<String> PersonList = new ArrayList<String>();
+    ArrayList<String> P_PersonList = new ArrayList<String>();
+    ArrayList<String> ADD_PersonList = new ArrayList<String>();
+    PersonAdapter adapter;
+
+    ListView list;
     protected int id;
 
     @Override
@@ -36,8 +52,9 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
 
                 String title = titleEditText.getText().toString();
                 String name = NameEditText.getText().toString();
-                String date = dateEditText.getText().toString().substring(0, dateEditText.getText().toString().indexOf(" "));
-                String time = dateEditText.getText().toString().substring(dateEditText.getText().toString().indexOf(" ")+1);
+                String datetext = dateEditText.getText().toString();
+                String date = datetext.substring(0, datetext.indexOf(" ") >= 0 ? datetext.indexOf(" ") : datetext.length());
+                String time = datetext.substring(datetext.indexOf(" ") + 1);
                 String location = locationEditText.getText().toString();
 
                 ContentValues updateRowValue = new ContentValues();
@@ -45,10 +62,19 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
                 updateRowValue.put("title", title);
                 updateRowValue.put("name", name);
                 updateRowValue.put("date", date);
-                updateRowValue.put("time", time);
+       //         updateRowValue.put("time", time);
                 updateRowValue.put("location", location);
 
                 sqLiteDatabase.update(TABLE_NAME, updateRowValue, "id=" + id, null);
+
+                ContentValues addRowValue = new ContentValues();
+
+                for(int position=0; position<ADD_PersonList.size(); position++) {
+                    addRowValue.put("userId", ADD_PersonList.get(position));
+                    addRowValue.put("recordId", id);
+
+                    sqLiteDatabase.insert("table_member_presented", null, addRowValue);
+                }
 
                 finish();
             }
@@ -76,6 +102,13 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
         getRecordTitle();
 
         setUpdateButton();
+        setDatePicker();
+        setPersonButton();
+        ShowPerson();
+        adapter = new PersonAdapter(this, R.layout.task_list_item,P_PersonList);
+
+        list = (ListView) findViewById(R.id.record_view);
+        list.setAdapter(adapter);
     }
 
     private void getRecordTitle() {
@@ -128,5 +161,114 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setPersonButton() {
+        Button PersonButton = (Button) findViewById(R.id.person_button);
+
+        PersonButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(
+                        RecordUpdateActivity.this);
+                alertBuilder.setTitle("추가할 사람을 선택해주세요");
+
+                // List Adapter 생성
+                final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                        RecordUpdateActivity.this,
+                        android.R.layout.select_dialog_singlechoice);
+
+
+
+                for(int position=0; position<PersonList.size(); position++)
+                    adapter.add(PersonList.get(position));
+
+                alertBuilder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String user = adapter.getItem(which);
+
+                       ADD_PersonList.add(user);
+
+
+                        dialog.dismiss();
+
+                    }
+                });
+
+                alertBuilder.show();
+            }
+        });
+
+    }
+
+
+
+    protected void ShowPerson() {
+
+        String[] columns = new String[]{"id","userId"};
+
+        Cursor result = sqLiteDatabase.query("table_member", columns,null, null, null, null, null);
+
+        result.moveToFirst();
+        while (!result.isAfterLast()) {
+            PersonList.add(new String(result.getString(1)));
+            result.moveToNext();
+        }
+
+        columns = new String[]{"id","recordId","userId"};
+
+        result = sqLiteDatabase.query("table_member_presented", columns,"recordId="+ id, null, null, null, null);
+        result.moveToFirst();
+
+
+        while (!result.isAfterLast()) {
+            P_PersonList.add(new String(result.getString(2)));
+            result.moveToNext();
+        }
+        result.close();
+    }
+
+    protected class PersonAdapter extends ArrayAdapter<String> {
+
+        ArrayList<String> list;
+
+        public PersonAdapter(Context context, int resource, ArrayList<String> objects) {
+            super(context, resource, objects);
+            this.list = objects;
+        }
+
+        public View getView(int position, View contentView, ViewGroup parent) {
+            if (contentView == null) {
+                LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                contentView = vi.inflate(R.layout.task_list_item, null);
+            }
+
+            String Person = P_PersonList.get(position);
+
+            if (Person != null) {
+                TextView id = (TextView) contentView.findViewById(R.id.task_list_item_id);
+
+                if (id != null) {
+                    id.setText(Person);
+                }
+            }
+
+            return contentView;
+        }
+    }
+
+    @Override
+    public void onRestart()
+    {
+        super.onRestart();
+        adapter.clear();
+        PersonList.clear();
+        P_PersonList.clear();
+        ShowPerson();
+        adapter.notifyDataSetChanged();
+
+
     }
 }

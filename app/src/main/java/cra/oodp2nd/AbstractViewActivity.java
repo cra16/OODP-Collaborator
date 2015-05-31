@@ -27,7 +27,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
     protected JobFactory JFactory= new JobFactory();
     protected String userId;
 
-    protected List<AbstractJob> jobList; // Job 오브젝트를 담는 배열
+    protected List<AbstractJob> jobList; // Jofb 오브젝트를 담는 배열
     protected ListView jobListView;
     protected JobAdapter jobAdapter;
     protected String alertDialogTitle;
@@ -121,8 +121,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
 //                jobListView.invalidate();
 
                 // TODO: Make intent dynamically call activity
-                Intent intent = new Intent(getApplicationContext(), getThisActivityClass());
-                startActivity(intent);
+                onRestart();
             }
         });
 

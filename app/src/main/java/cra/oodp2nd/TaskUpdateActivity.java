@@ -26,7 +26,6 @@ import java.util.List;
 public class TaskUpdateActivity extends AbstractModelActivity implements TaskInterface {
 
     protected int id;
-    protected int titleId;
     ArrayList<SubTaskJob> subJobList = new ArrayList<SubTaskJob>();
     ArrayList<AbstractJob> JobList = new ArrayList<AbstractJob>();
     SubTaskAdapter adapter;
@@ -94,10 +93,14 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
             @Override
             public void onClick(View v) {
                 EditText titleEditText = (EditText) findViewById(R.id.edit_text_task_title);
+                EditText nameEditText = (EditText)findViewById(R.id.edit_text_task_name);
+
                 String title = titleEditText.getText().toString();
+                String name = nameEditText.getText().toString();
                 ContentValues updateRowValue = new ContentValues();
 
                 updateRowValue.put("title", title);
+                updateRowValue.put("name", name);
                 sqLiteDatabase.update(TABLE_NAME, updateRowValue, "id=" + id, null);
 
                 finish();
@@ -116,15 +119,19 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
 
 
     private void getTaskTitle() {
-        String[] columns = {"title,userId"};
+        String[] columns = {"title,userId","name"};
 
         Cursor result = sqLiteDatabase.query(TABLE_NAME, columns, "id=" + id, null, null, null, null);
 
         result.moveToFirst();
         String title = result.getString(0);
+        String name = result.getString(2);
 
         EditText titleEditText = (EditText) findViewById(R.id.edit_text_task_title);
+        EditText nameEditText = (EditText)findViewById(R.id.edit_text_task_name);
         titleEditText.setText(title);
+        nameEditText.setText(name);
+
 
         result.close();
     }
@@ -202,11 +209,13 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
         @Override
         public void onRestart()
         {
+            super.onRestart();
+
             adapter.clear();
+
             ShowSubTask();
             adapter.notifyDataSetChanged();
-            super.onRestart();
-        }
+          }
 
 
 

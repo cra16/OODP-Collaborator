@@ -71,6 +71,7 @@ public class RecordViewActivity extends AbstractViewActivity implements RecordIn
         Intent intent = new Intent(getApplicationContext(), RecordAddActivity.class);
         Bundle bundle = getIntent().getExtras();
         intent.putExtra("userId", userId);
+
         startActivity(intent);
     }
 

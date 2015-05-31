@@ -68,11 +68,16 @@ public class TaskAddActivity extends AbstractModelActivity implements TaskInterf
             @Override
             public void onClick(View v) {
                 EditText titleEditText = (EditText) findViewById(R.id.edit_text_task_title);
+                EditText nameEditText = (EditText) findViewById(R.id.edit_text_task_name);
+
                 String title = titleEditText.getText().toString();
+                String name = nameEditText.getText().toString();
                 ContentValues addRowValue = new ContentValues();
 
                 addRowValue.put("title", title);
                 addRowValue.put("userId",userId);
+                addRowValue.put("name", name);
+
                 sqLiteDatabase.insert(TABLE_NAME, null, addRowValue);
 
 

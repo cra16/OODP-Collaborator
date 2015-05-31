@@ -83,8 +83,7 @@ public class TaskViewActivity extends AbstractViewActivity implements TaskInterf
         result.moveToFirst();
         while(!result.isAfterLast()) {
 
-            int id = Integer.parseInt(result.getString(0));
-            String title = result.getString(1);
+
             jobList.add(JFactory.create(result,alertDialogTitle));
 
             result.moveToNext();

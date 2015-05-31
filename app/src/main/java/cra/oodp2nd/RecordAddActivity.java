@@ -1,10 +1,12 @@
 package cra.oodp2nd;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -30,8 +32,12 @@ import java.util.Date;
 public class RecordAddActivity extends AbstractModelActivity implements RecordInterface {
 
     ArrayList<String> PersonList = new ArrayList<String>();
+    ArrayList<String> P_PersonList = new ArrayList<String>();
+    ArrayList<String> ADD_PersonList = new ArrayList<String>();
     PersonAdapter adapter;
+
     ListView list;
+    protected int id;
 
     @Override
     protected void setSaveButton() {
@@ -57,10 +63,18 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
                 addRowValue.put("title", title);
                 addRowValue.put("name", name);
                 addRowValue.put("date", date);
-                addRowValue.put("location",location);
+                addRowValue.put("location", location);
 
-                sqLiteDatabase.insert(TABLE_NAME, null, addRowValue) ;
+                sqLiteDatabase.insert(TABLE_NAME, null, addRowValue);/*
+                sqLiteDatabase.query(TABLE_NAME,new String[]{"id"},"")
+                addRowValue = new ContentValues();
 
+                for(int position=0; position<ADD_PersonList.size(); position++) {
+                    addRowValue.put("userId", ADD_PersonList.get(position));
+                    addRowValue.put("recordId", );
+
+                    sqLiteDatabase.insert("table_member_presented", null, addRowValue);
+                }*/
                 finish();
             }
         });
@@ -86,10 +100,16 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_add_update);
+        Bundle bundle = getIntent().getExtras();
+        id=bundle.getInt("p_id");
         setSaveButton();
         setDatePicker();
-        adapter = new PersonAdapter(this, android.R.layout.simple_list_item_multiple_choice,PersonList);
+        setPersonButton();
+        ShowPerson();
+        adapter = new PersonAdapter(this, R.layout.task_list_item,P_PersonList);
 
+        list = (ListView) findViewById(R.id.record_view);
+        list.setAdapter(adapter);
 
     }
 
@@ -122,8 +142,45 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
         return super.onOptionsItemSelected(item);
     }
 
-    protected void ShowSubTask() {
+    public void setPersonButton() {
+        Button PersonButton = (Button) findViewById(R.id.person_button);
 
+        PersonButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(
+                        RecordAddActivity.this);
+                alertBuilder.setTitle("추가할 사람을 선택해주세요");
+
+                // List Adapter 생성
+                final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                        RecordAddActivity.this,
+                        android.R.layout.select_dialog_singlechoice);
+
+
+                for(int position=0; position<PersonList.size(); position++)
+                     adapter.add(PersonList.get(position));
+
+                alertBuilder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String user = adapter.getItem(which);
+
+                        ADD_PersonList.add(user);
+                        dialog.dismiss();
+                    }
+                });
+
+                alertBuilder.show();
+            }
+        });
+
+    }
+
+
+
+    protected void ShowPerson() {
 
         String[] columns = new String[]{"id","userId"};
 
@@ -132,6 +189,16 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
         result.moveToFirst();
         while (!result.isAfterLast()) {
             PersonList.add(new String(result.getString(1)));
+            result.moveToNext();
+        }
+        columns = new String[]{"id","recordId","userId"};
+
+        result = sqLiteDatabase.query("table_member_presented", columns,"recordId="+id, null, null, null, null);
+        result.moveToFirst();
+
+
+        while (!result.isAfterLast()) {
+            P_PersonList.add(new String(result.getString(2)));
             result.moveToNext();
         }
         result.close();
@@ -151,7 +218,7 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
                 contentView = vi.inflate(R.layout.task_list_item, null);
             }
 
-            String Person = PersonList.get(position);
+            String Person = P_PersonList.get(position);
 
             if (Person != null) {
                 TextView id = (TextView) contentView.findViewById(R.id.task_list_item_id);
@@ -160,7 +227,19 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
                     id.setText(Person);
                 }
             }
+
             return contentView;
         }
+    }
+
+    @Override
+    public void onRestart()
+    {
+        super.onRestart();
+        adapter.clear();
+        PersonList.clear();
+        P_PersonList.clear();
+        ShowPerson();
+        adapter.notifyDataSetChanged();
     }
 }

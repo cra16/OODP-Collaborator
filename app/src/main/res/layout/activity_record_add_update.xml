@@ -123,7 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add"
-            android:id="@+id/sub_task_button" />
+            android:id="@+id/person_button" />
 
 
     </LinearLayout>
@@ -142,7 +142,7 @@
 
             <ListView
 
-                android:id="@+id/sub_task_view"
+                android:id="@+id/record_view"
                 android:layout_width="match_parent"
                 android:layout_height="149dp"
                 android:layout_gravity="center_vertical"/>
