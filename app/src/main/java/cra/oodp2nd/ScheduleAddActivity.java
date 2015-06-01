@@ -1,14 +1,18 @@
 package cra.oodp2nd;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class ScheduleAddActivity extends AbstractModelActivity implements ScheduleInterface {
@@ -80,7 +84,7 @@ public class ScheduleAddActivity extends AbstractModelActivity implements Schedu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_schedule_update_activty, menu);
+        getMenuInflater().inflate(R.menu.menu_login, menu);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         return true;
     }
@@ -93,8 +97,18 @@ public class ScheduleAddActivity extends AbstractModelActivity implements Schedu
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_login_about) {
+            // about
+            aboutOptionDialog();
+        }
+        else if (id == R.id.action_login_option){
+            // option
+            OptionDialog();
+            return  true;
+        }
+        else if (id == R.id.action_login_exit){
+            // exit
+            exitOptionDialog();
         }
         if(id== android.R.id.home) {
 
@@ -104,7 +118,64 @@ public class ScheduleAddActivity extends AbstractModelActivity implements Schedu
         }
 
         return super.onOptionsItemSelected(item);
+    }
 
+    private void aboutOptionDialog() {
+        new AlertDialog.Builder(this).setTitle("About Collaborator").setMessage("Developer : Team OODP E").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        }).show();
+    }
+
+    private void OptionDialog() {
+        final String items[] = {"Blue", "Green", "Gray", "White"};
+        AlertDialog.Builder ab = new AlertDialog.Builder(this);
+        ab.setTitle("Select Color");
+        ab.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // 각 리스트 선택 시
+                Toast.makeText(getApplicationContext(), items[which], Toast.LENGTH_SHORT).show();
+                LoginActivity.OptionInformaiton.option_color = which;
+            }
+        }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                which = LoginActivity.OptionInformaiton.option_color;
+                // OK button, to Main Activity
+                if (which == 0) { // Blue
+                    getWindow().getDecorView().setBackgroundColor(Color.BLUE);
+                } else if (which == 1) { // Green
+                    getWindow().getDecorView().setBackgroundColor(Color.GREEN);
+                } else if (which == 2) { // Purple
+                    getWindow().getDecorView().setBackgroundColor(Color.GRAY);
+                } else { // default
+                    getWindow().getDecorView().setBackgroundColor(Color.WHITE);
+                }
+            }
+        }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // CANCEL button
+            }
+        });
+        ab.show();
+    }
+
+    private void exitOptionDialog(){
+        new AlertDialog.Builder(this).setTitle("Exit").setMessage("Exit the Program.").setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        }).show();
     }
 
 }

@@ -1,5 +1,7 @@
 package cra.oodp2nd;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -28,6 +30,11 @@ public class LoginActivity extends Activity {
     private TextView textViewRemaingLoginAttempts;
     int remainingLoginAttempts = 3;
 
+    public static class OptionInformaiton {
+        static int option_color = -1;
+        // 추후 옵션이 추가되면 여기에 넣어서 다른 클래스들로도 공유하면 됨
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +42,19 @@ public class LoginActivity extends Activity {
         setupVariables();
         HDB = DatabaseHelper.getInstance(this);
         DB = HDB.getWritableDatabase();
+
+        int which = LoginActivity.OptionInformaiton.option_color;
+        // OK button, to Main Activity
+        if (which == 0) { // Blue
+            getWindow().getDecorView().setBackgroundColor(Color.BLUE);
+        } else if (which == 1) { // Green
+            getWindow().getDecorView().setBackgroundColor(Color.GREEN);
+        } else if (which == 2) { // Purple
+            getWindow().getDecorView().setBackgroundColor(Color.GRAY);
+        } else { // default
+            getWindow().getDecorView().setBackgroundColor(Color.WHITE);
+        }
+
         login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -109,11 +129,79 @@ public class LoginActivity extends Activity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_login_about) {
+            // about
+            aboutOptionDialog();
+        }
+        else if (id == R.id.action_login_option){
+            // option
+            OptionDialog();
+            return  true;
+        }
+        else if (id == R.id.action_login_exit){
+            // exit
+            exitOptionDialog();
         }
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void aboutOptionDialog() {
+        new AlertDialog.Builder(this).setTitle("About Collaborator").setMessage("Developer : Team OODP E").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        }).show();
+    }
+
+    private void OptionDialog() {
+        final String items[] = {"Blue", "Green", "Gray", "White"};
+        AlertDialog.Builder ab = new AlertDialog.Builder(this);
+        ab.setTitle("Select Color");
+        ab.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // 각 리스트 선택 시
+                Toast.makeText(getApplicationContext(), items[which], Toast.LENGTH_SHORT).show();
+                OptionInformaiton.option_color = which;
+            }
+        }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                which = OptionInformaiton.option_color;
+                // OK button, to Main Activity
+                if (which == 0) { // Blue
+                    getWindow().getDecorView().setBackgroundColor(Color.BLUE);
+                } else if (which == 1) { // Green
+                    getWindow().getDecorView().setBackgroundColor(Color.GREEN);
+                } else if (which == 2) { // Purple
+                    getWindow().getDecorView().setBackgroundColor(Color.GRAY);
+                } else { // default
+                    getWindow().getDecorView().setBackgroundColor(Color.WHITE);
+                }
+            }
+        }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // CANCEL button
+            }
+        });
+        ab.show();
+    }
+
+    private void exitOptionDialog(){
+        new AlertDialog.Builder(this).setTitle("Exit").setMessage("Exit the Program.").setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        }).show();
     }
 }

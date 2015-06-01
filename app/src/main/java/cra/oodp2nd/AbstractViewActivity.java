@@ -6,13 +6,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -32,7 +32,6 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
     protected JobAdapter jobAdapter;
     protected String alertDialogTitle;
     protected String[] columns;
-    protected Button addNewJobButton;
 
     protected abstract void setColumns();
     protected abstract void setAlertDialogTitle();
@@ -41,8 +40,6 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
     protected abstract void dbDeleteSingleJob(int position);
     protected abstract Class getJobUpdateActivityClass();
     protected abstract Class getThisActivityClass();
-
-    public abstract void onButtonAddNewJob(View v);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,24 +61,45 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         setJobAdapter();
         displayJobList();
 
+        int which = LoginActivity.OptionInformaiton.option_color;
+        // OK button, to Main Activity
+        if (which == 0) { // Blue
+            getWindow().getDecorView().setBackgroundColor(Color.BLUE);
+        } else if (which == 1) { // Green
+            getWindow().getDecorView().setBackgroundColor(Color.GREEN);
+        } else if (which == 2) { // Purple
+            getWindow().getDecorView().setBackgroundColor(Color.GRAY);
+        } else { // default
+            getWindow().getDecorView().setBackgroundColor(Color.WHITE);
+        }
+
         jobListView.setOnItemClickListener(this);
 
         jobListView.setOnItemLongClickListener(this);
+    }
 
-        // addNewJobButton listener 추가
-        addNewJobButton = (Button) findViewById(R.id.BUTTON_ADD_NEW_JOB);
-        addNewJobButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onButtonAddNewJob(v);
-            }
-        });
+    @Override
+    public void onRestart()
+    {
+        super.onRestart();
+        //Option 재적용
+        int which = LoginActivity.OptionInformaiton.option_color;
+        // OK button, to Main Activity
+        if (which == 0) { // Blue
+            getWindow().getDecorView().setBackgroundColor(Color.BLUE);
+        } else if (which == 1) { // Green
+            getWindow().getDecorView().setBackgroundColor(Color.GREEN);
+        } else if (which == 2) { // Purple
+            getWindow().getDecorView().setBackgroundColor(Color.GRAY);
+        } else { // default
+            getWindow().getDecorView().setBackgroundColor(Color.WHITE);
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds jobList to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_view, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -155,10 +173,6 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
 
     protected final void setJobList(){
         jobList = new ArrayList<>();
-    }
-
-    protected final void setAddNewJobButtonText(String text) {
-        addNewJobButton.setText(text);
     }
 
     protected class JobAdapter extends ArrayAdapter<AbstractJob> {

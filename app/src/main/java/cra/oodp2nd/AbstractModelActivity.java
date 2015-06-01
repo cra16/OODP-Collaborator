@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -92,6 +93,17 @@ public abstract class AbstractModelActivity extends Activity {
         sqLiteDatabase = myDBHelper.getWritableDatabase();
         setuserId();
 
+        int which = LoginActivity.OptionInformaiton.option_color;
+        // OK button, to Main Activity
+        if (which == 0) { // Blue
+            getWindow().getDecorView().setBackgroundColor(Color.BLUE);
+        } else if (which == 1) { // Green
+            getWindow().getDecorView().setBackgroundColor(Color.GREEN);
+        } else if (which == 2) { // Purple
+            getWindow().getDecorView().setBackgroundColor(Color.GRAY);
+        } else { // default
+            getWindow().getDecorView().setBackgroundColor(Color.WHITE);
+        }
     }
 
     protected final void setuserId()
