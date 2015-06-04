@@ -22,11 +22,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 
 public class RecordAddActivity extends AbstractModelActivity implements RecordInterface {
@@ -106,7 +102,7 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
         setDatePicker();
         setPersonButton();
         ShowPerson();
-        adapter = new PersonAdapter(this, R.layout.task_list_item,P_PersonList);
+        adapter = new PersonAdapter(this, android.R.layout.simple_list_item_multiple_choice,P_PersonList);
 
         list = (ListView) findViewById(R.id.record_view);
         list.setAdapter(adapter);
@@ -215,7 +211,7 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
         public View getView(int position, View contentView, ViewGroup parent) {
             if (contentView == null) {
                 LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                contentView = vi.inflate(R.layout.task_list_item, null);
+                contentView = vi.inflate(android.R.layout.simple_list_item_multiple_choice, null);
             }
 
             String Person = P_PersonList.get(position);

@@ -21,13 +21,12 @@ import java.util.List;
 
 public abstract class AbstractViewActivity extends Activity implements AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
 
-
     public static DatabaseHelper myDBHelper;
     protected SQLiteDatabase sqLiteDatabase;
     protected JobFactory JFactory= new JobFactory();
     protected String userId;
 
-    protected List<AbstractJob> jobList; // Jofb 오브젝트를 담는 배열
+    protected List<AbstractJob> jobList; // Job 오브젝트를 담는 배열
     protected ListView jobListView;
     protected JobAdapter jobAdapter;
     protected String alertDialogTitle;
@@ -161,15 +160,6 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         addNewJobButton.setText(text);
     }
 
-    protected class JobAdapter extends ArrayAdapter<AbstractJob> {
-
-        protected List<AbstractJob> jobList;
-
-        public JobAdapter(Context context, int textViewResourceId, List<AbstractJob> objects) {
-            super(context, textViewResourceId, objects);
-            jobList = objects;
-        }
-    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

@@ -74,7 +74,7 @@ public class TaskViewActivity extends AbstractViewActivity implements TaskInterf
 
     @Override
     protected void setJobAdapter() {
-        jobAdapter = new TaskAdapter(this, R.layout.task_list_item, jobList);
+        jobAdapter = new TaskAdapter(this, R.layout.task_list_item, jobList, TaskViewActivity.this );
     }
 
     @Override
@@ -92,8 +92,11 @@ public class TaskViewActivity extends AbstractViewActivity implements TaskInterf
     }
 
     @Override
-    protected void dbDeleteSingleJob(int position) {
+    protected void dbDeleteSingleJob(int position)
+    {
+        sqLiteDatabase.delete("table_subtask", "titleId=" +position,null );
         sqLiteDatabase.delete(TABLE_NAME, "id=" + position, null);
+
     }
 
     @Override
@@ -106,35 +109,7 @@ public class TaskViewActivity extends AbstractViewActivity implements TaskInterf
         return this.getClass();
     }
 
-    protected class TaskAdapter extends JobAdapter {
-            public TaskAdapter(Context context, int textViewResourceId, List<AbstractJob> objects) {
-                super(context, textViewResourceId, objects);
-            }
 
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View v = convertView;
-                if(v == null) {
-                    LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    v = vi.inflate(R.layout.task_list_item, null);
-                }
-                TaskJob taskJob = (TaskJob) jobList.get(position);
-                if(taskJob != null) {
-                    TextView id = (TextView) v.findViewById(R.id.task_list_item_id);
-                    TextView title = (TextView) v.findViewById(R.id.task_list_item_title);
-                    if (id != null) {
-//                    Log.i("i", taskJob.getId() + "");
-                        id.setText(Integer.toString(taskJob.getId()));
-                    }
-                    if (title != null) {
-                        title.setText(taskJob.getTitle());
-                    }
-                }
-                return  v;
-            }
-
-
-    }
     @Override
     public void onRestart()
     {

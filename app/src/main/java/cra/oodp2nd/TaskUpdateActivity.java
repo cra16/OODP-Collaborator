@@ -1,8 +1,10 @@
 package cra.oodp2nd;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,7 +29,7 @@ import java.util.List;
 public class TaskUpdateActivity extends AbstractModelActivity implements TaskInterface {
 
     protected int id;
-    ArrayList<SubTaskJob> subJobList = new ArrayList<SubTaskJob>();
+    ArrayList<AbstractJob> subJobList = new ArrayList<AbstractJob>();
     ArrayList<AbstractJob> JobList = new ArrayList<AbstractJob>();
     SubTaskAdapter adapter;
     ListView list;
@@ -43,12 +46,40 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
         setUpdateButton();
         setSubTaskButton();
         ShowSubTask();
-        adapter= new SubTaskAdapter(this, R.layout.task_list_item, subJobList);
+        adapter= new SubTaskAdapter(this, R.layout.task_list_item, subJobList,TaskUpdateActivity.this);
 
 
         list = (ListView) findViewById(R.id.sub_task_view);
         list.setAdapter(adapter);
 
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final Integer selectedPos = position;
+                AlertDialog.Builder alertDlg = new AlertDialog.Builder(view.getContext());
+                alertDlg.setTitle("aa");
+
+                alertDlg.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int position = subJobList.get(selectedPos).getId();
+
+                        dialog.dismiss();
+                        sqLiteDatabase.delete("table_subtask", "id =" + position, null);
+                        // TODO: Refresh jobListView instead recall this activity
+
+                        // TODO: Make intent dynamically call activity
+                        onRestart();
+
+
+                    }
+                });
+                alertDlg.setMessage("Select an action");
+                alertDlg.show();
+                return false;
+            }
+        });
 
     }
     @Override
@@ -153,19 +184,11 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
     protected void ShowSubTask() {
 
 
-        String[] columns = new String[]{"id", "title","userId"};
-
-        Cursor result = sqLiteDatabase.query("table_task", columns, "id=" + id, null, null, null, null);
-
-        result.moveToFirst();
-        JobList.add(new TaskJob(result));
-        TaskJob taskJob = (TaskJob) JobList.get(0);
-
-        columns = new String[]{"id","userId", "title", "titleId", "clear", "state"};
-        result = sqLiteDatabase.query("table_subtask", columns, "titleId=" + id, null, null, null, null);
+        String[] columns = new String[]{"id","userId", "title", "titleId", "clear", "state"};
+        Cursor result = sqLiteDatabase.query("table_subtask", columns, "titleId=" + id, null, null, null, null);
         result.moveToFirst();
         while (!result.isAfterLast()) {
-            subJobList.add(new SubTaskJob(result));
+            subJobList.add(jobFactory.create(result,"Sub"));
             result.moveToNext();
         }
 
@@ -175,37 +198,7 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
 
 
     }
-   protected class SubTaskAdapter extends ArrayAdapter<SubTaskJob> {
 
-        ArrayList<SubTaskJob> list;
-
-       public SubTaskAdapter(Context context, int resource, ArrayList<SubTaskJob> objects) {
-            super(context, resource, objects);
-            this.list = objects;
-        }
-
-        public View getView(int position, View contentView, ViewGroup parent) {
-            if (contentView == null) {
-                LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                contentView = vi.inflate(R.layout.task_list_item, null);
-            }
-
-            SubTaskJob subTask = list.get(position);
-
-            if (subTask != null) {
-                TextView id = (TextView) contentView.findViewById(R.id.task_list_item_id);
-                TextView title = (TextView) contentView.findViewById(R.id.task_list_item_title);
-
-                if (id != null) {
-                    id.setText(Integer.toString(subTask.getId()));
-                }
-                if (title != null) {
-                    title.setText(subTask.getTitle());
-                }
-            }
-            return contentView;
-        }
-    }
         @Override
         public void onRestart()
         {
@@ -220,4 +213,3 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
 
 
 }
-

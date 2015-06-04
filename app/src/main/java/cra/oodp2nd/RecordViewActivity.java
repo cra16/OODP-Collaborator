@@ -28,7 +28,7 @@ public class RecordViewActivity extends AbstractViewActivity implements RecordIn
 
     @Override
     protected void setJobAdapter() {
-        jobAdapter = new RecordAdapter(this, R.layout.record_list_item, jobList);
+        jobAdapter = new RecordAdapter(this, R.layout.record_list_item, jobList,RecordViewActivity.this);
     }
 
     @Override
@@ -110,35 +110,6 @@ public class RecordViewActivity extends AbstractViewActivity implements RecordIn
         return super.onOptionsItemSelected(item);
     }
 
-    protected class RecordAdapter extends JobAdapter {
-
-        public RecordAdapter(Context context, int textViewResourceId, List<AbstractJob> objects) {
-            super(context, textViewResourceId, objects);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View v = convertView;
-            if(v == null) {
-                LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = vi.inflate(R.layout.record_list_item, null);
-            }
-            RecordJob recordJob = (RecordJob) jobList.get(position);
-            if(recordJob != null) {
-                TextView id = (TextView) v.findViewById(R.id.record_list_item_id);
-                TextView title = (TextView) v.findViewById(R.id.record_list_item_title);
-
-                if (id != null) {
-                    id.setText(Integer.toString(recordJob.getId()));
-                }
-                if (title != null) {
-                    title.setText(recordJob.getTitle());
-                }
-
-            }
-            return  v;
-        }
-    }
 
     @Override
     public void onRestart()
