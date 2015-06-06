@@ -47,7 +47,7 @@ public class ScheduleViewActivity extends AbstractViewActivity implements Schedu
             date = "\""+bundle.getInt("year") + "/" + bundle.getInt("month") + "/" + bundle.getInt("day")+"\"";
         }
 
-        Cursor result = sqLiteDatabase.query(TABLE_NAME, columns,"date="+date,null,null,null,null);
+        Cursor result = sqLiteDatabase.query(TABLE_NAME, columns,"date="+date ,null,null,null,null);
         result.moveToFirst();
         while(!result.isAfterLast()) {
 

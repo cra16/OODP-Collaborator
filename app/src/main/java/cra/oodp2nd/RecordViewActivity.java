@@ -22,7 +22,7 @@ public class RecordViewActivity extends AbstractViewActivity implements RecordIn
 
     @Override
     protected void setColumns() {
-        columns = new String[]{"id", "title", "date", "location"};
+        columns = new String[]{"id","userId", "title", "date", "location"};
     }
 
     @Override
@@ -37,7 +37,7 @@ public class RecordViewActivity extends AbstractViewActivity implements RecordIn
 
     @Override
     protected void selectData(String[] columns) {
-        Cursor result = sqLiteDatabase.query(TABLE_NAME,columns,null,null,null,null,null);
+        Cursor result = sqLiteDatabase.query(TABLE_NAME,columns,"userId="+"\""+userId+"\"",null,null,null,null);
         result.moveToFirst();
         while(!result.isAfterLast()) {
 

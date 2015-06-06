@@ -59,7 +59,7 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
                 ContentValues addRowValue = new ContentValues();
 
                 addRowValue.put("title", title);
-                addRowValue.put("name", name);
+                addRowValue.put("userId", name);
                 addRowValue.put("date", date);
                 addRowValue.put("location", location);
 
@@ -100,6 +100,10 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
         setContentView(R.layout.activity_record_add_update);
         Bundle bundle = getIntent().getExtras();
         id=bundle.getInt("p_id");
+
+        EditText name = (EditText) findViewById(R.id.edit_text_record_name);
+        name.setText(userId);
+
         setSaveButton();
         setDatePicker();
         setPersonButton();

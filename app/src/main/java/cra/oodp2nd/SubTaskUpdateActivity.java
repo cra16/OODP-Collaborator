@@ -51,7 +51,7 @@ public class SubTaskUpdateActivity extends AbstractModelActivity{
                     checked=1;
 
                 updateRowValue.put("title", title);
-                updateRowValue.put("userId", userId);
+                updateRowValue.put("userId", name);
                 updateRowValue.put("clear",  checked);
                 sqLiteDatabase.update("table_subtask", updateRowValue, "id=" + T_ID, null);
 
@@ -74,16 +74,18 @@ public class SubTaskUpdateActivity extends AbstractModelActivity{
 
     protected void getSubTask()
     {
-        String[] columns = {"title","titleId","clear"};
+        String[] columns = {"title","userId","titleId","clear"};
 
         Cursor result = sqLiteDatabase.query("table_subtask", columns, "id=" + T_ID, null, null, null, null);
 
         result.moveToFirst();
         String title = result.getString(0);
-
+        String name = result.getString(1);
+        EditText nameEditText = (EditText) findViewById(R.id.edit_text_subtask_name);
         EditText titleEditText = (EditText) findViewById(R.id.edit_text_subtask_title);
         CheckBox check = (CheckBox) findViewById(R.id.checkbox_completed);
         check.setChecked(result.getInt(2)==1);
+        nameEditText.setText(name);
 
         titleEditText.setText(title);
 
