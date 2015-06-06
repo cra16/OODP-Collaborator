@@ -20,9 +20,11 @@ import java.util.Calendar;
 
 public abstract class AbstractModelActivity extends Activity {
 
+    protected JobFactory jobFactory = new JobFactory();
     public static DatabaseHelper myDBHelper;
     protected SQLiteDatabase sqLiteDatabase;
     protected String userId;
+
 //    protected Button saveButton;
 //    protected Button updateButton;
 
@@ -30,6 +32,7 @@ public abstract class AbstractModelActivity extends Activity {
     protected abstract void setUpdateButton();
     protected abstract Activity getThisActivity();
     protected abstract int getLayout();
+
     protected final void setDatePicker()
     {
 
@@ -100,4 +103,7 @@ public abstract class AbstractModelActivity extends Activity {
         this.userId=bundle.getString("userId");
     }
 
+
+
 }
+
