@@ -63,7 +63,7 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
                 ContentValues updateRowValue = new ContentValues();
 
                 updateRowValue.put("title", title);
-                updateRowValue.put("name", name);
+                updateRowValue.put("userId", name);
                 updateRowValue.put("date", date);
        //         updateRowValue.put("time", time);
                 updateRowValue.put("location", location);
@@ -149,7 +149,7 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
     }
 
     private void getRecordTitle() {
-        String[] columns = {"title","date","location"};
+        String[] columns = {"title","userId","date","location"};
 
         Cursor result = sqLiteDatabase.query(TABLE_NAME, columns, "id=" + id, null, null, null, null);
 

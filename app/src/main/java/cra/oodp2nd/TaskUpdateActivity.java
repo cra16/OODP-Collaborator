@@ -32,7 +32,7 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_add_update);
         Bundle bundle = getIntent().getExtras();
-
+        userId = bundle.getString("userId");
         id = bundle.getInt("p_id");
 
         getTaskTitle();
@@ -247,6 +247,7 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
             public void onClick(View v) {
                 Intent intent = new Intent(TaskUpdateActivity.this, SubTaskAddActivity.class);
                 intent.putExtra("T_ID", id);
+                intent.putExtra("userId",userId);
                 startActivity(intent);
             }
         });

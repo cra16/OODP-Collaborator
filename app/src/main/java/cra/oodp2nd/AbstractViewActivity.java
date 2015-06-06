@@ -181,6 +181,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         int Item_position = jobList.get(selectedPos).getId();
         Intent intent = new Intent(getApplicationContext(), getJobUpdateActivityClass());
         intent.putExtra("p_id", Item_position);
+        intent.putExtra("userId",userId);
         startActivity(intent);
 
     }
