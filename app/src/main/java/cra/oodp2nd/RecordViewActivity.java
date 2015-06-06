@@ -18,7 +18,7 @@ public class RecordViewActivity extends AbstractViewActivity implements RecordIn
 
     @Override
     protected void setColumns() {
-        columns = new String[]{"id", "title","name", "date", "location"};
+        columns = new String[]{"id", "title", "date", "location"};
     }
 
     @Override

@@ -119,7 +119,8 @@ public class CalendarSchedule extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        int[] NextMonth = new int[3];
+        int[] NextMonth = mToday;
+
         final DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
@@ -128,9 +129,9 @@ public class CalendarSchedule extends Activity implements View.OnClickListener {
             case R.id.Next:
 
 
-                NextMonth[1]=(mCalendar.get(Calendar.MONTH)+1>=13 ? 1: mCalendar.get(Calendar.MONTH));
-                NextMonth[2]=mCalendar.get(Calendar.YEAR)+(NextMonth[1]>=13 ? 1:0);
-                mCalendar.set(mCalendar.get(Calendar.YEAR)+(NextMonth[1]>=13 ? 1:0), mCalendar.get(Calendar.MONTH)+(NextMonth[1]>=13 ? 0:1), 1);
+                NextMonth[1]=(mCalendar.get(Calendar.MONTH)>=12 ? 1: mCalendar.get(Calendar.MONTH));
+                NextMonth[2]=mCalendar.get(Calendar.YEAR)+(NextMonth[1]>=12 ? 1:0);
+                mCalendar.set(mCalendar.get(Calendar.YEAR)+(NextMonth[1]>=12 ? 1:0), mCalendar.get(Calendar.MONTH)+(NextMonth[1]>=12 ? 0:1), 1);
 
                 text.setText(NextMonth[2] +"년 " + (NextMonth[1]+1)+"월");
 
@@ -142,10 +143,10 @@ public class CalendarSchedule extends Activity implements View.OnClickListener {
             case R.id.Prev:
 //여기좀 이상함 로직 다시 세워야할듯
 
-                NextMonth[1]=(mCalendar.get(Calendar.MONTH)-1==-1 ? 11 : (mCalendar.get(Calendar.MONTH)));
-                NextMonth[2]=mCalendar.get(Calendar.YEAR)-(NextMonth[1]==-1 ? 1:0);
+                NextMonth[1]=(mCalendar.get(Calendar.MONTH)==0 ? 11 : (mCalendar.get(Calendar.MONTH)));
+                NextMonth[2]=mCalendar.get(Calendar.YEAR)-(NextMonth[1]==0 ? 1:0);
 
-                mCalendar.set(mCalendar.get(Calendar.YEAR)-(NextMonth[1]==-1 ? 1:0), mCalendar.get(Calendar.MONTH)-(NextMonth[1]==-1 ? 0:1), 1);
+                mCalendar.set(mCalendar.get(Calendar.YEAR)-(NextMonth[1]==0 ? 1:0), mCalendar.get(Calendar.MONTH)-(NextMonth[1]==0 ? 0:1), 1);
 
                 text.setText(NextMonth[2] +"년 " + (NextMonth[1]+1)+"월");
 
@@ -176,7 +177,7 @@ public class CalendarSchedule extends Activity implements View.OnClickListener {
                         startActivity(intent);
                     }
                 });
-                onRestart();
+//                onRestart();
 
             }
         });

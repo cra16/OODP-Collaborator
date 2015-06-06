@@ -39,6 +39,7 @@ public class ScheduleAddActivity extends AbstractModelActivity implements Schedu
 
                 sqLiteDatabase.insert(TABLE_NAME, null, addRowValue) ;
 
+
                 finish();
             }
         });

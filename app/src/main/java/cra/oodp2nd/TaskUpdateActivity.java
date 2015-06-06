@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -51,7 +52,17 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
 
         list = (ListView) findViewById(R.id.sub_task_view);
         list.setAdapter(adapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final Integer selectedPos = position;
+                int Item_position = subJobList.get(selectedPos).getId();
+                Intent intent = new Intent(getApplicationContext(), SubTaskUpdateActivity.class);
+                intent.putExtra("p_id", Item_position);
+                startActivity(intent);
 
+            }
+        });
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -77,7 +88,7 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
                 });
                 alertDlg.setMessage("Select an action");
                 alertDlg.show();
-                return false;
+                return true;
             }
         });
 
@@ -131,7 +142,7 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
                 ContentValues updateRowValue = new ContentValues();
 
                 updateRowValue.put("title", title);
-                updateRowValue.put("name", name);
+                updateRowValue.put("userId", userId);
                 sqLiteDatabase.update(TABLE_NAME, updateRowValue, "id=" + id, null);
 
                 finish();
@@ -150,13 +161,13 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
 
 
     private void getTaskTitle() {
-        String[] columns = {"title,userId","name"};
+        String[] columns = {"title,userId"};
 
         Cursor result = sqLiteDatabase.query(TABLE_NAME, columns, "id=" + id, null, null, null, null);
 
         result.moveToFirst();
         String title = result.getString(0);
-        String name = result.getString(2);
+        String name = result.getString(1);
 
         EditText titleEditText = (EditText) findViewById(R.id.edit_text_task_title);
         EditText nameEditText = (EditText)findViewById(R.id.edit_text_task_name);

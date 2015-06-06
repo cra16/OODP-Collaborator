@@ -116,6 +116,14 @@
                 android:value="cra.oodp2nd.MainActivity" />
 
         </activity>
+        <activity
+            android:name=".SubTaskUpdateActivity"
+
+            android:parentActivityName=".TaskUpdateActivity" >
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="cra.oodp2nd.TaskUpdateActivity" />
+    </activity>
     </application>
 
 </manifest>

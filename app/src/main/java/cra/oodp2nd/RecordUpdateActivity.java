@@ -147,7 +147,7 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
     }
 
     private void getRecordTitle() {
-        String[] columns = {"title","name","date","location"};
+        String[] columns = {"title","date","location"};
 
         Cursor result = sqLiteDatabase.query(TABLE_NAME, columns, "id=" + id, null, null, null, null);
 

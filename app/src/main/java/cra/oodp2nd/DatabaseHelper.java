@@ -47,11 +47,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table if not exists table_task (id integer primary key, userId text,title text, name text);");
-        db.execSQL("create table if not exists table_schedule(id integer primary key, userId text, title text, date date, time text, name text);");
-        db.execSQL("create table if not exists table_record (id integer primary key, userId text, title text, name text, date date, location text);");
-        db.execSQL("create table if not exists table_subtask (id integer primary key, userId text,  title text, titleId integer," +
-                "clear boolean, state text);");
+        db.execSQL("create table if not exists table_task (id integer primary key, userId text,title text);");
+        db.execSQL("create table if not exists table_schedule(id integer primary key, userId text, title text, date date, time text);");
+        db.execSQL("create table if not exists table_record (id integer primary key, userId text, title text,  date date, location text);");
+        db.execSQL("create table if not exists table_subtask (id integer primary key, userId text, title text, titleId integer," +
+                "clear integer, state text);");
         db.execSQL("create table if not exists table_member (id integer primary key, userId text unique, password text);");
         db.execSQL("create table if not exists table_member_presented (id integer primary key, recordID integer, title text, userId text);");
 
