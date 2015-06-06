@@ -6,30 +6,31 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public abstract class AbstractViewActivity extends Activity implements AdapterView.OnItemLongClickListener {
+public abstract class AbstractViewActivity extends Activity implements AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
 
     public static DatabaseHelper myDBHelper;
     protected SQLiteDatabase sqLiteDatabase;
+    protected JobFactory JFactory= new JobFactory();
+    protected String userId;
 
     protected List<AbstractJob> jobList; // Job 오브젝트를 담는 배열
     protected ListView jobListView;
     protected JobAdapter jobAdapter;
     protected String alertDialogTitle;
     protected String[] columns;
-    protected Button addNewJobButton;
 
     protected abstract void setColumns();
     protected abstract void setAlertDialogTitle();
@@ -38,8 +39,6 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
     protected abstract void dbDeleteSingleJob(int position);
     protected abstract Class getJobUpdateActivityClass();
     protected abstract Class getThisActivityClass();
-
-    public abstract void onButtonAddNewJob(View v);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,28 +54,51 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         setJobListView();
 
         setJobList();
-
+        setuserId();
         selectData(columns);
 
         setJobAdapter();
         displayJobList();
 
-        jobListView.setOnItemLongClickListener(this);
+        int which = LoginActivity.OptionInformaiton.option_color;
+        // OK button, to Main Activity
+        if (which == 0) { // Blue
+            getWindow().getDecorView().setBackgroundColor(Color.BLUE);
+        } else if (which == 1) { // Green
+            getWindow().getDecorView().setBackgroundColor(Color.GREEN);
+        } else if (which == 2) { // Purple
+            getWindow().getDecorView().setBackgroundColor(Color.GRAY);
+        } else { // default
+            getWindow().getDecorView().setBackgroundColor(Color.WHITE);
+        }
 
-        // addNewJobButton listener 추가
-        addNewJobButton = (Button) findViewById(R.id.BUTTON_ADD_NEW_JOB);
-        addNewJobButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onButtonAddNewJob(v);
-            }
-        });
+        jobListView.setOnItemClickListener(this);
+
+        jobListView.setOnItemLongClickListener(this);
+    }
+
+    @Override
+    public void onRestart()
+    {
+        super.onRestart();
+        //Option 재적용
+        int which = LoginActivity.OptionInformaiton.option_color;
+        // OK button, to Main Activity
+        if (which == 0) { // Blue
+            getWindow().getDecorView().setBackgroundColor(Color.BLUE);
+        } else if (which == 1) { // Green
+            getWindow().getDecorView().setBackgroundColor(Color.GREEN);
+        } else if (which == 2) { // Purple
+            getWindow().getDecorView().setBackgroundColor(Color.GRAY);
+        } else { // default
+            getWindow().getDecorView().setBackgroundColor(Color.WHITE);
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds jobList to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_view, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -87,13 +109,11 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -115,12 +135,12 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
 //                jobListView.invalidate();
 
                 // TODO: Make intent dynamically call activity
-                Intent intent = new Intent(getApplicationContext(), getThisActivityClass());
-                startActivity(intent);
+                onRestart();
             }
         });
 
-        alertDlg.setNegativeButton("Modify", new DialogInterface.OnClickListener() {
+
+        /*alertDlg.setNegativeButton("Modify", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -130,12 +150,14 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
                 intent.putExtra("p_id", position);
                 startActivity(intent);
             }
-        });
+        });*/
 
         alertDlg.setMessage("Select an action");
         alertDlg.show();
-        return false;
+        return true;
     }
+
+
 
     protected final void displayJobList() {
         jobListView.setAdapter(jobAdapter);
@@ -149,17 +171,23 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         jobList = new ArrayList<>();
     }
 
-    protected final void setAddNewJobButtonText(String text) {
+   /* protected final void setAddNewJobButtonText(String text) {
         addNewJobButton.setText(text);
+    }*/
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        final Integer selectedPos = position;
+        int Item_position = jobList.get(selectedPos).getId();
+        Intent intent = new Intent(getApplicationContext(), getJobUpdateActivityClass());
+        intent.putExtra("p_id", Item_position);
+        startActivity(intent);
+
     }
 
-    protected class JobAdapter extends ArrayAdapter<AbstractJob> {
-
-        protected List<AbstractJob> jobList;
-
-        public JobAdapter(Context context, int textViewResourceId, List<AbstractJob> objects) {
-            super(context, textViewResourceId, objects);
-            jobList = objects;
-        }
+    protected final void setuserId()
+    {
+        Bundle bundle = getIntent().getExtras();
+        this.userId=bundle.getString("userId");
     }
 }

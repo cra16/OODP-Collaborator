@@ -1,5 +1,7 @@
 package cra.oodp2nd;
 
+import android.database.Cursor;
+
 /**
  * Created by wbqd on 15. 5. 16..
  */
@@ -7,9 +9,10 @@ public abstract class AbstractJob {
     private int id;
     private String title;
 
-    public AbstractJob(int id, String title) {
-        setId(id);
-        setTitle(title);
+    public AbstractJob(Cursor result) {
+        setId(Integer.valueOf(result.getString(0)));
+        if(result.getString(2) !=null)
+            setTitle(result.getString(2));
     }
 
     public String getTitle() {

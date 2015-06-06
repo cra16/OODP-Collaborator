@@ -25,7 +25,7 @@
             android:inputType="textPersonName"
             android:text="Manager"
             android:ems="10"
-            android:id="@+id/e_manager"
+            android:id="@+id/edit_text_schedule_name"
             android:layout_weight="1"
             android:imeOptions="actionDone"/>
     </LinearLayout>
@@ -53,6 +53,82 @@
             android:imeOptions="actionDone"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffffff"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Location"
+            android:layout_margin="15dp"
+            android:id="@+id/t_schedule_location" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_text_record_location"
+            android:layout_margin="15dp"
+            android:inputType="text"
+            android:imeOptions="actionDone"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffffff"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="date"
+            android:layout_margin="15dp"
+            android:id="@+id/t_schedule_date" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:onClick="onClick"
+            android:clickable="true"
+            android:focusableInTouchMode="false"
+            android:ems="10"
+            android:id="@+id/edit_text_schedule_date"
+            android:layout_weight="1" />
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffffff"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="People"
+            android:layout_margin="15dp"
+            android:id="@+id/t_schedule_presented" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_text_schedule_presented"
+            android:layout_margin="15dp"
+            android:inputType="text"
+            android:imeOptions="actionDone"/>
+    </LinearLayout>
+
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="383dp"
@@ -63,6 +139,12 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <ListView
+                android:id="@+id/sub_task_view"
+                android:layout_width="match_parent"
+                android:layout_height="146dp"
+                android:layout_gravity="center_vertical"/>
 
             <CheckBox
                 android:layout_width="wrap_content"
