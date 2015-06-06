@@ -21,13 +21,12 @@ import java.util.List;
 
 public abstract class AbstractViewActivity extends Activity implements AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
 
-
     public static DatabaseHelper myDBHelper;
     protected SQLiteDatabase sqLiteDatabase;
     protected JobFactory JFactory= new JobFactory();
     protected String userId;
 
-    protected List<AbstractJob> jobList; // Jofb 오브젝트를 담는 배열
+    protected List<AbstractJob> jobList; // Job 오브젝트를 담는 배열
     protected ListView jobListView;
     protected JobAdapter jobAdapter;
     protected String alertDialogTitle;
@@ -110,10 +109,7 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -175,15 +171,9 @@ public abstract class AbstractViewActivity extends Activity implements AdapterVi
         jobList = new ArrayList<>();
     }
 
-    protected class JobAdapter extends ArrayAdapter<AbstractJob> {
-
-        protected List<AbstractJob> jobList;
-
-        public JobAdapter(Context context, int textViewResourceId, List<AbstractJob> objects) {
-            super(context, textViewResourceId, objects);
-            jobList = objects;
-        }
-    }
+   /* protected final void setAddNewJobButtonText(String text) {
+        addNewJobButton.setText(text);
+    }*/
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

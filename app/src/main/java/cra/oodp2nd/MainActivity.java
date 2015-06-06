@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
     public void onRestart()
     {
         super.onRestart();
-        //Option ¿Á¿˚øÎ
+        //Option Ïû¨Ï†ÅÏö©
         int which = LoginActivity.OptionInformaiton.option_color;
         // OK button, to Main Activity
         if (which == 0) { // Blue
@@ -103,7 +103,7 @@ public class MainActivity extends Activity {
         ab.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // ∞¢ ∏ÆΩ∫∆Æ º±≈√ Ω√
+                // Í∞Å Î¶¨Ïä§Ìä∏ ÏÑ†ÌÉù Ïãú
                 Toast.makeText(getApplicationContext(), items[which], Toast.LENGTH_SHORT).show();
                 LoginActivity.OptionInformaiton.option_color = which;
             }

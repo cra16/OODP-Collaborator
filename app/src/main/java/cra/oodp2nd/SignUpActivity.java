@@ -121,7 +121,7 @@ public class SignUpActivity extends Activity {
         ab.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // ∞¢ ∏ÆΩ∫∆Æ º±≈√ Ω√
+                // Í∞Å Î¶¨Ïä§Ìä∏ ÏÑ†ÌÉù Ïãú
                 Toast.makeText(getApplicationContext(), items[which], Toast.LENGTH_SHORT).show();
                 LoginActivity.OptionInformaiton.option_color = which;
             }

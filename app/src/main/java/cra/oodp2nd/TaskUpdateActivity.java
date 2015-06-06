@@ -3,34 +3,27 @@ package cra.oodp2nd;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class TaskUpdateActivity extends AbstractModelActivity implements TaskInterface {
 
     protected int id;
-    ArrayList<SubTaskJob> subJobList = new ArrayList<SubTaskJob>();
+    ArrayList<AbstractJob> subJobList = new ArrayList<AbstractJob>();
     ArrayList<AbstractJob> JobList = new ArrayList<AbstractJob>();
     SubTaskAdapter adapter;
     ListView list;
@@ -47,12 +40,50 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
         setUpdateButton();
         setSubTaskButton();
         ShowSubTask();
-        adapter= new SubTaskAdapter(this, R.layout.task_list_item, subJobList);
+        adapter= new SubTaskAdapter(this, R.layout.task_list_item, subJobList,TaskUpdateActivity.this);
 
 
         list = (ListView) findViewById(R.id.sub_task_view);
         list.setAdapter(adapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final Integer selectedPos = position;
+                int Item_position = subJobList.get(selectedPos).getId();
+                Intent intent = new Intent(getApplicationContext(), SubTaskUpdateActivity.class);
+                intent.putExtra("p_id", Item_position);
+                startActivity(intent);
 
+            }
+        });
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final Integer selectedPos = position;
+                AlertDialog.Builder alertDlg = new AlertDialog.Builder(view.getContext());
+                alertDlg.setTitle("aa");
+
+                alertDlg.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int position = subJobList.get(selectedPos).getId();
+
+                        dialog.dismiss();
+                        sqLiteDatabase.delete("table_subtask", "id =" + position, null);
+                        // TODO: Refresh jobListView instead recall this activity
+
+                        // TODO: Make intent dynamically call activity
+                        onRestart();
+
+
+                    }
+                });
+                alertDlg.setMessage("Select an action");
+                alertDlg.show();
+                return true;
+            }
+        });
 
     }
     @Override
@@ -110,7 +141,7 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
         ab.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // °¢ ¸®½ºÆ® ¼±ÅÃ ½Ã
+                // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
                 Toast.makeText(getApplicationContext(), items[which], Toast.LENGTH_SHORT).show();
                 LoginActivity.OptionInformaiton.option_color = which;
             }
@@ -172,7 +203,7 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
                 ContentValues updateRowValue = new ContentValues();
 
                 updateRowValue.put("title", title);
-                updateRowValue.put("name", name);
+                updateRowValue.put("userId", userId);
                 sqLiteDatabase.update(TABLE_NAME, updateRowValue, "id=" + id, null);
 
                 finish();
@@ -191,13 +222,13 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
 
 
     private void getTaskTitle() {
-        String[] columns = {"title,userId","name"};
+        String[] columns = {"title,userId"};
 
         Cursor result = sqLiteDatabase.query(TABLE_NAME, columns, "id=" + id, null, null, null, null);
 
         result.moveToFirst();
         String title = result.getString(0);
-        String name = result.getString(2);
+        String name = result.getString(1);
 
         EditText titleEditText = (EditText) findViewById(R.id.edit_text_task_title);
         EditText nameEditText = (EditText)findViewById(R.id.edit_text_task_name);
@@ -225,19 +256,11 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
     protected void ShowSubTask() {
 
 
-        String[] columns = new String[]{"id", "title","userId"};
-
-        Cursor result = sqLiteDatabase.query("table_task", columns, "id=" + id, null, null, null, null);
-
-        result.moveToFirst();
-        JobList.add(new TaskJob(result));
-        TaskJob taskJob = (TaskJob) JobList.get(0);
-
-        columns = new String[]{"id","userId", "title", "titleId", "clear", "state"};
-        result = sqLiteDatabase.query("table_subtask", columns, "titleId=" + id, null, null, null, null);
+        String[] columns = new String[]{"id","userId", "title", "titleId", "clear", "state"};
+        Cursor result = sqLiteDatabase.query("table_subtask", columns, "titleId=" + id, null, null, null, null);
         result.moveToFirst();
         while (!result.isAfterLast()) {
-            subJobList.add(new SubTaskJob(result));
+            subJobList.add(jobFactory.create(result,"Sub"));
             result.moveToNext();
         }
 
@@ -247,37 +270,7 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
 
 
     }
-   protected class SubTaskAdapter extends ArrayAdapter<SubTaskJob> {
 
-        ArrayList<SubTaskJob> list;
-
-       public SubTaskAdapter(Context context, int resource, ArrayList<SubTaskJob> objects) {
-            super(context, resource, objects);
-            this.list = objects;
-        }
-
-        public View getView(int position, View contentView, ViewGroup parent) {
-            if (contentView == null) {
-                LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                contentView = vi.inflate(R.layout.task_list_item, null);
-            }
-
-            SubTaskJob subTask = list.get(position);
-
-            if (subTask != null) {
-                TextView id = (TextView) contentView.findViewById(R.id.task_list_item_id);
-                TextView title = (TextView) contentView.findViewById(R.id.task_list_item_title);
-
-                if (id != null) {
-                    id.setText(Integer.toString(subTask.getId()));
-                }
-                if (title != null) {
-                    title.setText(subTask.getTitle());
-                }
-            }
-            return contentView;
-        }
-    }
         @Override
         public void onRestart()
         {
@@ -292,4 +285,3 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
 
 
 }
-

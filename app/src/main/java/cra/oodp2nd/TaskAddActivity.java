@@ -30,7 +30,9 @@ public class TaskAddActivity extends AbstractModelActivity implements TaskInterf
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_add_update);
         setSaveButton();
-
+        Bundle bundle = getIntent().getExtras();
+        EditText text = (EditText)findViewById(R.id.edit_text_task_name);
+        text.setText(bundle.getString("userId"));
 
     }
 
@@ -90,7 +92,6 @@ public class TaskAddActivity extends AbstractModelActivity implements TaskInterf
         ab.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // 각 리스트 선택 시
                 Toast.makeText(getApplicationContext(), items[which], Toast.LENGTH_SHORT).show();
                 LoginActivity.OptionInformaiton.option_color = which;
             }
@@ -148,7 +149,6 @@ public class TaskAddActivity extends AbstractModelActivity implements TaskInterf
 
                 addRowValue.put("title", title);
                 addRowValue.put("userId",userId);
-                addRowValue.put("name", name);
 
                 sqLiteDatabase.insert(TABLE_NAME, null, addRowValue);
 

@@ -11,7 +11,8 @@ public abstract class AbstractJob {
 
     public AbstractJob(Cursor result) {
         setId(Integer.valueOf(result.getString(0)));
-        setTitle(result.getString(2));
+        if(result.getString(2) !=null)
+            setTitle(result.getString(2));
     }
 
     public String getTitle() {

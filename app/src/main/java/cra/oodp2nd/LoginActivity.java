@@ -32,7 +32,7 @@ public class LoginActivity extends Activity {
 
     public static class OptionInformaiton {
         static int option_color = -1;
-        // ÃßÈÄ ¿É¼ÇÀÌ Ãß°¡µÇ¸é ¿©±â¿¡ ³Ö¾î¼­ ´Ù¸¥ Å¬·¡½ºµé·Îµµ °øÀ¯ÇÏ¸é µÊ
+        // ì¶”í›„ ì˜µì…˜ì´ ì¶”ê°€ë˜ë©´ ì—¬ê¸°ì— ë„£ì–´ì„œ ë‹¤ë¥¸ í´ë˜ìŠ¤ë“¤ë¡œë„ ê³µìœ í•˜ë©´ ë¨
     }
 
     @Override
@@ -163,7 +163,7 @@ public class LoginActivity extends Activity {
         ab.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // °¢ ¸®½ºÆ® ¼±ÅÃ ½Ã
+                // ê° ë¦¬ìŠ¤íŠ¸ ì„ íƒ ì‹œ
                 Toast.makeText(getApplicationContext(), items[which], Toast.LENGTH_SHORT).show();
                 OptionInformaiton.option_color = which;
             }

@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,9 +28,9 @@ import java.util.ArrayList;
 
 public class RecordUpdateActivity extends AbstractModelActivity implements RecordInterface {
 
-    ArrayList<String> PersonList = new ArrayList<String>();
-    ArrayList<String> P_PersonList = new ArrayList<String>();
-    ArrayList<String> ADD_PersonList = new ArrayList<String>();
+    ArrayList<PersonJob> PersonList = new ArrayList<PersonJob>();
+    ArrayList<PersonJob> P_PersonList = new ArrayList<PersonJob>();
+    ArrayList<PersonJob> ADD_PersonList = new ArrayList<PersonJob>();
     PersonAdapter adapter;
 
     ListView list;
@@ -71,8 +72,10 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
 
                 ContentValues addRowValue = new ContentValues();
 
+
+
                 for(int position=0; position<ADD_PersonList.size(); position++) {
-                    addRowValue.put("userId", ADD_PersonList.get(position));
+                    addRowValue.put("userId", (ADD_PersonList.get(position)).getUserId());
                     addRowValue.put("recordId", id);
 
                     sqLiteDatabase.insert("table_member_presented", null, addRowValue);
@@ -107,14 +110,46 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
         setDatePicker();
         setPersonButton();
         ShowPerson();
-        adapter = new PersonAdapter(this, R.layout.task_list_item,P_PersonList);
+        adapter = new PersonAdapter(this, android.R.layout.simple_list_item_multiple_choice, P_PersonList, RecordUpdateActivity.this);
 
         list = (ListView) findViewById(R.id.record_view);
         list.setAdapter(adapter);
+        list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final Integer selectedPos = position;
+                AlertDialog.Builder alertDlg = new AlertDialog.Builder(view.getContext());
+                alertDlg.setTitle("냠");
+                alertDlg.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int position = P_PersonList.get(selectedPos).getId();
+
+                        dialog.dismiss();
+                        sqLiteDatabase.delete("table_member_presented", "id=" + position, null);
+                        // TODO: Refresh jobListView instead recall this activity
+//                jobList.remove(selectedPos);
+//                setJobAdapter();
+//                displayJobList();
+//                jobListView.invalidate();
+
+                        // TODO: Make intent dynamically call activity
+                        P_PersonList.remove(P_PersonList.get(selectedPos));
+
+
+                        onRestart();
+                    }
+                });
+                alertDlg.setMessage("is it true");
+                alertDlg.show();
+                return false;
+            }
+        });
     }
 
     private void getRecordTitle() {
-        String[] columns = {"title","name","date","location"};
+        String[] columns = {"title","date","location"};
 
         Cursor result = sqLiteDatabase.query(TABLE_NAME, columns, "id=" + id, null, null, null, null);
 
@@ -166,7 +201,7 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
             exitOptionDialog();
         }
         if(id== android.R.id.home) {
-
+            P_PersonList.clear();
             // NavUtils.navigateUpFromSameTask(this);
             finish();
             return true;
@@ -239,7 +274,6 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
         PersonButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(
                         RecordUpdateActivity.this);
                 alertBuilder.setTitle("추가할 사람을 선택해주세요");
@@ -252,18 +286,17 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
 
 
                 for(int position=0; position<PersonList.size(); position++)
-                    adapter.add(PersonList.get(position));
+                    adapter.add(PersonList.get(position).getUserId());
 
                 alertBuilder.setAdapter(adapter, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String user = adapter.getItem(which);
 
-                       ADD_PersonList.add(user);
-
-
+                       ADD_PersonList.add(PersonList.get(which));
+                       P_PersonList.add(PersonList.get(which));
                         dialog.dismiss();
-
+                        onRestart();
                     }
                 });
 
@@ -283,60 +316,31 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
 
         result.moveToFirst();
         while (!result.isAfterLast()) {
-            PersonList.add(new String(result.getString(1)));
+            PersonList.add(new PersonJob(result));
             result.moveToNext();
         }
 
-        columns = new String[]{"id","recordId","userId"};
+        columns = new String[]{"id","userId","recordId"};
 
         result = sqLiteDatabase.query("table_member_presented", columns,"recordId="+ id, null, null, null, null);
         result.moveToFirst();
 
 
         while (!result.isAfterLast()) {
-            P_PersonList.add(new String(result.getString(2)));
+            P_PersonList.add(new PersonJob(result));
             result.moveToNext();
         }
         result.close();
     }
 
-    protected class PersonAdapter extends ArrayAdapter<String> {
 
-        ArrayList<String> list;
-
-        public PersonAdapter(Context context, int resource, ArrayList<String> objects) {
-            super(context, resource, objects);
-            this.list = objects;
-        }
-
-        public View getView(int position, View contentView, ViewGroup parent) {
-            if (contentView == null) {
-                LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                contentView = vi.inflate(R.layout.task_list_item, null);
-            }
-
-            String Person = P_PersonList.get(position);
-
-            if (Person != null) {
-                TextView id = (TextView) contentView.findViewById(R.id.task_list_item_id);
-
-                if (id != null) {
-                    id.setText(Person);
-                }
-            }
-
-            return contentView;
-        }
-    }
 
     @Override
     public void onRestart()
     {
         super.onRestart();
-        adapter.clear();
-        PersonList.clear();
-        P_PersonList.clear();
-        ShowPerson();
+
+
         adapter.notifyDataSetChanged();
 
 

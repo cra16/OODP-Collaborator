@@ -15,6 +15,8 @@ public class JobFactory {
             return new TaskJob(cursor);
         else if(ProductName.equals("Schedule"))
             return new ScheduleJob(cursor);
+        else if(ProductName.equals("Sub"))
+            return new SubTaskJob(cursor);
 
         return null;
     }

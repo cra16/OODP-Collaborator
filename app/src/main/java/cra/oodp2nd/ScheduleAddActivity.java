@@ -43,6 +43,7 @@ public class ScheduleAddActivity extends AbstractModelActivity implements Schedu
 
                 sqLiteDatabase.insert(TABLE_NAME, null, addRowValue) ;
 
+
                 finish();
             }
         });
@@ -136,7 +137,7 @@ public class ScheduleAddActivity extends AbstractModelActivity implements Schedu
         ab.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // 각 리스트 선택 시
+
                 Toast.makeText(getApplicationContext(), items[which], Toast.LENGTH_SHORT).show();
                 LoginActivity.OptionInformaiton.option_color = which;
             }

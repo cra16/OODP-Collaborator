@@ -37,7 +37,7 @@ public class ScheduleViewActivity extends AbstractViewActivity implements Schedu
 
     @Override
     protected void setJobAdapter() {
-        jobAdapter = new ScheduleAdapter(this, R.layout.record_list_item, jobList);
+        jobAdapter = new ScheduleAdapter(this, R.layout.record_list_item, jobList,ScheduleViewActivity.this);
     }
 
     @Override
@@ -131,6 +131,7 @@ public class ScheduleViewActivity extends AbstractViewActivity implements Schedu
         return super.onOptionsItemSelected(item);
     }
 
+
     private void aboutOptionDialog() {
         new AlertDialog.Builder(this).setTitle("About Collaborator").setMessage("Developer : Team OODP E").setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -147,7 +148,7 @@ public class ScheduleViewActivity extends AbstractViewActivity implements Schedu
         ab.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // °¢ ¸®½ºÆ® ¼±ÅÃ ½Ã
+                // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
                 Toast.makeText(getApplicationContext(), items[which], Toast.LENGTH_SHORT).show();
                 LoginActivity.OptionInformaiton.option_color = which;
             }
@@ -189,32 +190,7 @@ public class ScheduleViewActivity extends AbstractViewActivity implements Schedu
         }).show();
     }
 
-    protected class ScheduleAdapter extends JobAdapter {
-        public ScheduleAdapter(Context context, int textViewResourceId, List<AbstractJob> objects) {
-            super(context, textViewResourceId, objects);
-        }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View v = convertView;
-            if(v == null) {
-                LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                 v = vi.inflate(R.layout.schedule_list_item, null);
-            }
-            ScheduleJob scheduleJob = (ScheduleJob) jobList.get(position);
-            if(scheduleJob != null) {
-                TextView id = (TextView) v.findViewById(R.id.schedule_list_item_id);
-                TextView title = (TextView) v.findViewById(R.id.schedule_list_item_title);
-                if (id != null) {
-                    id.setText(Integer.toString(scheduleJob.getId()));
-                }
-                if (title != null) {
-                    title.setText(scheduleJob.getTitle());
-                }
-            }
-            return  v;
-        }
-    }
     @Override
     public void onRestart()
     {
