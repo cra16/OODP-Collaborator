@@ -6,14 +6,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    static final String DataBase = "Project_DB";
+    static final String dbInstance = "Project_DB";
     private static DatabaseHelper myDBHelper;
 
     public static DatabaseHelper getInstance(Context context)//singleton
     {
 
         if(myDBHelper ==null)
-            myDBHelper = new DatabaseHelper(context, DataBase, null,1);
+            myDBHelper = new DatabaseHelper(context, dbInstance, null,1);
 
         return myDBHelper;
     }
@@ -44,15 +44,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return myDatabase.delete(TableName, whereClause, whereArgs);
         }
     */
+
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table if not exists table_task (id integer primary key, title text);");
-        db.execSQL("create table if not exists table_schedule(id integer primary key, title text);");
-        db.execSQL("create table if not exists table_meeting_record (id integer primary key, title text) ;");
-        db.execSQL("create table if not exists table_subtask (id integer primary key, titleId integer, title text, " +
-                "clear boolean, state text);");
+        db.execSQL("create table if not exists table_task (id integer primary key, userId text,title text);");
+        db.execSQL("create table if not exists table_schedule(id integer primary key, userId text, title text, date date, time text);");
+        db.execSQL("create table if not exists table_record (id integer primary key, userId text, title text,  date date, location text);");
+        db.execSQL("create table if not exists table_subtask (id integer primary key, userId text, title text, titleId integer," +
+                "clear integer, state text);");
         db.execSQL("create table if not exists table_member (id integer primary key, userId text unique, password text);");
-        db.execSQL("create table if not exists table_memberpresented (id integer primary key, recordID integer, title text, userId text);");
+        db.execSQL("create table if not exists table_member_presented (id integer primary key, recordID integer, title text, userId text);");
 
     }
 
@@ -60,10 +61,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS table_task");
         db.execSQL("DROP TABLE IF EXISTS table_schedule");
-        db.execSQL("DROP TABLE IF EXISTS table_meetingRecordTable");
+        db.execSQL("DROP TABLE IF EXISTS table_record");
         db.execSQL("DROP TABLE IF EXISTS table_subtask");
         db.execSQL("DROP TABLE IF EXISTS table_member");
-        db.execSQL("DROP TABLE IF EXISTS table_memberpresentedTable");
+        db.execSQL("DROP TABLE IF EXISTS table_member_presented");
         onCreate(db);
     }
 }

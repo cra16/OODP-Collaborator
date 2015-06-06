@@ -1,81 +1,93 @@
 package cra.oodp2nd;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import java.util.List;
 
 
-public class SignUpActivity extends Activity {
+public class ScheduleViewActivity extends AbstractViewActivity implements ScheduleInterface {
+    String date;
 
-    private EditText userId;
-    private EditText password;
-    private EditText confirmation;
-    private Button signUp;
+
+
+    @Override
+    protected void setColumns() {
+        columns = new String[]{"id", "title", "date","time"};
+    }
+
+    @Override
+    protected void setAlertDialogTitle() {
+        alertDialogTitle = "Schedule";
+    }
+
+    @Override
+    protected void setJobAdapter() {
+        jobAdapter = new ScheduleAdapter(this, R.layout.record_list_item, jobList,ScheduleViewActivity.this);
+    }
+
+    @Override
+    protected void selectData(String[] columns) {
+        Bundle bundle = getIntent().getExtras();
+        if (getIntent().getExtras()!=null  ) {
+            date = "\""+bundle.getInt("year") + "/" + bundle.getInt("month") + "/" + bundle.getInt("day")+"\"";
+        }
+
+        Cursor result = sqLiteDatabase.query(TABLE_NAME, columns,"date="+date ,null,null,null,null);
+        result.moveToFirst();
+        while(!result.isAfterLast()) {
+
+            int id = Integer.parseInt(result.getString(0));
+            String title = result.getString(1);
+            String date = result.getString(2);
+            String time = result.getString(3);
+            jobList.add(JFactory.create(result,alertDialogTitle));
+
+            result.moveToNext();
+        }
+        result.close();
+    }
+
+    @Override
+    protected void dbDeleteSingleJob(int position) {
+        sqLiteDatabase.delete(TABLE_NAME, "id=" + position, null);
+    }
+
+    @Override
+    protected Class getJobUpdateActivityClass() {
+        return ScheduleUpdateActivity.class;
+    }
+
+    @Override
+    protected Class getThisActivityClass() {
+        return this.getClass();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
-        setupVariables();
-
-        int which = LoginActivity.OptionInformaiton.option_color;
-        // OK button, to Main Activity
-        if (which == 0) { // Blue
-            getWindow().getDecorView().setBackgroundColor(Color.BLUE);
-        } else if (which == 1) { // Green
-            getWindow().getDecorView().setBackgroundColor(Color.GREEN);
-        } else if (which == 2) { // Purple
-            getWindow().getDecorView().setBackgroundColor(Color.GRAY);
-        } else { // default
-            getWindow().getDecorView().setBackgroundColor(Color.WHITE);
-        }
-
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!(password.getText().toString().equals(confirmation.getText().toString()))) {
-                    password.setText(null);
-                    confirmation.setText(null);
-                    Toast.makeText(getApplicationContext(), "Passwords aren't matched. Please retry", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                String tableName = "table_member";
-                ContentValues addRowValue = new ContentValues();
-                addRowValue.put("userId", userId.getText().toString());
-                addRowValue.put("password", password.getText().toString());
-                if(LoginActivity.DB.insert(tableName, null, addRowValue) == -1){
-                    Toast.makeText(getApplicationContext(), "Error occurred during Sign Up.\nPlease use other ID/PS", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Toast.makeText(getApplicationContext(), "The User \'" + userId.getText().toString() + "\' created Successfully.", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        });
-    }
-
-    private void setupVariables() {
-        userId = (EditText) findViewById(R.id.editTextUserId_SignUp);
-        password = (EditText) findViewById(R.id.editTextPassword_SignUp);
-        confirmation = (EditText) findViewById(R.id.editTextConfirmation_SignUp);
-        signUp = (Button) findViewById(R.id.buttonSignUp_SignUp);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         return true;
     }
 
@@ -87,23 +99,38 @@ public class SignUpActivity extends Activity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_login_about) {
+        if (id == R.id.action_about) {
             // about
             aboutOptionDialog();
         }
-        else if (id == R.id.action_login_option){
+        else if (id == R.id.action_option){
             // option
             OptionDialog();
             return  true;
         }
-        else if (id == R.id.action_login_exit){
+        else if (id == R.id.action_exit){
             // exit
             exitOptionDialog();
         }
+        else if (id == android.R.id.home){
+            //
+            finish();
+            return true;
+        }
+        else if (id == R.id.action_add){
+            Intent intent = new Intent(getApplicationContext(), ScheduleAddActivity.class);
+            Bundle bundle = getIntent().getExtras();
+            intent.putExtra("userId", userId);
+            intent.putExtra("year",bundle.getInt("year"));
+            intent.putExtra("month",bundle.getInt("month"));
+            intent.putExtra("day", bundle.getInt("day"));
 
+            startActivity(intent);
+        }
 
         return super.onOptionsItemSelected(item);
     }
+
 
     private void aboutOptionDialog() {
         new AlertDialog.Builder(this).setTitle("About Collaborator").setMessage("Developer : Team OODP E").setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -121,7 +148,7 @@ public class SignUpActivity extends Activity {
         ab.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // 각 리스트 선택 시
+                // �� ����Ʈ ���� ��
                 Toast.makeText(getApplicationContext(), items[which], Toast.LENGTH_SHORT).show();
                 LoginActivity.OptionInformaiton.option_color = which;
             }
@@ -162,4 +189,21 @@ public class SignUpActivity extends Activity {
             }
         }).show();
     }
+
+
+    @Override
+    public void onRestart()
+    {
+
+        super.onRestart();
+        Bundle bundle = getIntent().getExtras();
+        date = bundle.getInt("year") +"/" + bundle.getInt("month")+"/"+bundle.getInt("day");
+
+        jobAdapter.clear();
+        jobAdapter.notifyDataSetChanged();
+        selectData(columns);
+
+
+    }
+
 }

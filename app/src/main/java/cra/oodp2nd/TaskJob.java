@@ -1,5 +1,7 @@
 package cra.oodp2nd;
 
+import android.database.Cursor;
+
 import java.util.List;
 
 /**
@@ -10,8 +12,8 @@ public class TaskJob extends AbstractJob {
     private List<SubTaskJob> subTaskArray;
     private boolean isFinished;
 
-    public TaskJob(int id, String title) {
-        super(id, title);
+    public TaskJob(Cursor result) {
+        super(result);
 //        setAssignee(assignee);
 //        setIsFinished(isFinished);
     }

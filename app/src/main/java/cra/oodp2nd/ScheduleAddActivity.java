@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,71 +12,81 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
 
+public class ScheduleAddActivity extends AbstractModelActivity implements ScheduleInterface {
 
-public class SignUpActivity extends Activity {
+    private int year;
+    private int month;
+    private int day;
 
-    private EditText userId;
-    private EditText password;
-    private EditText confirmation;
-    private Button signUp;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
-        setupVariables();
-
-        int which = LoginActivity.OptionInformaiton.option_color;
-        // OK button, to Main Activity
-        if (which == 0) { // Blue
-            getWindow().getDecorView().setBackgroundColor(Color.BLUE);
-        } else if (which == 1) { // Green
-            getWindow().getDecorView().setBackgroundColor(Color.GREEN);
-        } else if (which == 2) { // Purple
-            getWindow().getDecorView().setBackgroundColor(Color.GRAY);
-        } else { // default
-            getWindow().getDecorView().setBackgroundColor(Color.WHITE);
-        }
-
-        signUp.setOnClickListener(new View.OnClickListener() {
+    protected void setSaveButton() {
+        Button saveButton = (Button) findViewById(R.id.button_add_update);
+        saveButton.setText("Save");
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!(password.getText().toString().equals(confirmation.getText().toString()))) {
-                    password.setText(null);
-                    confirmation.setText(null);
-                    Toast.makeText(getApplicationContext(), "Passwords aren't matched. Please retry", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                String tableName = "table_member";
+                EditText titleEditText = (EditText) findViewById(R.id.edit_text_schedule_title);
+                EditText dateEditText = (EditText)findViewById(R.id.edit_text_schedule_date);
+
+                String title = titleEditText.getText().toString();
+                String date = dateEditText.getText().toString();
+
                 ContentValues addRowValue = new ContentValues();
-                addRowValue.put("userId", userId.getText().toString());
-                addRowValue.put("password", password.getText().toString());
-                if(LoginActivity.DB.insert(tableName, null, addRowValue) == -1){
-                    Toast.makeText(getApplicationContext(), "Error occurred during Sign Up.\nPlease use other ID/PS", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Toast.makeText(getApplicationContext(), "The User \'" + userId.getText().toString() + "\' created Successfully.", Toast.LENGTH_SHORT).show();
+
+                addRowValue.put("title", title);
+                addRowValue.put("date", year+"/"+month+"/"+day);
+                addRowValue.put("time", date.substring(date.indexOf(" ")+1));
+
+                sqLiteDatabase.insert(TABLE_NAME, null, addRowValue) ;
+
+
                 finish();
             }
         });
     }
 
-    private void setupVariables() {
-        userId = (EditText) findViewById(R.id.editTextUserId_SignUp);
-        password = (EditText) findViewById(R.id.editTextPassword_SignUp);
-        confirmation = (EditText) findViewById(R.id.editTextConfirmation_SignUp);
-        signUp = (Button) findViewById(R.id.buttonSignUp_SignUp);
+    @Override
+    protected void setUpdateButton() {
+
+    }
+
+    @Override
+    protected Activity getThisActivity() {
+        return ScheduleAddActivity.this;
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.id.edit_text_schedule_date;
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_schedule_add_update);
+
+        Bundle bundle = getIntent().getExtras();
+        year = bundle.getInt("year");
+        month = bundle.getInt("month");
+        day = bundle.getInt("day");
+
+
+        EditText dateEditText = (EditText)findViewById(R.id.edit_text_schedule_date);
+        dateEditText.setText(year +"/"+month+"/"+day);
+        setTimePicker();
+        setSaveButton();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_login, menu);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         return true;
     }
 
@@ -100,7 +111,12 @@ public class SignUpActivity extends Activity {
             // exit
             exitOptionDialog();
         }
+        if(id== android.R.id.home) {
 
+            // NavUtils.navigateUpFromSameTask(this);
+            finish();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -121,7 +137,7 @@ public class SignUpActivity extends Activity {
         ab.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // 각 리스트 선택 시
+
                 Toast.makeText(getApplicationContext(), items[which], Toast.LENGTH_SHORT).show();
                 LoginActivity.OptionInformaiton.option_color = which;
             }
@@ -162,4 +178,5 @@ public class SignUpActivity extends Activity {
             }
         }).show();
     }
+
 }

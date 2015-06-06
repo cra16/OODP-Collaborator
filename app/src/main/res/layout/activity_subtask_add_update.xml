@@ -1,9 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/new_task"
-    tools:context="cra.oodp2nd.AddNewTask"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="cra.oodp2nd.TaskAddActivity"
     >
 
     <LinearLayout
@@ -14,7 +14,7 @@
         >
 
         <Button
-            android:id="@+id/button_add_update"
+            android:id="@+id/button_sub_add_update"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -26,7 +26,7 @@
             android:inputType="textPersonName"
             android:text="Manager"
             android:ems="10"
-            android:id="@+id/e_manager"
+            android:id="@+id/edit_text_subtask_name"
             android:layout_weight="1"
             android:imeOptions="actionDone"/>
     </LinearLayout>
@@ -43,16 +43,19 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Title"
             android:layout_margin="15dp"
-            android:id="@+id/t_task_title" />
+            android:id="@+id/t_subtask_title" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/edit_text_task_title"
+            android:id="@+id/edit_text_subtask_title"
             android:layout_margin="15dp"
             android:inputType="text"
             android:imeOptions="actionDone"/>
     </LinearLayout>
+
+
+
 
     <ScrollView
         android:layout_width="match_parent"

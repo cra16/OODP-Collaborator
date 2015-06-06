@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,71 +13,92 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
 
+public class ScheduleUpdateActivity extends AbstractModelActivity implements ScheduleInterface {
 
-public class SignUpActivity extends Activity {
-
-    private EditText userId;
-    private EditText password;
-    private EditText confirmation;
-    private Button signUp;
+    protected int id;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
-        setupVariables();
+    protected void setSaveButton() {
 
-        int which = LoginActivity.OptionInformaiton.option_color;
-        // OK button, to Main Activity
-        if (which == 0) { // Blue
-            getWindow().getDecorView().setBackgroundColor(Color.BLUE);
-        } else if (which == 1) { // Green
-            getWindow().getDecorView().setBackgroundColor(Color.GREEN);
-        } else if (which == 2) { // Purple
-            getWindow().getDecorView().setBackgroundColor(Color.GRAY);
-        } else { // default
-            getWindow().getDecorView().setBackgroundColor(Color.WHITE);
-        }
+    }
 
-        signUp.setOnClickListener(new View.OnClickListener() {
+    @Override
+    protected void setUpdateButton() {
+        Button updateButton = (Button) findViewById(R.id.button_add_update);
+        updateButton.setText("Modify");
+        updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!(password.getText().toString().equals(confirmation.getText().toString()))) {
-                    password.setText(null);
-                    confirmation.setText(null);
-                    Toast.makeText(getApplicationContext(), "Passwords aren't matched. Please retry", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                String tableName = "table_member";
-                ContentValues addRowValue = new ContentValues();
-                addRowValue.put("userId", userId.getText().toString());
-                addRowValue.put("password", password.getText().toString());
-                if(LoginActivity.DB.insert(tableName, null, addRowValue) == -1){
-                    Toast.makeText(getApplicationContext(), "Error occurred during Sign Up.\nPlease use other ID/PS", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Toast.makeText(getApplicationContext(), "The User \'" + userId.getText().toString() + "\' created Successfully.", Toast.LENGTH_SHORT).show();
+                EditText titleEditText = (EditText) findViewById(R.id.edit_text_schedule_title);
+                EditText dateEditText = (EditText)findViewById(R.id.edit_text_schedule_date);
+
+
+                String title = titleEditText.getText().toString();
+                String datetext = dateEditText.getText().toString();
+                String date = datetext.substring(0, datetext.indexOf(" ")>=0?datetext.indexOf(" "):datetext.length());
+                String time = datetext.substring(datetext.indexOf(" ")+1);
+                ContentValues updateRowValue = new ContentValues();
+
+                updateRowValue.put("title", title);
+                updateRowValue.put("date", date);
+                updateRowValue.put("time", time);
+                sqLiteDatabase.update(TABLE_NAME, updateRowValue, "id=" + id, null);
+
                 finish();
             }
         });
     }
 
-    private void setupVariables() {
-        userId = (EditText) findViewById(R.id.editTextUserId_SignUp);
-        password = (EditText) findViewById(R.id.editTextPassword_SignUp);
-        confirmation = (EditText) findViewById(R.id.editTextConfirmation_SignUp);
-        signUp = (Button) findViewById(R.id.buttonSignUp_SignUp);
+    @Override
+    protected Activity getThisActivity() {
+        return ScheduleUpdateActivity.this;
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.id.edit_text_schedule_date;
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_schedule_add_update);
+
+        Bundle bundle = getIntent().getExtras();
+        id = bundle.getInt("p_id");
+        getScheduleTitle();
+
+        setTimePicker();
+        setUpdateButton();
+    }
+
+    private void getScheduleTitle() {
+        String[] columns = {"title","date","time"};
+
+        Cursor result = sqLiteDatabase.query(TABLE_NAME, columns, "id=" + id, null, null, null, null);
+
+        result.moveToFirst();
+        String title = result.getString(0);
+        String date = result.getString(1);
+        String time = result.getString(2);
+
+        EditText titleEditText = (EditText) findViewById(R.id.edit_text_schedule_title);
+        EditText dateEditText = (EditText)findViewById(R.id.edit_text_schedule_date);
+        titleEditText.setText(title);
+        dateEditText.setText(date+" " + time);
+
+        result.close();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_login, menu);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         return true;
     }
 
@@ -100,7 +123,12 @@ public class SignUpActivity extends Activity {
             // exit
             exitOptionDialog();
         }
+        if(id== android.R.id.home) {
 
+            // NavUtils.navigateUpFromSameTask(this);
+            finish();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -162,4 +190,6 @@ public class SignUpActivity extends Activity {
             }
         }).show();
     }
+
+
 }
