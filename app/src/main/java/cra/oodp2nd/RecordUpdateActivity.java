@@ -107,6 +107,7 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
         Bundle bundle = getIntent().getExtras();
         id = bundle.getInt("p_id");
         getRecordTitle();
+        getFileList();
 
         setUpdateButton();
         setDatePicker();
@@ -179,13 +180,12 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
         Cursor result = sqLiteDatabase.query(FILE_TABLE_NAME, columns, "recordId=" + id, null, null, null, null);
 
         result.moveToFirst();
-        String[] fileNames = new String[] {};
-
+        ArrayList<String> fileNames = new ArrayList<String>();
 
         fileListView = (ListView) findViewById(R.id.fileListView);
 
         for(int i=0; i<result.getCount(); i++) {
-            fileNames[i] = result.getString(0);
+            fileNames.add(result.getString(0));
             result.moveToNext();
         }
 

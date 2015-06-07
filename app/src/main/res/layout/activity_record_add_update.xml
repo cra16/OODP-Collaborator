@@ -115,7 +115,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="People"
+            android:text="Participants"
             android:layout_margin="15dp"
             android:id="@+id/t_task_presented" />
 
@@ -127,6 +127,7 @@
 
 
     </LinearLayout>
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -146,6 +147,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Attached File"/>
 
             <ListView
                 android:id="@+id/fileListView"
