@@ -130,7 +130,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="383dp"
+        android:layout_height="wrap_content"
         android:id="@+id/scrollView"
         android:layout_gravity="right"
         >
@@ -144,8 +144,14 @@
 
                 android:id="@+id/record_view"
                 android:layout_width="match_parent"
-                android:layout_height="149dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"/>
+
+            <ListView
+                android:id="@+id/fileListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </ListView>
 
             <CheckBox
                 android:layout_width="wrap_content"
@@ -155,5 +161,4 @@
 
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

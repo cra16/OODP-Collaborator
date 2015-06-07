@@ -55,6 +55,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("create table if not exists table_member (id integer primary key, userId text unique, password text);");
         db.execSQL("create table if not exists table_member_presented (id integer primary key, recordID integer, title text, userId text);");
 
+        db.execSQL("create table if not exists table_record_file (id integer primary key, recordId integer, fileName text) ;");
+
     }
 
     @Override
@@ -65,6 +67,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS table_subtask");
         db.execSQL("DROP TABLE IF EXISTS table_member");
         db.execSQL("DROP TABLE IF EXISTS table_member_presented");
+        db.execSQL("DROP TABLE IF EXISTS table_record_file");
         onCreate(db);
     }
 }

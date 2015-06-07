@@ -5,4 +5,5 @@ package cra.oodp2nd;
  */
 public interface RecordInterface {
     String TABLE_NAME = "table_record";
+    String FILE_TABLE_NAME = "table_record_file";
 }
