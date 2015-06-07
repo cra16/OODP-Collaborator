@@ -121,10 +121,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cra.oodp2nd.TaskUpdateActivity" />
         </activity>
+        <!--<activity-->
+            <!--android:name=".FileBrowserActivity"-->
+            <!--android:label="@string/title_activity_file_browser" >-->
+        <!--</activity>-->
         <activity
-            android:name=".FileBrowserActivity"
-            android:label="@string/title_activity_file_browser" >
+            android:name="cra.oodp2nd.FileBrowserActivity"
+            android:label="File browser"
+            android:configChanges="orientation|keyboardHidden">
+            <intent-filter>
+                <action android:name="cra.oodp2nd.SELECT_DIRECTORY_ACTION"></action>
+            </intent-filter>
         </activity>
     </application>
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 </manifest>

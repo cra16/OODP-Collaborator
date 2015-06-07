@@ -134,11 +134,13 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
         list = (ListView) findViewById(R.id.record_view);
         list.setAdapter(adapter);
 
-        fileListAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, listValues);
-
-        //set fileListAdapter to ListView
-        fileListView.setAdapter(fileListAdapter);
+        listValues = new ArrayList<>();
+        fileListView = (ListView) findViewById(R.id.fileListView);
+//        fileListAdapter = new ArrayAdapter<String>(this,
+//                android.R.layout.simple_list_item_1, android.R.id.text1, listValues);
+//
+//        //set fileListAdapter to ListView
+//        fileListView.setAdapter(fileListAdapter);
     }
 
     @Override
