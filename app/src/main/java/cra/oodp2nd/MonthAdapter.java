@@ -36,14 +36,15 @@ public abstract class MonthAdapter extends BaseAdapter {
     private int mTitleHeight, mDayHeight;
     private final String[] mDays = { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
     private final int[] mDaysInMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-
-    public MonthAdapter(Context c, int month, int year, DisplayMetrics metrics) {
+    private String userId;
+    public MonthAdapter(Context c, int month, int year, DisplayMetrics metrics,String userId) {
         mContext = c;
         mMonth = month;
         mYear = year;
         mCalendar = new GregorianCalendar(mYear, mMonth, 1);
         mCalendarToday = Calendar.getInstance();
         mDisplayMetrics = metrics;
+        this.userId=userId;
         populateMonth();
     }
 
@@ -232,7 +233,7 @@ public abstract class MonthAdapter extends BaseAdapter {
         DatabaseHelper Helper = DatabaseHelper.getInstance(mContext);
         SQLiteDatabase DB= Helper.getReadableDatabase();
         Cursor result;
-        result=DB.query("table_schedule", new String[]{"date"}, "date = "+"\""+dayDate[2]+"/"+(dayDate[1]+1)+"/"+dayDate[0]+"\"",null,null,null,null);
+        result=DB.query("table_schedule", new String[]{"date"}, "date = "+"\""+dayDate[2]+"/"+(dayDate[1]+1)+"/"+dayDate[0]+"\""+" and " +"userId="+"\""+userId+"\"",null,null,null,null);
 
         result.moveToFirst();
 

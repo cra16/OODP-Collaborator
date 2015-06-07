@@ -27,13 +27,16 @@ public class CalendarSchedule extends Activity implements View.OnClickListener {
     GridView mGridView;
     int[] mToday = new int[3];
     final DisplayMetrics metrics = new DisplayMetrics();
-
+    protected String userId;
     TextView text;
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.schedule_layout);
+
+        Bundle bundle = getIntent().getExtras();
+        userId=bundle.getString("userId");
 
         Button Prev = (Button) findViewById(R.id.Prev);
         Button Next = (Button) findViewById(R.id.Next);
@@ -56,7 +59,7 @@ public class CalendarSchedule extends Activity implements View.OnClickListener {
 
 // set adapter
         mGridView = (GridView) findViewById(R.id.gridview);
-        mGridView.setAdapter(new MonthAdapter(this, mToday[1], mToday[2], metrics) {
+        mGridView.setAdapter(new MonthAdapter(this, mToday[1], mToday[2], metrics,userId) {
             @Override
             protected void onDate(int[] date, int position, View item) {
                 final int[] day = date;
@@ -64,8 +67,7 @@ public class CalendarSchedule extends Activity implements View.OnClickListener {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getApplicationContext(), ScheduleViewActivity.class);
-                        Bundle bundle = getIntent().getExtras();
-                        intent.putExtra("userId", bundle.getString("userId"));
+                        intent.putExtra("userId", userId);
                         intent.putExtra("year", day[2]);
                         intent.putExtra("month", day[1] + 1);
                         intent.putExtra("day", day[0]);
@@ -240,7 +242,7 @@ public class CalendarSchedule extends Activity implements View.OnClickListener {
     public void setGridView(GridView g, int[] mToday, DisplayMetrics metrics) {
 
 
-        g.setAdapter(new MonthAdapter(this, mToday[1], mToday[2], metrics) {
+        g.setAdapter(new MonthAdapter(this, mToday[1], mToday[2], metrics,userId) {
             @Override
             protected void onDate(int[] date, int position, View item) {
                 final int[] day = date;
@@ -249,8 +251,8 @@ public class CalendarSchedule extends Activity implements View.OnClickListener {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getApplicationContext(), ScheduleViewActivity.class);
-                        Bundle bundle = getIntent().getExtras();
-                        intent.putExtra("userId", bundle.getString("userId"));
+
+                        intent.putExtra("userId",userId);
                         intent.putExtra("year", day[2]);
                         intent.putExtra("month", day[1] + 1);
                         intent.putExtra("day", day[1]);
@@ -291,7 +293,7 @@ public class CalendarSchedule extends Activity implements View.OnClickListener {
 
 
         mGridView = (GridView) findViewById(R.id.gridview);
-        mGridView.setAdapter(new MonthAdapter(this, mToday[1], mToday[2], metrics) {
+        mGridView.setAdapter(new MonthAdapter(this, mToday[1], mToday[2], metrics,userId) {
             @Override
             protected void onDate(int[] date, int position, View item) {
                 final int[] day = date;
@@ -300,7 +302,7 @@ public class CalendarSchedule extends Activity implements View.OnClickListener {
                     public void onClick(View v) {
                         Intent intent = new Intent(getApplicationContext(), ScheduleViewActivity.class);
                         Bundle bundle = getIntent().getExtras();
-                        intent.putExtra("userId", bundle.getString("userId"));
+                        intent.putExtra("userId",userId );
                         intent.putExtra("year", day[2]);
                         intent.putExtra("month", day[1] + 1);
                         intent.putExtra("day", day[0]);

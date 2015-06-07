@@ -27,7 +27,7 @@ public class ScheduleViewActivity extends AbstractViewActivity implements Schedu
 
     @Override
     protected void setColumns() {
-        columns = new String[]{"id", "title", "date","time"};
+        columns = new String[]{"id", "userId","title", "date","time"};
     }
 
     @Override
@@ -47,14 +47,15 @@ public class ScheduleViewActivity extends AbstractViewActivity implements Schedu
             date = "\""+bundle.getInt("year") + "/" + bundle.getInt("month") + "/" + bundle.getInt("day")+"\"";
         }
 
-        Cursor result = sqLiteDatabase.query(TABLE_NAME, columns,"date="+date ,null,null,null,null);
+        Cursor result = sqLiteDatabase.query(TABLE_NAME, columns,"date="+date +" and "+"userId="+"\""+userId+"\"" ,null,null,null,null);
         result.moveToFirst();
         while(!result.isAfterLast()) {
 
             int id = Integer.parseInt(result.getString(0));
-            String title = result.getString(1);
-            String date = result.getString(2);
-            String time = result.getString(3);
+            String name = result.getString(1);
+            String title = result.getString(2);
+            String date = result.getString(3);
+            String time = result.getString(4);
             jobList.add(JFactory.create(result,alertDialogTitle));
 
             result.moveToNext();
