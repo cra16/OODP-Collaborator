@@ -35,6 +35,8 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
 
     ListView list;
     protected int id;
+    ListView fileListView;
+
 
     @Override
     protected void setSaveButton() {
@@ -169,6 +171,29 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
         dateEditText.setText(date);
         locationEditText.setText(location);
         result.close();
+    }
+
+    private void getFileList() {
+        String[] columns = {"fileName"};
+
+        Cursor result = sqLiteDatabase.query(FILE_TABLE_NAME, columns, "recordId=" + id, null, null, null, null);
+
+        result.moveToFirst();
+        String[] fileNames = new String[] {};
+
+
+        fileListView = (ListView) findViewById(R.id.fileListView);
+
+        for(int i=0; i<result.getCount(); i++) {
+            fileNames[i] = result.getString(0);
+            result.moveToNext();
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, fileNames);
+
+        //set Adapter to ListView
+        fileListView.setAdapter(adapter);
     }
 
     @Override
