@@ -33,6 +33,9 @@ import java.util.ArrayList;
 
 public class RecordAddActivity extends AbstractModelActivity implements RecordInterface {
 
+    private final int REQUEST_CODE_PICK_DIR = 1;
+    private final int REQUEST_CODE_PICK_FILE = 2;
+
     ArrayList<String> PersonList = new ArrayList<String>();
     ArrayList<String> P_PersonList = new ArrayList<String>();
     ArrayList<String> ADD_PersonList = new ArrayList<String>();
@@ -141,7 +144,7 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
+        getMenuInflater().inflate(R.menu.menu_record_add, menu);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         return true;
     }
