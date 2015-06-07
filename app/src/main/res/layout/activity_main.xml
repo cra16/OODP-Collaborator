@@ -10,7 +10,7 @@
         android:id="@+id/b_task_management"
         android:text="@string/button_show_task"
         android:layout_centerInParent="true"
-        android:onClick="onButtonShowTasks"/>
+        />
 
     <Button
         android:layout_width="188dip"

@@ -123,7 +123,7 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
         id=bundle.getInt("p_id");
 
         TextView Text = (TextView)findViewById(R.id.t_task_presented);
-        Button button =(Button)findViewById(R.id.sub_task_button);
+        Button button =(Button)findViewById(R.id.person_button);
         Text.setVisibility(View.INVISIBLE);
         button.setVisibility(View.INVISIBLE);
 
