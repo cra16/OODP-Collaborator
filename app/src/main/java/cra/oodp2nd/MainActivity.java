@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 
@@ -21,6 +22,11 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         Bundle bundle = getIntent().getExtras();
         userId= bundle.getString("userId");
+
+
+        setButton();
+
+
 
         int which = LoginActivity.OptionInformaiton.option_color;
         // OK button, to Main Activity
@@ -145,25 +151,25 @@ public class MainActivity extends Activity {
         }).show();
     }
 
-    public void onButtonShowTasks(View view) {
-        Intent intent = new Intent(this, TaskViewActivity.class);
-        Bundle bundle = getIntent().getExtras();
-        intent.putExtra("userId", userId);
-        startActivity(intent);
+    public void setButton()
+    {
+        Button Task = (Button)findViewById(R.id.b_task_management);
+        Button Record= (Button)findViewById(R.id.b_record_management);
+        Button Schedule= (Button)findViewById(R.id.b_schedule_management);
+
+        Intent intent;
+
+        ButtonContext context = new ButtonContext();
+
+
+        TaskButton TaskState = new TaskButton();
+        TaskState.doAction(context,Task,MainActivity.this,userId, TaskViewActivity.class);
+
+        RecordButton RecordState = new RecordButton();
+        RecordState.doAction(context, Record,MainActivity.this, userId, RecordViewActivity.class);
+
+        ScheduleButton ScheduleState = new ScheduleButton();
+        ScheduleState.doAction(context,Schedule, MainActivity.this, userId, CalendarSchedule.class);
     }
 
-    public void onButtonShowRecords(View view) {
-        Intent intent = new Intent(this, RecordViewActivity.class);
-        Bundle bundle = getIntent().getExtras();
-        intent.putExtra("userId", userId);
-        startActivity(intent);
-    }
-
-    public void onButtonShowSchedules(View view) {
-        Intent intent = new Intent(this, CalendarSchedule.class);
-        Bundle bundle = getIntent().getExtras();
-        intent.putExtra("userId", userId);
-
-        startActivity(intent);
-    }
 }
