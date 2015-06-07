@@ -216,9 +216,10 @@ public class TaskUpdateActivity extends AbstractModelActivity implements TaskInt
     }
 
     @Override
-    protected int getLayout() {
-        return 0;
+    protected EditText getEditText() {
+        return null;
     }
+
 
 
     private void getTaskTitle() {

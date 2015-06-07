@@ -180,8 +180,8 @@ public class TaskAddActivity extends AbstractModelActivity implements TaskInterf
     }
 
     @Override
-    protected int getLayout() {
-        return 0;
+    protected EditText getEditText() {
+        return null;
     }
 
 

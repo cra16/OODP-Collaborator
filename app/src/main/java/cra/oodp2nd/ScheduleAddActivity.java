@@ -63,8 +63,9 @@ public class ScheduleAddActivity extends AbstractModelActivity implements Schedu
     }
 
     @Override
-    protected int getLayout() {
-        return R.id.edit_text_schedule_date;
+    protected EditText getEditText() {
+        EditText view = (EditText)findViewById(R.id.edit_text_schedule_date);
+        return view;
     }
 
 
@@ -72,6 +73,9 @@ public class ScheduleAddActivity extends AbstractModelActivity implements Schedu
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_add_update);
+
+
+        picker.setTPicker(getThisActivity(),getEditText());
 
         Bundle bundle = getIntent().getExtras();
         year = bundle.getInt("year");
@@ -84,7 +88,7 @@ public class ScheduleAddActivity extends AbstractModelActivity implements Schedu
         dateEditText.setText(year +"/"+month+"/"+day);
         EditText nameEditText = (EditText)findViewById(R.id.edit_text_schedule_name);
         nameEditText.setText(userId);
-        setTimePicker();
+
         setSaveButton();
     }
 

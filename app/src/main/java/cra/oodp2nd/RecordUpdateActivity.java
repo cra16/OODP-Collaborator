@@ -94,8 +94,9 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
     }
 
     @Override
-    protected int getLayout() {
-        return R.id.edit_text_record_date;
+    protected EditText getEditText() {
+       EditText view= (EditText) findViewById(R.id.edit_text_record_date);
+        return view;
     }
 
 
@@ -104,13 +105,16 @@ public class RecordUpdateActivity extends AbstractModelActivity implements Recor
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_add_update);
 
+        picker.setDPicker(getThisActivity(),getEditText());
+
+
         Bundle bundle = getIntent().getExtras();
         id = bundle.getInt("p_id");
         getRecordTitle();
         getFileList();
 
         setUpdateButton();
-        setDatePicker();
+
         setPersonButton();
         ShowPerson();
         adapter = new PersonAdapter(this, android.R.layout.simple_list_item_multiple_choice, P_PersonList, RecordUpdateActivity.this);

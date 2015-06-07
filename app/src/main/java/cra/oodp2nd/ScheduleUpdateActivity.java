@@ -61,8 +61,10 @@ public class ScheduleUpdateActivity extends AbstractModelActivity implements Sch
     }
 
     @Override
-    protected int getLayout() {
-        return R.id.edit_text_schedule_date;
+    protected EditText getEditText() {
+
+        EditText view= (EditText) findViewById(R.id.edit_text_schedule_date);
+        return view;
     }
 
 
@@ -71,16 +73,18 @@ public class ScheduleUpdateActivity extends AbstractModelActivity implements Sch
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_add_update);
 
+        picker.setTPicker(getThisActivity(),getEditText());
+
         Bundle bundle = getIntent().getExtras();
         id = bundle.getInt("p_id");
         getScheduleTitle();
 
-        setTimePicker();
+
         setUpdateButton();
     }
 
     private void getScheduleTitle() {
-        String[] columns = {"title","userId","date","time"};
+        String[] columns = {"title","userId","date","time","location"};
 
         Cursor result = sqLiteDatabase.query(TABLE_NAME, columns, "id=" + id, null, null, null, null);
 
@@ -89,14 +93,18 @@ public class ScheduleUpdateActivity extends AbstractModelActivity implements Sch
         String name = result.getString(1);
         String date = result.getString(2);
         String time = result.getString(3);
+        String location =result.getString(4);
 
 
         EditText titleEditText = (EditText) findViewById(R.id.edit_text_schedule_title);
         EditText dateEditText = (EditText)findViewById(R.id.edit_text_schedule_date);
         EditText nameEditText = (EditText)findViewById(R.id.edit_text_schedule_name);
+        EditText locationText = (EditText)findViewById(R.id.edit_text_schedule_location);
+
         titleEditText.setText(title);
         dateEditText.setText(date+" " + time);
         nameEditText.setText(name);
+        locationText.setText(location);
         result.close();
     }
 

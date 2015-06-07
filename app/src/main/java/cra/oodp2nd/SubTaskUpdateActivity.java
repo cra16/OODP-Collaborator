@@ -18,6 +18,7 @@ public class SubTaskUpdateActivity extends AbstractModelActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subtask_add_update);
+
         Bundle bundle = getIntent().getExtras();
         T_ID = bundle.getInt("p_id");
 
@@ -68,9 +69,10 @@ public class SubTaskUpdateActivity extends AbstractModelActivity{
     }
 
     @Override
-    protected int getLayout() {
-        return 0;
+    protected EditText getEditText() {
+        return null;
     }
+
 
     protected void getSubTask()
     {

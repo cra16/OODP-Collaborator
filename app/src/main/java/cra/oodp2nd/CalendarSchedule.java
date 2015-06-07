@@ -66,6 +66,8 @@ public class CalendarSchedule extends Activity implements View.OnClickListener {
                 item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if(day==null)
+                            return;
                         Intent intent = new Intent(getApplicationContext(), ScheduleViewActivity.class);
                         intent.putExtra("userId", userId);
                         intent.putExtra("year", day[2]);

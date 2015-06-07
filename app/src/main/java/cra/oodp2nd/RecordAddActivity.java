@@ -110,8 +110,9 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
     }
 
     @Override
-    protected int getLayout() {
-        return R.id.edit_text_record_date;
+    protected EditText getEditText() {
+        EditText view = (EditText)findViewById(R.id.edit_text_record_date);
+        return view;
     }
 
 
@@ -121,7 +122,7 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
         setContentView(R.layout.activity_record_add_update);
         Bundle bundle = getIntent().getExtras();
         id=bundle.getInt("p_id");
-
+        picker.setDPicker(getThisActivity(),getEditText());
         TextView Text = (TextView)findViewById(R.id.t_task_presented);
         Button button =(Button)findViewById(R.id.person_button);
         Text.setVisibility(View.INVISIBLE);
@@ -131,7 +132,7 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
         name.setText(userId);
 
         setSaveButton();
-        setDatePicker();
+
         setPersonButton();
         ShowPerson();
         adapter = new PersonAdapter(this, android.R.layout.simple_list_item_multiple_choice,P_PersonList);
