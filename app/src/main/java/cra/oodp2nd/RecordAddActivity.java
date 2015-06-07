@@ -24,6 +24,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -32,6 +36,10 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
     ArrayList<String> PersonList = new ArrayList<String>();
     ArrayList<String> P_PersonList = new ArrayList<String>();
     ArrayList<String> ADD_PersonList = new ArrayList<String>();
+
+    ListView fileListView;
+    ArrayAdapter<String> fileListAdapter;
+    ArrayList<String> listValues;
     PersonAdapter adapter;
 
     ListView list;
@@ -63,7 +71,7 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
                 addRowValue.put("date", date);
                 addRowValue.put("location", location);
 
-                sqLiteDatabase.insert(TABLE_NAME, null, addRowValue);/*
+                long recordId = sqLiteDatabase.insert(TABLE_NAME, null, addRowValue);/*
                 sqLiteDatabase.query(TABLE_NAME,new String[]{"id"},"")
                 addRowValue = new ContentValues();
 
@@ -73,6 +81,16 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
 
                     sqLiteDatabase.insert("table_member_presented", null, addRowValue);
                 }*/
+
+                ContentValues addFileRowValue = new ContentValues();
+
+                for (int i=0; i<fileListView.getCount(); i++) {
+                    addFileRowValue.put("recordId", recordId);
+                    addFileRowValue.put("fileName", fileListView.getItemAtPosition(i).toString());
+                }
+
+                sqLiteDatabase.insert(FILE_TABLE_NAME, null, addFileRowValue);
+
                 finish();
             }
         });
@@ -113,6 +131,11 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
         list = (ListView) findViewById(R.id.record_view);
         list.setAdapter(adapter);
 
+        fileListAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, listValues);
+
+        //set fileListAdapter to ListView
+        fileListView.setAdapter(fileListAdapter);
     }
 
     @Override
@@ -143,6 +166,17 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
         else if (id == R.id.action_login_exit){
             // exit
             exitOptionDialog();
+        } else if (id == R.id.action_record_upload) {
+            final Activity activityForButton = this;
+
+            Intent fileExploreIntent = new Intent(FileBrowserActivity.INTENT_ACTION_SELECT_FILE,
+                    null,
+                    activityForButton,
+                    cra.oodp2nd.FileBrowserActivity.class);
+            fileExploreIntent.putExtra(FileBrowserActivity.showCannotReadParameter, false);
+            startActivityForResult(fileExploreIntent, REQUEST_CODE_PICK_FILE);
+
+            return true;
         }
         if(id== android.R.id.home) {
 
@@ -300,6 +334,59 @@ public class RecordAddActivity extends AbstractModelActivity implements RecordIn
 
             return contentView;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_PICK_DIR) {
+            if (resultCode == RESULT_OK) {
+                String newDir = data.getStringExtra(
+                        FileBrowserActivity.returnDirectoryParameter);
+                Toast.makeText(this, "Received DIRECTORY path from file browser: \n" + newDir,
+                        Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Received NO result from file browser",
+                        Toast.LENGTH_LONG).show();
+            }
+
+        }
+
+        if (requestCode == REQUEST_CODE_PICK_FILE) {
+            if (resultCode == RESULT_OK) {
+
+                String source = data.getStringExtra(FileBrowserActivity.returnFileParameter);
+                File file = new File(source);
+
+                Toast.makeText(this, "Received FILE path from file browser:\n" + source,
+                        Toast.LENGTH_LONG).show();
+
+                String destination = this.getFilesDir().toString()+"/"+file.getName();
+                File destinationFile = new File(destination);
+                File sourceFile = new File(source);
+
+                try{
+                    FileUtils.copyFile(sourceFile, destinationFile);
+                    Toast.makeText(this, "Copy file to "+ destination, Toast.LENGTH_LONG).show();
+
+                    //listValues[listValues.length] = file.getName();
+                    listValues.add(file.getName());
+
+                    fileListAdapter = new ArrayAdapter<String>(this,
+                            android.R.layout.simple_list_item_1, android.R.id.text1, listValues);
+
+
+                    //set Adapter to ListView
+                    fileListView.setAdapter(fileListAdapter);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                Toast.makeText(this, "Received NO result from file browser",
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
