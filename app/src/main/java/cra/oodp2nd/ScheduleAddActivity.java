@@ -31,16 +31,19 @@ public class ScheduleAddActivity extends AbstractModelActivity implements Schedu
             public void onClick(View v) {
                 EditText titleEditText = (EditText) findViewById(R.id.edit_text_schedule_title);
                 EditText dateEditText = (EditText)findViewById(R.id.edit_text_schedule_date);
+                EditText locationEditText = (EditText)findViewById(R.id.edit_text_schedule_location);
 
                 String title = titleEditText.getText().toString();
                 String date = dateEditText.getText().toString();
+                String location =locationEditText.getText().toString();
 
                 ContentValues addRowValue = new ContentValues();
 
                 addRowValue.put("title", title);
                 addRowValue.put("date", year+"/"+month+"/"+day);
-                addRowValue.put("time", date.substring(date.indexOf(" ")+1));
-
+                addRowValue.put("userId",userId);
+                addRowValue.put("time",date.indexOf(" ")>=0 ? date.substring(date.indexOf(" ")+1) : "");
+                addRowValue.put("location",location);
                 sqLiteDatabase.insert(TABLE_NAME, null, addRowValue) ;
 
 
@@ -74,10 +77,13 @@ public class ScheduleAddActivity extends AbstractModelActivity implements Schedu
         year = bundle.getInt("year");
         month = bundle.getInt("month");
         day = bundle.getInt("day");
+        userId=bundle.getString("userId");
 
 
         EditText dateEditText = (EditText)findViewById(R.id.edit_text_schedule_date);
         dateEditText.setText(year +"/"+month+"/"+day);
+        EditText nameEditText = (EditText)findViewById(R.id.edit_text_schedule_name);
+        nameEditText.setText(userId);
         setTimePicker();
         setSaveButton();
     }

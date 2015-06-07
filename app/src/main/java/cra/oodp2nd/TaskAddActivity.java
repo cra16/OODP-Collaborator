@@ -30,9 +30,16 @@ public class TaskAddActivity extends AbstractModelActivity implements TaskInterf
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_add_update);
         setSaveButton();
+
+        TextView Text = (TextView)findViewById(R.id.t_task_presented);
+        Button button =(Button)findViewById(R.id.sub_task_button);
+        Text.setVisibility(View.INVISIBLE);
+        button.setVisibility(View.INVISIBLE);
+
         Bundle bundle = getIntent().getExtras();
         EditText text = (EditText)findViewById(R.id.edit_text_task_name);
         text.setText(bundle.getString("userId"));
+
 
     }
 
