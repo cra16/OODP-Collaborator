@@ -39,7 +39,8 @@ public class ScheduleAddActivity extends AbstractModelActivity implements Schedu
 
                 addRowValue.put("title", title);
                 addRowValue.put("date", year+"/"+month+"/"+day);
-                addRowValue.put("time", date.substring(date.indexOf(" ")+1));
+                addRowValue.put("userId",userId);
+                addRowValue.put("time",date.indexOf(" ")>=0 ? date.substring(date.indexOf(" ")+1) : "");
 
                 sqLiteDatabase.insert(TABLE_NAME, null, addRowValue) ;
 
@@ -74,10 +75,13 @@ public class ScheduleAddActivity extends AbstractModelActivity implements Schedu
         year = bundle.getInt("year");
         month = bundle.getInt("month");
         day = bundle.getInt("day");
+        userId=bundle.getString("userId");
 
 
         EditText dateEditText = (EditText)findViewById(R.id.edit_text_schedule_date);
         dateEditText.setText(year +"/"+month+"/"+day);
+        EditText nameEditText = (EditText)findViewById(R.id.edit_text_schedule_name);
+        nameEditText.setText(userId);
         setTimePicker();
         setSaveButton();
     }

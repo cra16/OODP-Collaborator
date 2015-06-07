@@ -77,20 +77,23 @@ public class ScheduleUpdateActivity extends AbstractModelActivity implements Sch
     }
 
     private void getScheduleTitle() {
-        String[] columns = {"title","date","time"};
+        String[] columns = {"title","userId","date","time"};
 
         Cursor result = sqLiteDatabase.query(TABLE_NAME, columns, "id=" + id, null, null, null, null);
 
         result.moveToFirst();
         String title = result.getString(0);
-        String date = result.getString(1);
-        String time = result.getString(2);
+        String name = result.getString(1);
+        String date = result.getString(2);
+        String time = result.getString(3);
+
 
         EditText titleEditText = (EditText) findViewById(R.id.edit_text_schedule_title);
         EditText dateEditText = (EditText)findViewById(R.id.edit_text_schedule_date);
+        EditText nameEditText = (EditText)findViewById(R.id.edit_text_schedule_name);
         titleEditText.setText(title);
         dateEditText.setText(date+" " + time);
-
+        nameEditText.setText(name);
         result.close();
     }
 
