@@ -31,9 +31,11 @@ public class ScheduleAddActivity extends AbstractModelActivity implements Schedu
             public void onClick(View v) {
                 EditText titleEditText = (EditText) findViewById(R.id.edit_text_schedule_title);
                 EditText dateEditText = (EditText)findViewById(R.id.edit_text_schedule_date);
+                EditText locationEditText = (EditText)findViewById(R.id.edit_text_schedule_location);
 
                 String title = titleEditText.getText().toString();
                 String date = dateEditText.getText().toString();
+                String location =locationEditText.getText().toString();
 
                 ContentValues addRowValue = new ContentValues();
 
@@ -41,7 +43,7 @@ public class ScheduleAddActivity extends AbstractModelActivity implements Schedu
                 addRowValue.put("date", year+"/"+month+"/"+day);
                 addRowValue.put("userId",userId);
                 addRowValue.put("time",date.indexOf(" ")>=0 ? date.substring(date.indexOf(" ")+1) : "");
-
+                addRowValue.put("location",location);
                 sqLiteDatabase.insert(TABLE_NAME, null, addRowValue) ;
 
 
