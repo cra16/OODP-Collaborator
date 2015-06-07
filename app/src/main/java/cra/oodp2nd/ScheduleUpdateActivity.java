@@ -34,17 +34,20 @@ public class ScheduleUpdateActivity extends AbstractModelActivity implements Sch
             public void onClick(View v) {
                 EditText titleEditText = (EditText) findViewById(R.id.edit_text_schedule_title);
                 EditText dateEditText = (EditText)findViewById(R.id.edit_text_schedule_date);
-
+                EditText locationEditText =(EditText)findViewById(R.id.edit_text_schedule_location);
 
                 String title = titleEditText.getText().toString();
                 String datetext = dateEditText.getText().toString();
+                String location = locationEditText.getText().toString();
                 String date = datetext.substring(0, datetext.indexOf(" ")>=0?datetext.indexOf(" "):datetext.length());
                 String time = datetext.substring(datetext.indexOf(" ")+1);
+
                 ContentValues updateRowValue = new ContentValues();
 
                 updateRowValue.put("title", title);
                 updateRowValue.put("date", date);
                 updateRowValue.put("time", time);
+                updateRowValue.put("location",location);
                 sqLiteDatabase.update(TABLE_NAME, updateRowValue, "id=" + id, null);
 
                 finish();
@@ -77,20 +80,23 @@ public class ScheduleUpdateActivity extends AbstractModelActivity implements Sch
     }
 
     private void getScheduleTitle() {
-        String[] columns = {"title","date","time"};
+        String[] columns = {"title","userId","date","time"};
 
         Cursor result = sqLiteDatabase.query(TABLE_NAME, columns, "id=" + id, null, null, null, null);
 
         result.moveToFirst();
         String title = result.getString(0);
-        String date = result.getString(1);
-        String time = result.getString(2);
+        String name = result.getString(1);
+        String date = result.getString(2);
+        String time = result.getString(3);
+
 
         EditText titleEditText = (EditText) findViewById(R.id.edit_text_schedule_title);
         EditText dateEditText = (EditText)findViewById(R.id.edit_text_schedule_date);
+        EditText nameEditText = (EditText)findViewById(R.id.edit_text_schedule_name);
         titleEditText.setText(title);
         dateEditText.setText(date+" " + time);
-
+        nameEditText.setText(name);
         result.close();
     }
 
