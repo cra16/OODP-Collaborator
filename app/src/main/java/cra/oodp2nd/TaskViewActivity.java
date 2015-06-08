@@ -20,6 +20,8 @@ import java.util.List;
 
 public class TaskViewActivity extends AbstractViewActivity implements TaskInterface {
 
+    private static DatabaseHelper_v2 myDBHelper_v2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,7 +148,16 @@ public class TaskViewActivity extends AbstractViewActivity implements TaskInterf
 
     @Override
     protected void selectData(String[] columns) {
-        Cursor result = sqLiteDatabase.query(TABLE_NAME,columns,"userId="+"\""+userId+"\"",null,null,null,null,null);
+        // TODO: Replace sqLiteDatabase to myDBHelper_v2
+
+        // Before delegation
+//        Cursor result = sqLiteDatabase.query(TABLE_NAME,columns,"userId="+"\""+userId+"\"",null,null,null,null,null);
+
+        // After delegation
+        myDBHelper_v2 = DatabaseHelper_v2.getInstance(this);
+        Cursor result = myDBHelper_v2.getAll(TABLE_NAME, userId);
+
+
         result.moveToFirst();
         while(!result.isAfterLast()) {
 
@@ -161,8 +172,17 @@ public class TaskViewActivity extends AbstractViewActivity implements TaskInterf
     @Override
     protected void dbDeleteSingleJob(int position)
     {
-        sqLiteDatabase.delete("table_subtask", "titleId=" +position,null );
-        sqLiteDatabase.delete(TABLE_NAME, "id=" + position, null);
+        // TODO: Replace sqLiteDatabase to myDBHelper_v2
+        myDBHelper_v2 = DatabaseHelper_v2.getInstance(this);
+
+        // Before delegation
+//        sqLiteDatabase.delete(TABLE_NAME, "id=" + position, null);
+
+        // After delegation
+        myDBHelper_v2.deleteTask(position);
+
+
+
 
     }
 
