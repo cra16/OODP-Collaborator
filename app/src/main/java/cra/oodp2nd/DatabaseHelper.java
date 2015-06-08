@@ -23,40 +23,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context,name,factory, version);
     }
 
-
-    /*
-        public long QueryInsert(String TableName,ContentValues RowValue)
-        {
-            return myDatabase.insert(TableName,null,RowValue);
-        }
-
-        public Cursor QuerySelect(String TableName, String[] columns, String selection, String[] selectionArgs, String GroupBy, String having, String orderBy)
-        {
-            return myDatabase.query(TableName, columns, selection, selectionArgs, GroupBy, having, orderBy);
-        }
-
-        public int QueryUpdate( String TableName, ContentValues UpRowValue,String whereClause, String[] whereArgs)
-        {
-            return myDatabase.update(TableName, UpRowValue, whereClause, whereArgs);
-        }
-        public int Querydelete(String TableName, String whereClause, String[] whereArgs)
-        {
-            return myDatabase.delete(TableName, whereClause, whereArgs);
-        }
-    */
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table if not exists table_task (id integer primary key, userId text,title text);");
         db.execSQL("create table if not exists table_schedule(id integer primary key, userId text, title text, date date, time text);");
         db.execSQL("create table if not exists table_record (id integer primary key, userId text, title text,  date date, location text);");
-        db.execSQL("create table if not exists table_subtask (id integer primary key, userId text, title text, titleId integer," +
-                "clear integer, state text);");
+        db.execSQL("create table if not exists table_subtask (id integer primary key, userId text, title text, titleId integer," + "clear integer, state text);");
         db.execSQL("create table if not exists table_member (id integer primary key, userId text unique, password text);");
         db.execSQL("create table if not exists table_member_presented (id integer primary key, recordID integer, title text, userId text);");
-
         db.execSQL("create table if not exists table_record_file (id integer primary key, recordId integer, fileName text);");
-
     }
 
     @Override
