@@ -40,7 +40,7 @@ public class SubTaskAdapter extends JobAdapter {
                 id.setChecked(false);
 
             if (id != null) {
-                id.setText(Integer.toString(subTaskJob .getId()));
+                id.setText(subTaskJob.getTitle());
             }
 
         }
