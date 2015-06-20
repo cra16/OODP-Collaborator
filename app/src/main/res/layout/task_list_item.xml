@@ -3,14 +3,14 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:id="@+id/task_list_item_id"
+        android:id="@+id/task_list_item_title"
         android:layout_width="fill_parent"
         android:gravity="center_vertical"
         android:layout_height="wrap_content"
         android:textSize="20sp"/>
     <TextView
         android:layout_width="fill_parent"
-        android:id="@+id/task_list_item_title"
+        android:id="@+id/task_list_item_id"
         android:singleLine="true"
         android:ellipsize="marquee"
         android:layout_height="wrap_content"/>
